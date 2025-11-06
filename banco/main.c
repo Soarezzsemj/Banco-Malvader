@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+#include <ctype.h>
 
 #define MAX_CONTAS 100
 #define TAM_NOME 100
@@ -18,12 +20,17 @@ typedef struct {
     int status;                 /* ATIVA ou ENCERRADA */
 } Conta;
 
+void limpa_tela(); //por enquanto deixa ai kkkkk achei daora por
+
+void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCIA_temp[], char TELEFONE_temp[]);
+
+void verifica_dados_conta(Conta contas, int *quant, int *proximo_numero);
 int main()
 {
     Conta vetor_de_contas[MAX_CONTAS];
     int quantidade_atual = 0; // numero de contas criadas
     int num_proxima_conta = 1; //vai ser incrementado depois apos a criação de uma nova conta
-    int opcao;
+    int opcao, sucesso_leitura, c;
 
     do {
         printf("\n------Menu------\n");
@@ -38,16 +45,40 @@ int main()
         printf("9. Sair\n");
         printf("Escolha: ");
 
-        scanf("%d", &opcao);
+        sucesso_leitura= scanf("%d", &opcao); //se ler um numero ele retorna 1
+
+        if (sucesso_leitura != 1) { //se for uma letra, ele ficou preso na fila, temos que limpa-lo
+            limpa_tela();
+            printf("\nEntrada invalida! Por favor informe somente numeros.\n");
+            while (( c= getchar()) != '\n' && c != EOF); /*Limpa o buffer (usa getchar enquanto nao
+            nao limpar a fila toda), o buffer que causa o loop*/
+
+            opcao = 0;
+            continue;
+        }
+
+        while ((c = getchar()) != '\n' && c != EOF); //limpar o buffer para o \n nao ir para o proximo fgets
+
         if (opcao < 1 || opcao > 9) { //se nao for uma das opcoes pede ao usuario para tentar novamente
-            printf("Opcao invalida! Digite uma opcao valida por favor.\n");
+            limpa_tela();
+            printf("\nOpcao invalida! Digite uma opcao valida por favor.\n");
             continue; // reinicia o loop
         }
 
         switch (opcao) { /* chamar as funções conforme a escolha */
             case 1:
                 printf("Voce escolheu abrir conta.");
-                //chamada aqui
+                if (quantidade_atual >= MAX_CONTAS) {
+                    limpa_tela();
+                    printf("\nErro: Limite de contas atingido!\n");
+                    break; //volta para o menu
+                }
+                char nome_temp[TAM_NOME];
+                char cpf_temp[TAM_CPF];
+                char agencia_temp[TAM_AGENCIA];
+                char telefone_temp[TAM_TELEFONE];
+
+                coletar_dados_abertura_conta(nome_temp, cpf_temp, agencia_temp, telefone_temp); //preenche os dados
                 break;
             case 2:
                 printf("Voce escolheu depositar.");
@@ -63,4 +94,33 @@ int main()
     } while (opcao != 9);
 
     return 0;
+}
+
+void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCIA_temp[], char TELEFONE_temp[]) {
+    printf("\n------ABERTURA DE CONTA NOVA------\n");
+    do {
+        printf("Digite o seu nome completo: ");
+        fgets(NOME_temp, TAM_NOME, stdin);
+    }while (NOME_temp[TAM_NOME] < TAM_NOME); //!!!falta fazer essas verificacoes em todos aqui
+
+    printf("Digite o seu cpf completo (apenas numeros): ");
+    fgets(CPF_temp, TAM_CPF, stdin);
+
+    printf("Informe sua agencia: ");
+    fgets(AGENCIA_temp, TAM_AGENCIA, stdin);
+
+    printf("Informe seu telefone (apenas numeros): ");
+    fgets(TELEFONE_temp, TAM_AGENCIA, stdin);
+
+    //limpar o \n que o fgets deixa
+    NOME_temp[strcspn(NOME_temp, "\n")] = '\0';
+    CPF_temp[strcspn(CPF_temp, "\n")] = '\0';
+    AGENCIA_temp[strcspn(AGENCIA_temp, "\n")] = '\0';
+    TELEFONE_temp[strcspn(TELEFONE_temp, "\n")] = '\0';
+}
+
+void limpa_tela() {
+    int i;
+    for (i = 0; i < 40; i++) //da 40 espaços
+        printf("\n");
 }
