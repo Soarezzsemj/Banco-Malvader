@@ -18,12 +18,14 @@ typedef struct {
     int status;                 /* ATIVA ou ENCERRADA */
 } Conta;
 
+void limpa_tela(); //por enquanto deixa ai kkkkk achei daora por
+
 int main()
 {
     Conta vetor_de_contas[MAX_CONTAS];
     int quantidade_atual = 0; // numero de contas criadas
     int num_proxima_conta = 1; //vai ser incrementado depois apos a criação de uma nova conta
-    int opcao;
+    int opcao, sucesso_leitura, c;
 
     do {
         printf("\n------Menu------\n");
@@ -38,7 +40,20 @@ int main()
         printf("9. Sair\n");
         printf("Escolha: ");
 
-        scanf("%d", &opcao);
+        sucesso_leitura= scanf("%d", &opcao); //se ler um numero ele retorna 1
+
+        if (sucesso_leitura != 1) { //se for uma letra, ele ficou preso na fila, temos que limpa-lo
+            limpa_tela();
+            printf("Entrada invalida! Por favor informe somente numeros.");
+            while (( c= getchar()) != '\n' && c != EOF); /*Limpa o buffer (usa getchar enquanto nao
+            nao limpar a fila toda), o buffer que causa o loop*/
+
+            opcao = 0;
+            continue;
+        }
+
+        while ((c = getchar()) != '\n' && c != EOF); //limpar o buffer para o \n nao ir para o proximo fgets
+
         if (opcao < 1 || opcao > 9) { //se nao for uma das opcoes pede ao usuario para tentar novamente
             printf("Opcao invalida! Digite uma opcao valida por favor.\n");
             continue; // reinicia o loop
@@ -63,4 +78,10 @@ int main()
     } while (opcao != 9);
 
     return 0;
+}
+
+void limpa_tela() {
+    int i;
+    for (i = 0; i < 40; i++) //da 60 espaços
+        printf("\n");
 }
