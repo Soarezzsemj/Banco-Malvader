@@ -4,7 +4,7 @@
 
 #define MAX_CONTAS 100
 #define TAM_NOME 100
-#define TAM_CPF 15
+#define TAM_CPF 13
 #define TAM_AGENCIA 10
 #define TAM_TELEFONE 20
 #define ATIVA 1
@@ -24,7 +24,10 @@ void limpa_tela(); //por enquanto deixa ai kkkkk achei daora por
 
 void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCIA_temp[], char TELEFONE_temp[]);
 
+int verifica_fgets(char INFO[], int TAMANHO);
+
 void verifica_dados_conta(Conta contas, int *quant, int *proximo_numero);
+
 int main()
 {
     Conta vetor_de_contas[MAX_CONTAS];
@@ -67,7 +70,6 @@ int main()
 
         switch (opcao) { /* chamar as funções conforme a escolha */
             case 1:
-                printf("Voce escolheu abrir conta.");
                 if (quantidade_atual >= MAX_CONTAS) {
                     limpa_tela();
                     printf("\nErro: Limite de contas atingido!\n");
@@ -98,13 +100,41 @@ int main()
 
 void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCIA_temp[], char TELEFONE_temp[]) {
     printf("\n------ABERTURA DE CONTA NOVA------\n");
-    do {
-        printf("Digite o seu nome completo: ");
-        fgets(NOME_temp, TAM_NOME, stdin);
-    }while (NOME_temp[TAM_NOME] < TAM_NOME); //!!!falta fazer essas verificacoes em todos aqui
 
-    printf("Digite o seu cpf completo (apenas numeros): ");
-    fgets(CPF_temp, TAM_CPF, stdin);
+    int entrada_valida, i, c;
+
+    do {
+        printf("\nDigite o seu nome completo: ");
+        fgets(NOME_temp, TAM_NOME, stdin);
+
+        entrada_valida = verifica_fgets(NOME_temp, TAM_NOME); //funcao verifica se ultrapassou o limite
+        if (entrada_valida != 0) {
+            printf("\nErro: Nome muito longo! O limite de caracteres eh %d.", TAM_NOME - 2);
+            while ((c = getchar()) != '\n' && c != EOF); //limpando o string
+        }
+    }while (entrada_valida == -1);
+
+    do {
+        printf("\nDigite o seu cpf completo (apenas numeros): ");
+        fgets(CPF_temp, TAM_CPF, stdin);
+
+        entrada_valida = verifica_fgets(CPF_temp, TAM_CPF);
+        if (entrada_valida == -1) {
+            printf("Erro: CPF muito longo!");
+            while ((c = getchar()) != '\n' && c != EOF);
+        }
+        for (i = 0; i < strlen(CPF_temp); i++) {
+            c = CPF_temp[i];
+
+            if (!isdigit(c)) {
+                while ((c = getchar()) != '\n' && c != EOF);
+                entrada_valida = -1;
+                printf("\nErro: Informe somente numeros!");
+                break;
+            }
+        }
+    }while (entrada_valida == -1);
+
 
     printf("Informe sua agencia: ");
     fgets(AGENCIA_temp, TAM_AGENCIA, stdin);
@@ -113,7 +143,6 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
     fgets(TELEFONE_temp, TAM_AGENCIA, stdin);
 
     //limpar o \n que o fgets deixa
-    NOME_temp[strcspn(NOME_temp, "\n")] = '\0';
     CPF_temp[strcspn(CPF_temp, "\n")] = '\0';
     AGENCIA_temp[strcspn(AGENCIA_temp, "\n")] = '\0';
     TELEFONE_temp[strcspn(TELEFONE_temp, "\n")] = '\0';
@@ -123,4 +152,17 @@ void limpa_tela() {
     int i;
     for (i = 0; i < 40; i++) //da 40 espaços
         printf("\n");
+}
+
+int verifica_fgets(char INFO[], int TAMANHO) {
+    char *ponteiro_enter;
+    ponteiro_enter = strchr(INFO, '\n'); //procura o /n na string, se tiver o limite de char foi respeitado
+
+    if (ponteiro_enter != NULL) {
+        *ponteiro_enter = '\0';
+        return 0;
+    }
+    else { //se nao tiver \n nao teve espaço para armazenar toda a string
+        return -1;
+    }
 }
