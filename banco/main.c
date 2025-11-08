@@ -5,7 +5,7 @@
 #define MAX_CONTAS 100
 #define TAM_NOME 100
 #define TAM_CPF 13
-#define TAM_AGENCIA 10
+#define TAM_AGENCIA 11
 #define TAM_TELEFONE 20
 #define ATIVA 1
 #define ENCERRADA 0
@@ -21,6 +21,8 @@ typedef struct {
 } Conta;
 
 void limpa_tela(); //por enquanto deixa ai kkkkk achei daora por
+
+void limpa_buffer();
 
 void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCIA_temp[], char TELEFONE_temp[]);
 
@@ -48,14 +50,12 @@ int main()
         printf("9. Sair\n");
         printf("Escolha: ");
 
-        sucesso_leitura= scanf("%d", &opcao); //se ler um numero ele retorna 1
+        sucesso_leitura = scanf("%d", &opcao); //se ler um numero ele retorna 1
 
         if (sucesso_leitura != 1) { //se for uma letra, ele ficou preso na fila, temos que limpa-lo
             limpa_tela();
             printf("\nEntrada invalida! Por favor informe somente numeros.\n");
-            while (( c= getchar()) != '\n' && c != EOF); /*Limpa o buffer (usa getchar enquanto nao
-            nao limpar a fila toda), o buffer que causa o loop*/
-
+            limpa_buffer();
             opcao = 0;
             continue;
         }
@@ -91,6 +91,9 @@ int main()
                 //chamada aqui
                 break;
                 //...
+            default:
+                printf("\nErro: Opcao invalida!");
+                break;
         }
 
     } while (opcao != 9);
@@ -109,8 +112,8 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
 
         entrada_valida = verifica_fgets(NOME_temp, TAM_NOME); //funcao verifica se ultrapassou o limite
         if (entrada_valida == -1) {
-            printf("\nErro: Nome muito longo! O limite de caracteres eh %d.", TAM_NOME - 2);
-            while ((c = getchar()) != '\n' && c != EOF); //limpando o string
+            printf("\nErro: Nome muito longo! O limite de caracteres eh %d caracteres.", TAM_NOME - 2);
+            limpa_buffer(); //limpando o string
         }
     }while (entrada_valida == -1);
 
@@ -121,7 +124,7 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
         entrada_valida = verifica_fgets(CPF_temp, TAM_CPF);
         if (entrada_valida == -1) {
             printf("Erro: CPF muito longo! O CPF deve ter 11 digitos.");
-            while ((c = getchar()) != '\n' && c != EOF);
+            limpa_buffer();
             continue;
         }
 
@@ -145,8 +148,18 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
         }
     }while (entrada_valida == -1);
 
-    printf("Informe sua agencia: ");
-    fgets(AGENCIA_temp, TAM_AGENCIA, stdin);
+    do {
+        printf("Informe sua agencia: ");
+        fgets(AGENCIA_temp, TAM_AGENCIA, stdin);
+
+        entrada_valida = verifica_fgets(AGENCIA_temp, TAM_AGENCIA);
+        if (entrada_valida == -1) {
+            printf("Erro: Nome de agencia muito longo! O limite eh %d caracteres.", TAM_AGENCIA - 2);
+
+        }
+
+    }while (entrada_valida == -1);
+
 
     printf("Informe seu telefone (apenas numeros): ");
     fgets(TELEFONE_temp, TAM_AGENCIA, stdin);
@@ -160,6 +173,17 @@ void limpa_tela() {
     int i;
     for (i = 0; i < 40; i++) //da 40 espaços
         printf("\n");
+}
+
+void limpa_buffer() {
+    int c;
+    /*Essa funcao vai ser usada em dois casos.
+    1: no menu quando o usuario digita uma letra e o scanf espera um int,
+    entao o comentario no while ja explica.
+    2: quando o usuario digitou algo que nao devia tipo letra em um cpf, entao
+    é preciso limpar a string para ela armazenar novamente o que o usuario digitar.*/
+    while ((c = getchar()) != '\n' && c != EOF); /*Limpa o buffer (usa getchar enquanto nao
+            nao limpar a fila toda), o buffer que causa o loop*/
 }
 
 int verifica_fgets(char INFO[], int TAMANHO) {
