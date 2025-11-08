@@ -97,26 +97,35 @@ int main()
 }
 
 void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCIA_temp[], char TELEFONE_temp[]) {
-    printf("\n------ABERTURA DE CONTA NOVA------\n");
+    printf("\n------ ABERTURA DE CONTA NOVA ------\n");
+
+    // Nome
     do {
         printf("Digite o seu nome completo: ");
         fgets(NOME_temp, TAM_NOME, stdin);
-    }while (NOME_temp[TAM_NOME] < TAM_NOME); //!!!falta fazer essas verificacoes em todos aqui
+        NOME_temp[strcspn(NOME_temp, "\n")] = '\0'; // remove o \n
+    } while (strlen(NOME_temp) < 2);
 
-    printf("Digite o seu cpf completo (apenas numeros): ");
-    fgets(CPF_temp, TAM_CPF, stdin);
+    // CPF
+    do {
+        printf("Digite o seu CPF completo (apenas números): ");
+        fgets(CPF_temp, TAM_CPF, stdin);
+        CPF_temp[strcspn(CPF_temp, "\n")] = '\0';
+    } while (strlen(CPF_temp) < 11); // exemplo: CPF deve ter 11 dígitos
 
-    printf("Informe sua agencia: ");
-    fgets(AGENCIA_temp, TAM_AGENCIA, stdin);
+    // Agência
+    do {
+        printf("Informe sua agência: ");
+        fgets(AGENCIA_temp, TAM_AGENCIA, stdin);
+        AGENCIA_temp[strcspn(AGENCIA_temp, "\n")] = '\0';
+    } while (strlen(AGENCIA_temp) < 1);
 
-    printf("Informe seu telefone (apenas numeros): ");
-    fgets(TELEFONE_temp, TAM_AGENCIA, stdin);
-
-    //limpar o \n que o fgets deixa
-    NOME_temp[strcspn(NOME_temp, "\n")] = '\0';
-    CPF_temp[strcspn(CPF_temp, "\n")] = '\0';
-    AGENCIA_temp[strcspn(AGENCIA_temp, "\n")] = '\0';
-    TELEFONE_temp[strcspn(TELEFONE_temp, "\n")] = '\0';
+    // Telefone
+    do {
+        printf("Informe seu telefone (apenas números): ");
+        fgets(TELEFONE_temp, TAM_TELEFONE, stdin);
+        TELEFONE_temp[strcspn(TELEFONE_temp, "\n")] = '\0';
+    } while (strlen(TELEFONE_temp) < 8);
 }
 
 void limpa_tela() {
