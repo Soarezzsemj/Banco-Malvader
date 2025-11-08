@@ -108,7 +108,7 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
         fgets(NOME_temp, TAM_NOME, stdin);
 
         entrada_valida = verifica_fgets(NOME_temp, TAM_NOME); //funcao verifica se ultrapassou o limite
-        if (entrada_valida != 0) {
+        if (entrada_valida == -1) {
             printf("\nErro: Nome muito longo! O limite de caracteres eh %d.", TAM_NOME - 2);
             while ((c = getchar()) != '\n' && c != EOF); //limpando o string
         }
@@ -120,21 +120,30 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
 
         entrada_valida = verifica_fgets(CPF_temp, TAM_CPF);
         if (entrada_valida == -1) {
-            printf("Erro: CPF muito longo!");
+            printf("Erro: CPF muito longo! O CPF deve ter 11 digitos.");
             while ((c = getchar()) != '\n' && c != EOF);
+            continue;
         }
-        for (i = 0; i < strlen(CPF_temp); i++) {
-            c = CPF_temp[i];
 
-            if (!isdigit(c)) {
-                while ((c = getchar()) != '\n' && c != EOF);
-                entrada_valida = -1;
-                printf("\nErro: Informe somente numeros!");
+        for (i = 0; i < strlen(CPF_temp); i++) {
+            if (!isdigit(CPF_temp[i])) { /*se a posição atual do cpf NAO FOR um digito
+                mande um codigo de erro*/
+                entrada_valida = -1; //codigo de erro
                 break;
             }
         }
-    }while (entrada_valida == -1);
 
+        if (entrada_valida == -1) {
+            printf("\nErro: Digite apenas numeros!");
+            continue;
+        }
+
+        if (strlen(CPF_temp) != 11) {
+            printf("\nErro: O CPF deve ter 11 digitos, voce informou somente %d.", (int)strlen(CPF_temp));
+            entrada_valida = -1;
+            continue;
+        }
+    }while (entrada_valida == -1);
 
     printf("Informe sua agencia: ");
     fgets(AGENCIA_temp, TAM_AGENCIA, stdin);
@@ -143,7 +152,6 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
     fgets(TELEFONE_temp, TAM_AGENCIA, stdin);
 
     //limpar o \n que o fgets deixa
-    CPF_temp[strcspn(CPF_temp, "\n")] = '\0';
     AGENCIA_temp[strcspn(AGENCIA_temp, "\n")] = '\0';
     TELEFONE_temp[strcspn(TELEFONE_temp, "\n")] = '\0';
 }
