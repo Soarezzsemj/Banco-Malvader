@@ -35,7 +35,7 @@ int main()
     Conta vetor_de_contas[MAX_CONTAS];
     int quantidade_atual = 0; // numero de contas criadas
     int num_proxima_conta = 1; //vai ser incrementado depois apos a criação de uma nova conta
-    int opcao, sucesso_leitura, c;
+    int opcao, sucesso_leitura;
 
     do {
         printf("\n------Menu------\n");
@@ -60,7 +60,7 @@ int main()
             continue;
         }
 
-        while ((c = getchar()) != '\n' && c != EOF); //limpar o buffer para o \n nao ir para o proximo fgets
+        limpa_buffer(); //limpar o buffer para o \n nao ir para o proximo fgets
 
         if (opcao < 1 || opcao > 9) { //se nao for uma das opcoes pede ao usuario para tentar novamente
             limpa_tela();
@@ -104,7 +104,7 @@ int main()
 void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCIA_temp[], char TELEFONE_temp[]) {
     printf("\n------ABERTURA DE CONTA NOVA------\n");
 
-    int entrada_valida, i, c;
+    int entrada_valida, i;
 
     do {
         printf("\nDigite o seu nome completo: ");
@@ -154,19 +154,37 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
 
         entrada_valida = verifica_fgets(AGENCIA_temp, TAM_AGENCIA);
         if (entrada_valida == -1) {
-            printf("Erro: Nome de agencia muito longo! O limite eh %d caracteres.", TAM_AGENCIA - 2);
-
+            printf("\nErro: Nome de agencia muito longo! O limite eh %d caracteres.", TAM_AGENCIA - 2);
+            limpa_buffer();
         }
 
     }while (entrada_valida == -1);
 
+    do {
+        printf("\nInforme seu telefone (apenas numeros): ");
+        fgets(TELEFONE_temp, TAM_AGENCIA, stdin);
 
-    printf("Informe seu telefone (apenas numeros): ");
-    fgets(TELEFONE_temp, TAM_AGENCIA, stdin);
+        entrada_valida = verifica_fgets(TELEFONE_temp, TAM_TELEFONE);
+        if (entrada_valida == -1) {
+            printf("\nErro: Numero de telefone grande demais! O limite é de %d numeros.", TAM_TELEFONE - 2);
+            limpa_buffer();
+            continue;
+        }
 
-    //limpar o \n que o fgets deixa
-    AGENCIA_temp[strcspn(AGENCIA_temp, "\n")] = '\0';
-    TELEFONE_temp[strcspn(TELEFONE_temp, "\n")] = '\0';
+        for (i = 0; i < strlen(TELEFONE_temp); i++) {
+            if (!isdigit(TELEFONE_temp[i])) { /*se a posição atual do numero NAO FOR um digito
+                mande um codigo de erro*/
+                entrada_valida = -1; //codigo de erro
+                break;
+            }
+        }
+
+        if (entrada_valida == -1) {
+            printf("\nErro: Digite apenas numeros!");
+            continue;
+        }
+    }while (entrada_valida == -1);
+
 }
 
 void limpa_tela() {
