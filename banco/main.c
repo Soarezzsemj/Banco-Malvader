@@ -60,11 +60,15 @@ int main() {
                     printf("Conta criada com sucesso!\n");
                     num_proxima_conta++;
                 }
+
                 break;
 
             case 2:
-                printf("Voce escolheu depositar.");
-                // chamada aqui
+                int num_conta;
+                double valor_deposito;
+
+                coletar_info_deposito(&num_conta, &valor_deposito);
+
                 break;
 
             case 3:

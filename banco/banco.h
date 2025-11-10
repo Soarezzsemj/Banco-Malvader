@@ -15,6 +15,7 @@
 #define TAM_TELEFONE 20
 #define ATIVA 1
 #define ENCERRADA 0
+#define VALOR_MAX_DEPOSITO 1000000000.0 //valor maximo para um deposito, 10 milhoes
 
 // --- 2. ESTRUTURAS DE DADOS (O Molde) ---
 typedef struct {
@@ -41,6 +42,8 @@ int verifica_fgets(char INFO[]);
 
 int abrir_conta(Conta contas[], int *quant, int num_conta, const char *nome,
         const char *cpf, const char *agencia, const char *telefone);
+
+void coletar_info_deposito (int *num_conta, double *valor_deposito);
 
 /* Funções dos seus amigos (eles adicionarão aqui depois) */
 // void depositar(Conta contas[], int quant);
