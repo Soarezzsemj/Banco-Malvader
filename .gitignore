@@ -1,2 +1,8 @@
+# Binários e executáveis
 *.exe
-*.vscode
+*.o
+*.out
+
+# Pastas de IDE
+.vscode/
+.idea/
