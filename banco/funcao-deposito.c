@@ -17,7 +17,7 @@ void coletar_info_deposito (int *num_conta, double *valor_deposito) {
             printf("\nErro: Informe uma conta valida!\n");
             opcao_valida = -1;
         }
-
+        limpa_buffer(); //evitar letras em caso de 22l ele pega o 22 e descarta o l
     }while (opcao_valida != 1);
 
     do {
@@ -40,7 +40,7 @@ void coletar_info_deposito (int *num_conta, double *valor_deposito) {
             printf("\nErro: o valor maximo de deposito eh %.2lf\n", VALOR_MAX_DEPOSITO);
             opcao_valida = -1;
         }
-
+    limpa_buffer();
     }while (opcao_valida != 1);
 }
 
