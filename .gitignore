@@ -6,3 +6,6 @@
 # Pastas de IDE
 .vscode/
 .idea/
+
+# Pasta de build local do CLion
+cmake-build-debug/
