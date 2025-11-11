@@ -29,7 +29,8 @@ int verifica_fgets(char INFO[]) {
     if (ponteiro_enter != NULL) {
         *ponteiro_enter = '\0';
         return 0;
-    } else { // se nao tiver \n nao teve espaço para armazenar toda a string
+    } else {
+        // se nao tiver \n nao teve espaço para armazenar toda a string
         return -1;
     }
 }
