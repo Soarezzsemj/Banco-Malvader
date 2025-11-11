@@ -45,6 +45,10 @@ int abrir_conta(Conta contas[], int *quant, int num_conta, const char *nome,
 
 void coletar_info_deposito (int *num_conta, double *valor_deposito);
 
+int encontrar_conta_por_numero(const Conta contas[],int num_conta, int quant_atual);
+
+int realizar_deposito(Conta contas[], int num_conta, double valor_deposito);
+
 /* Funções dos seus amigos (eles adicionarão aqui depois) */
 // void depositar(Conta contas[], int quant);
 // void sacar(Conta contas[], int quant);
