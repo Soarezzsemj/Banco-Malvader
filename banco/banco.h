@@ -49,6 +49,11 @@ int encontrar_conta_por_numero(const Conta contas[],int num_conta, int quant_atu
 
 int realizar_deposito(Conta contas[], int num_conta, double valor_deposito);
 
+int valida_conta_ativa(Conta contas[], int indice_conta);
+
+int obter_conta_valida(const Conta contas[], int quant_atual);
+
+int verifica_digitos(char INFO[]);
 /* Funções dos seus amigos (eles adicionarão aqui depois) */
 // void depositar(Conta contas[], int quant);
 // void sacar(Conta contas[], int quant);

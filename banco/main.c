@@ -90,7 +90,12 @@ int main() {
                 // chamada aqui
                 break;
 
-            // ...
+            case 6:
+                char TELEFON_TEMP[TAM_TELEFONE];
+
+                printf("")
+                break;
+
             default:
                 printf("\nErro: Opcao invalida!");
                 break;

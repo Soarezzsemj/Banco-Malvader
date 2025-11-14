@@ -59,13 +59,7 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
             continue;
         }
 
-        for (i = 0; i < strlen(CPF_temp); i++) {
-            if (!isdigit(CPF_temp[i])) { /* se a posição atual do cpf NAO FOR um digito
-                                             mande um codigo de erro */
-                entrada_valida = -1; // codigo de erro
-                break;
-            }
-        }
+        entrada_valida = verifica_digitos(CPF_temp);
 
         if (entrada_valida == -1) {
             printf("\nErro: Digite apenas numeros!");
@@ -88,6 +82,13 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
             printf("\nErro: Nome de agencia muito longo! O limite eh %d caracteres.\n", TAM_AGENCIA - 2);
             limpa_buffer();
         }
+
+        entrada_valida = verifica_fgets(AGENCIA_temp);
+
+        if (entrada_valida == -1) {
+            printf("\nErro: Digite apenas numeros!\n");
+            continue;
+        }
     } while (entrada_valida == -1);
 
     do {
@@ -101,13 +102,7 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
             continue;
         }
 
-        for (i = 0; i < strlen(TELEFONE_temp); i++) {
-            if (!isdigit(TELEFONE_temp[i])) { /* se a posição atual do numero NAO FOR um digito
-                                                  mande um codigo de erro */
-                entrada_valida = -1; // codigo de erro
-                break;
-            }
-        }
+        entrada_valida = verifica_fgets(TELEFONE_temp);
 
         if (entrada_valida == -1) {
             printf("\nErro: Digite apenas numeros!\n");

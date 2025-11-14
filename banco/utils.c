@@ -3,6 +3,7 @@
 #include "banco.h" // 1. Inclui o "contrato"
 #include <stdio.h> // 2. Inclui as bibliotecas que ESTAS funções usam
 #include <string.h>
+#include <ctype.h>
 
 void limpa_tela() {
     int i;
@@ -33,4 +34,33 @@ int verifica_fgets(char INFO[]) {
         // se nao tiver \n nao teve espaço para armazenar toda a string
         return -1;
     }
+}
+
+int encontrar_conta_por_numero(const Conta contas[], int num_conta, int quant_atual) {
+    int i;
+    for (i = 0; i < quant_atual; i++) { /*quantidade de contas*/
+        if (contas[i].numero == num_conta) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int valida_conta_ativa(Conta contas[], int indice_conta) {
+    if (contas[indice_conta].status == ENCERRADA) {
+        return -1;
+    }
+    return 0;
+}
+
+int verifica_digitos(char INFO[]) {
+    int i, tamanho = strlen(INFO);
+
+    for (i = 0; i < tamanho; i++) {
+        if (!isdigit(INFO[i])) { /* se a posição atual da string NAO FOR um digito
+                                         mande um codigo de erro */
+            return -1; // codigo de erro
+        }
+    }
+    return 0;
 }
