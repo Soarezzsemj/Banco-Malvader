@@ -60,11 +60,29 @@ int main() {
                     printf("Conta criada com sucesso!\n");
                     num_proxima_conta++;
                 }
+
                 break;
 
             case 2:
-                printf("Voce escolheu depositar.");
-                // chamada aqui
+                int num_conta, indice, sucesso_deposito;
+                double valor_deposito;
+
+                coletar_info_deposito(&num_conta, &valor_deposito);
+
+                indice = encontrar_conta_por_numero(vetor_de_contas, num_conta, quantidade_atual);
+
+                if (indice == -1) {
+                    printf("\nErro: Conta inexistente!");
+                    break;
+                }
+
+                sucesso_deposito = realizar_deposito(vetor_de_contas, indice, valor_deposito);
+                if (sucesso_deposito == -1) {
+                    break;
+                }
+                else {
+                    printf("\nSucesso no deposito!");
+                }
                 break;
 
             case 3:
