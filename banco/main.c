@@ -39,7 +39,9 @@ int main() {
         }
 
         switch (opcao) { /* chamar as funções conforme a escolha */
-            case 1:
+
+            // CHAVE ADICIONADA AQUI
+            case 1: {
                 if (quantidade_atual >= MAX_CONTAS) {
                     limpa_tela();
                     printf("\nErro: Limite de contas atingido!\n");
@@ -54,7 +56,8 @@ int main() {
                 coletar_dados_abertura_conta(nome_temp, cpf_temp, agencia_temp, telefone_temp); // preenche os dados
 
                 resultado_da_conta = abrir_conta(vetor_de_contas, &quantidade_atual, num_proxima_conta, nome_temp,
-                                                 cpf_temp, agencia_temp, telefone_temp); //verifica se o CPF ja existe em outra conta
+                                                 cpf_temp, agencia_temp,
+                                                 telefone_temp); //verifica se o CPF ja existe em outra conta
 
                 if (resultado_da_conta == 0) {
                     printf("Conta criada com sucesso!\n");
@@ -62,8 +65,10 @@ int main() {
                 }
 
                 break;
+            } // CHAVE ADICIONADA AQUI
 
-            case 2:
+                // CHAVE ADICIONADA AQUI
+            case 2: {
                 int num_conta, indice, sucesso_deposito;
                 double valor_deposito;
 
@@ -79,24 +84,53 @@ int main() {
                 sucesso_deposito = realizar_deposito(vetor_de_contas, indice, valor_deposito);
                 if (sucesso_deposito == -1) {
                     break;
-                }
-                else {
+                } else {
                     printf("\nSucesso no deposito!");
                 }
                 break;
+            } // CHAVE ADICIONADA AQUI
 
             case 3:
                 printf("Voce escolheu sacar seu saldo.");
                 // chamada aqui
+
                 break;
 
-            // ...
+                // ...
             default:
                 printf("\nErro: Opcao invalida!");
                 break;
+
+            case 4:
+                break;
+
+            case 5:
+                break;
+
+            case 6:
+                break;
+
+            case 7: { // Listar contas
+                int filtro;
+                printf("\n--- Listar Contas ---\n");
+                printf("Qual filtro deseja aplicar?\n");
+                printf(" (1) Somente Ativas\n");
+                printf(" (0) Somente Encerradas\n");
+                printf(" (2) Todas as Contas\n");
+                printf("Escolha: ");
+                scanf("%d", &filtro);
+
+                limpa_buffer();
+
+                listar_contas(vetor_de_contas, quantidade_atual, filtro);
+
+                break;
+            }
+
         }
 
     } while (opcao != 9);
 
     return 0;
+
 }

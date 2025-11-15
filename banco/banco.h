@@ -49,6 +49,10 @@ int encontrar_conta_por_numero(const Conta contas[],int num_conta, int quant_atu
 
 int realizar_deposito(Conta contas[], int num_conta, double valor_deposito);
 
+void listar_contas(const Conta contas[], int qtd, int filtro_status);
+
+void mostrar_dados(const Conta* c);
+
 /* Funções dos seus amigos (eles adicionarão aqui depois) */
 // void depositar(Conta contas[], int quant);
 // void sacar(Conta contas[], int quant);
