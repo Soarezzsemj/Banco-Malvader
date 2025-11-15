@@ -2,6 +2,7 @@
 
 #include "banco.h" // 1. Inclui o "contrato"
 #include <stdio.h> // 2. Inclui as bibliotecas que ESTAS funções usam
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
@@ -63,4 +64,33 @@ int verifica_digitos(char INFO[]) {
         }
     }
     return 0;
+}
+
+int coletar_numero_conta(Conta contas[]) { //coleta o numero de uma conta de forma segura e retorna um int
+    int entrada_valida = 0, num_conta_digito;
+    char num_conta[3]; // 1 espaço para numero e outro para o \n da verificao do fgets
+
+    do {
+        printf("Informe o numero da conta: ");
+        fgets(num_conta, 2, stdin);
+
+        entrada_valida = verifica_fgets(num_conta);
+
+        if (entrada_valida == -1) {
+            printf("\nErro: Informe apenas o numero da conta!");
+            continue;
+        }
+
+        entrada_valida = verifica_digitos(contas);
+
+        if (entrada_valida == -1) {
+            printf("\nErro: Informe somente numeros!");
+            continue; //return para dar a possibilidade do usuario criar uma conta caso nao tenha
+        }
+
+        num_conta_digito = atoi(num_conta); //transforma a string ja verificada em um int
+
+        return num_conta_digito;
+
+    }while (entrada_valida == -1);
 }

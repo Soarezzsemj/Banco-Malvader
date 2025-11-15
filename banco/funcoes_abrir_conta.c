@@ -35,7 +35,7 @@ int abrir_conta(Conta contas[], int *quant, int num_conta, const char *nome, con
 void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCIA_temp[], char TELEFONE_temp[]) {
     printf("\n------ABERTURA DE CONTA NOVA------\n");
 
-    int entrada_valida, i;
+    int entrada_valida;
 
     do {
         printf("\nDigite o seu nome completo: ");
@@ -83,7 +83,7 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
             limpa_buffer();
         }
 
-        entrada_valida = verifica_fgets(AGENCIA_temp);
+        entrada_valida = verifica_digitos(AGENCIA_temp);
 
         if (entrada_valida == -1) {
             printf("\nErro: Digite apenas numeros!\n");
@@ -102,7 +102,7 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
             continue;
         }
 
-        entrada_valida = verifica_fgets(TELEFONE_temp);
+        entrada_valida = verifica_digitos(TELEFONE_temp);
 
         if (entrada_valida == -1) {
             printf("\nErro: Digite apenas numeros!\n");

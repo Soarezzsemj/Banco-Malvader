@@ -91,9 +91,25 @@ int main() {
                 break;
 
             case 6:
-                char TELEFON_TEMP[TAM_TELEFONE];
+                char TELEFONE_TEMP[TAM_TELEFONE], AGENCIA_TEMP[TAM_AGENCIA];
+                int sucesso_atualizacao, conta_indice;
 
-                printf("")
+                conta_indice = coletar_numero_conta(vetor_de_contas); //coleta os dados
+
+                sucesso_atualizacao = encontrar_conta_por_numero(vetor_de_contas, conta_indice, quantidade_atual); //ve se a conta existe
+
+                if (sucesso_atualizacao == -1) {
+                    printf("\nErro: A conta nao existe!");
+                    break;
+                }
+
+                sucesso_atualizacao = valida_conta_ativa(vetor_de_contas, conta_indice); //ve se a conta esta ativa
+
+                if (sucesso_atualizacao == -1) {
+                    printf("\nErro: A conta esta desativada!");
+                    break;
+                }
+
                 break;
 
             default:
