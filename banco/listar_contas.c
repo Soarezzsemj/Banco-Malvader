@@ -28,7 +28,6 @@ void listar_contas(const Conta contas[], int qtd, int filtro_status) {
         int imprimir = 0;
 
         // Lógica dos filtros
-        // O trabalho pede filtros por status
 
         // Se o filtro for 2 (TODAS), imprime sempre
         if (filtro_status == FILTRO_TODAS) {
@@ -45,12 +44,10 @@ void listar_contas(const Conta contas[], int qtd, int filtro_status) {
 
         // Se a flag 'imprimir' for 1, entao mostra os dados
         if (imprimir) {
-            // O trabalho pede pra usar a 'mostrar_dados'
-            // (assumindo que o colega já fez ela)
             mostrar_dados(&c);
             printf("-------------------------\n");
 
-            // Avisa que a gente achou pelo menos uma
+            // Avisa que achamos pelo menos uma
             encontrou_alguma = 1;
         }
     }
