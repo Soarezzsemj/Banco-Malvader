@@ -49,6 +49,9 @@ int encontrar_conta_por_numero(const Conta contas[],int num_conta, int quant_atu
 
 int realizar_deposito(Conta contas[], int num_conta, double valor_deposito);
 
+int realizar_transferencia(Conta contas[], int quant_atual, int conta_origem, int conta_destino, double valor);
+
+
 /* Funções dos seus amigos (eles adicionarão aqui depois) */
 // void depositar(Conta contas[], int quant);
 // void sacar(Conta contas[], int quant);

@@ -14,4 +14,5 @@ add_executable(banco
     banco/funcoes_abrir_conta.c
     banco/utils.c
         banco/funcao-deposito.c
+        banco/funcao-transferir.c
 )

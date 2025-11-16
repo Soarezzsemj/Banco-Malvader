@@ -38,7 +38,8 @@ int main() {
             continue; // reinicia o loop
         }
 
-        switch (opcao) { /* chamar as funções conforme a escolha */
+        switch (opcao) {
+            /* chamar as funções conforme a escolha */
             case 1:
                 if (quantidade_atual >= MAX_CONTAS) {
                     limpa_tela();
@@ -90,12 +91,43 @@ int main() {
                 // chamada aqui
                 break;
 
-            // ...
-            default:
+            case 4:
+            {
+                int num_origem, num_destino;
+                double valor_transferencia;
+
+                printf("Informe o numero da conta de origem: ");
+                scanf("%d", &num_origem);
+                limpa_buffer();
+
+                printf("Informe o numero da conta de destino: ");
+                scanf("%d", &num_destino);
+                limpa_buffer();
+
+                printf("Informe o valor da transferencia: ");
+                scanf("%lf", &valor_transferencia);
+                limpa_buffer();
+
+                int resultado = realizar_transferencia(
+                        vetor_de_contas,
+                        quantidade_atual,
+                        num_origem,
+                        num_destino,
+                        valor_transferencia
+                );
+
+                if (resultado == 0) {
+                    printf("\nTransferencia concluida!\n");
+                }
+                break;
+
+                // ...
+                default:
                 printf("\nErro: Opcao invalida!");
                 break;
-        }
+            }
 
+        }
     } while (opcao != 9);
 
     return 0;
