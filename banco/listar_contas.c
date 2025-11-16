@@ -1,6 +1,5 @@
-// Puxa as nossas structs (Conta) e os defines (ATIVA, etc) do .h
+
 #include "banco.h"
-// Puxa o printf
 #include <stdio.h>
 
 void listar_contas(const Conta contas[], int qtd, int filtro_status) {

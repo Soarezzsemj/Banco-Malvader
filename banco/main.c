@@ -114,9 +114,9 @@ int main() {
                 int filtro;
                 printf("\n--- Listar Contas ---\n");
                 printf("Qual filtro deseja aplicar?\n");
-                printf(" (1) Somente Ativas\n");
-                printf(" (0) Somente Encerradas\n");
-                printf(" (2) Todas as Contas\n");
+                printf(" (1) Somente Encerradas\n");
+                printf(" (2) Somente Ativas\n");
+                printf(" (3) Todas as Contas\n");
                 printf("Escolha: ");
                 scanf("%d", &filtro);
 

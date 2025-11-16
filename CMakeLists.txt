@@ -15,4 +15,5 @@ add_executable(banco
     banco/utils.c
         banco/funcao-deposito.c
         banco/listar_contas.c
+        banco/mostrar_dados.c
 )
