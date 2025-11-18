@@ -44,23 +44,13 @@ void coletar_info_deposito (int *num_conta, double *valor_deposito) {
     }while (opcao_valida != 1);
 }
 
-int encontrar_conta_por_numero(const Conta contas[], int num_conta, int quant_atual) {
-    int i;
-    for (i = 0; i < quant_atual; i++) { /*quantidade de contas*/
-        if (contas[i].numero == num_conta) {
-            return i;
-        }
-    }
-    return -1;
-}
-
 int realizar_deposito(Conta contas[], int indice_conta, double valor_deposito) {
     if (valor_deposito <= 0) { //caso o valor venha de outro lugar alem da funcao "coletar_info_deposito
         printf("Erro: Informe um valor maior que 0!\n");
         return -1;
     }
 
-    if (contas[indice_conta].status == ENCERRADA) {
+    if (valida_conta_ativa(contas, indice_conta) == -1) { //valida se conta esta ativa
         printf("Erro: A conta informada esta desativada!\n");
         return -1;
     }

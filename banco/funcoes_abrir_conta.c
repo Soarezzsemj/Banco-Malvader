@@ -35,17 +35,27 @@ int abrir_conta(Conta contas[], int *quant, int num_conta, const char *nome, con
 void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCIA_temp[], char TELEFONE_temp[]) {
     printf("\n------ABERTURA DE CONTA NOVA------\n");
 
-    int entrada_valida, i;
+    int entrada_valida = 0;
 
     do {
         printf("\nDigite o seu nome completo: ");
         fgets(NOME_temp, TAM_NOME, stdin);
 
         entrada_valida = verifica_fgets(NOME_temp); // funcao verifica se ultrapassou o limite
+
         if (entrada_valida == -1) {
             printf("\nErro: Nome muito longo! O limite de caracteres eh %d caracteres.\n", TAM_NOME - 2);
-            limpa_buffer(); // limpando o string
+            limpa_buffer();
+            continue;
         }
+
+        entrada_valida = verifica_letras(NOME_temp);
+
+        if (entrada_valida == -1) {
+            printf("\nErro: Informe somente letras!");
+            continue;
+        }
+
     } while (entrada_valida == -1);
 
     do {
@@ -59,16 +69,10 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
             continue;
         }
 
-        for (i = 0; i < strlen(CPF_temp); i++) {
-            if (!isdigit(CPF_temp[i])) { /* se a posição atual do cpf NAO FOR um digito
-                                             mande um codigo de erro */
-                entrada_valida = -1; // codigo de erro
-                break;
-            }
-        }
+        entrada_valida = verifica_digitos(CPF_temp);
 
         if (entrada_valida == -1) {
-            printf("\nErro: Digite apenas numeros!");
+            printf("\nErro: Digite apenas numeros!\n");
             continue;
         }
 
@@ -88,6 +92,13 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
             printf("\nErro: Nome de agencia muito longo! O limite eh %d caracteres.\n", TAM_AGENCIA - 2);
             limpa_buffer();
         }
+
+        entrada_valida = verifica_digitos(AGENCIA_temp);
+
+        if (entrada_valida == -1) {
+            printf("\nErro: Digite apenas numeros!\n");
+            continue;
+        }
     } while (entrada_valida == -1);
 
     do {
@@ -101,13 +112,7 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
             continue;
         }
 
-        for (i = 0; i < strlen(TELEFONE_temp); i++) {
-            if (!isdigit(TELEFONE_temp[i])) { /* se a posição atual do numero NAO FOR um digito
-                                                  mande um codigo de erro */
-                entrada_valida = -1; // codigo de erro
-                break;
-            }
-        }
+        entrada_valida = verifica_digitos(TELEFONE_temp);
 
         if (entrada_valida == -1) {
             printf("\nErro: Digite apenas numeros!\n");
