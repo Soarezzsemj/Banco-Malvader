@@ -45,15 +45,22 @@ int abrir_conta(Conta contas[], int *quant, int num_conta, const char *nome,
 
 void coletar_info_deposito (int *num_conta, double *valor_deposito);
 
-int encontrar_conta_por_numero(const Conta contas[],int num_conta, int quant_atual);
+int encontrar_conta_por_numero(const Conta contas[], int *num_conta, int quant_atual);
 
-int realizar_deposito(Conta contas[], int num_conta, double valor_deposito);
+int realizar_deposito(Conta contas[], int indice_conta, double valor_deposito);
 
 int valida_conta_ativa(Conta contas[], int indice_conta);
 
 int coletar_numero_conta(Conta contas[]);
 
 int verifica_digitos(char INFO[]);
+
+void coletar_novos_dados_tel_agencia (char TEL_TEMP[], char AGENCIA_TEMP[]);
+
+void atualizar_dados_tel_agencia (Conta contas[], char TEL_NOVO[], char AGENCIA_NOVA[], int indice);
+
+int verifica_letras(char INFO[]);
+
 /* Funções dos seus amigos (eles adicionarão aqui depois) */
 // void depositar(Conta contas[], int quant);
 // void sacar(Conta contas[], int quant);

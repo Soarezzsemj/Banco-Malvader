@@ -37,10 +37,11 @@ int verifica_fgets(char INFO[]) {
     }
 }
 
-int encontrar_conta_por_numero(const Conta contas[], int num_conta, int quant_atual) {
+int encontrar_conta_por_numero(const Conta contas[], int *num_conta, int quant_atual) {
     int i;
     for (i = 0; i < quant_atual; i++) { /*quantidade de contas*/
-        if (contas[i].numero == num_conta) {
+        if (contas[i].numero == *num_conta) {
+            *num_conta = i;
             return i;
         }
     }
@@ -66,13 +67,25 @@ int verifica_digitos(char INFO[]) {
     return 0;
 }
 
+int verifica_letras(char INFO[]) {
+    int i, tamanho = strlen(INFO);
+
+    for (i = 0; i < tamanho; i++) {
+        if (isdigit(INFO[i])) { /* se a posição atual da string FOR um digito
+                                         mande um codigo de erro */
+            return -1; // codigo de erro
+        }
+    }
+    return 0;
+}
+
 int coletar_numero_conta(Conta contas[]) { //coleta o numero de uma conta de forma segura e retorna um int
     int entrada_valida = 0, num_conta_digito;
-    char num_conta[3]; // 1 espaço para numero e outro para o \n da verificao do fgets
+    char num_conta[4]; // 1 espaço para numero e outro para o \n da verificao do fgets
 
     do {
         printf("Informe o numero da conta: ");
-        fgets(num_conta, 2, stdin);
+        fgets(num_conta, 4, stdin);
 
         entrada_valida = verifica_fgets(num_conta);
 
@@ -81,7 +94,7 @@ int coletar_numero_conta(Conta contas[]) { //coleta o numero de uma conta de for
             continue;
         }
 
-        entrada_valida = verifica_digitos(contas);
+        entrada_valida = verifica_digitos(num_conta);
 
         if (entrada_valida == -1) {
             printf("\nErro: Informe somente numeros!");

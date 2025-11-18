@@ -69,7 +69,7 @@ int main() {
 
                 coletar_info_deposito(&num_conta, &valor_deposito);
 
-                indice = encontrar_conta_por_numero(vetor_de_contas, num_conta, quantidade_atual);
+                indice = encontrar_conta_por_numero(vetor_de_contas, &num_conta, quantidade_atual);
 
                 if (indice == -1) {
                     printf("\nErro: Conta inexistente!");
@@ -92,23 +92,27 @@ int main() {
 
             case 6:
                 char TELEFONE_TEMP[TAM_TELEFONE], AGENCIA_TEMP[TAM_AGENCIA];
-                int sucesso_atualizacao, conta_indice;
+                int sucesso_atualizacao, numero_conta;
 
-                conta_indice = coletar_numero_conta(vetor_de_contas); //coleta os dados
+                numero_conta = coletar_numero_conta(vetor_de_contas); //coleta os dados
 
-                sucesso_atualizacao = encontrar_conta_por_numero(vetor_de_contas, conta_indice, quantidade_atual); //ve se a conta existe
+                sucesso_atualizacao = encontrar_conta_por_numero(vetor_de_contas, &numero_conta, quantidade_atual); //ve se a conta existe
 
                 if (sucesso_atualizacao == -1) {
                     printf("\nErro: A conta nao existe!");
                     break;
                 }
 
-                sucesso_atualizacao = valida_conta_ativa(vetor_de_contas, conta_indice); //ve se a conta esta ativa
+                sucesso_atualizacao = valida_conta_ativa(vetor_de_contas, numero_conta); //ve se a conta esta ativa
 
                 if (sucesso_atualizacao == -1) {
                     printf("\nErro: A conta esta desativada!");
                     break;
                 }
+
+                coletar_novos_dados_tel_agencia(TELEFONE_TEMP, AGENCIA_TEMP); //pega os dados novos
+
+                atualizar_dados_tel_agencia(vetor_de_contas, TELEFONE_TEMP, AGENCIA_TEMP, numero_conta); //atualiza os dados de fato
 
                 break;
 
