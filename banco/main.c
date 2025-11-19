@@ -8,17 +8,8 @@ int main() {
     int opcao, sucesso_leitura, resultado_da_conta;
 
     do {
-        printf("\n------Menu------\n");
-        printf("1. Abrir conta\n");
-        printf("2. Depositar\n");
-        printf("3. Sacar\n");
-        printf("4. Transferir\n");
-        printf("5. Consultar saldo e dados\n");
-        printf("6. Atualizar telefone e agencia\n");
-        printf("7. Listar contas\n");
-        printf("8. Encerrar conta\n");
-        printf("9. Sair\n");
-        printf("Escolha: ");
+        // imprime na tela todas as opções do sistema bancário
+        exibir_menu();
 
         sucesso_leitura = scanf("%d", &opcao); // se ler um numero ele retorna 1
 
@@ -39,7 +30,9 @@ int main() {
         }
 
         switch (opcao) { /* chamar as funções conforme a escolha */
-            case 1:
+
+            // CHAVE ADICIONADA AQUI
+            case 1: {
                 if (quantidade_atual >= MAX_CONTAS) {
                     limpa_tela();
                     printf("\nErro: Limite de contas atingido!\n");
@@ -54,7 +47,8 @@ int main() {
                 coletar_dados_abertura_conta(nome_temp, cpf_temp, agencia_temp, telefone_temp); // preenche os dados
 
                 resultado_da_conta = abrir_conta(vetor_de_contas, &quantidade_atual, num_proxima_conta, nome_temp,
-                                                 cpf_temp, agencia_temp, telefone_temp); //verifica se o CPF ja existe em outra conta
+                                                 cpf_temp, agencia_temp,
+                                                 telefone_temp); //verifica se o CPF ja existe em outra conta
 
                 if (resultado_da_conta == 0) {
                     printf("Conta criada com sucesso!\n");
@@ -62,8 +56,10 @@ int main() {
                 }
 
                 break;
+            } // CHAVE ADICIONADA AQUI
 
-            case 2:
+                // CHAVE ADICIONADA AQUI
+            case 2: {
                 int num_conta, indice, sucesso_deposito;
                 double valor_deposito;
 
@@ -79,22 +75,29 @@ int main() {
                 sucesso_deposito = realizar_deposito(vetor_de_contas, indice, valor_deposito);
                 if (sucesso_deposito == -1) {
                     break;
-                }
-                else {
+                } else {
                     printf("\nSucesso no deposito!");
                 }
                 break;
+            } // CHAVE ADICIONADA AQUI
 
             case 3:
                 printf("Voce escolheu sacar seu saldo.");
                 // chamada aqui
+
+                break;
+
+            case 4:
+                break;
+
+            case 5:
                 break;
 
             case 6:
                 char TELEFONE_TEMP[TAM_TELEFONE], AGENCIA_TEMP[TAM_AGENCIA];
                 int sucesso_atualizacao, numero_conta;
 
-                numero_conta = coletar_numero_conta(vetor_de_contas); //coleta os dados
+                numero_conta = coletar_numero_conta(); //coleta os dados
 
                 sucesso_atualizacao = encontrar_conta_por_numero(vetor_de_contas, &numero_conta, quantidade_atual); //ve se a conta existe
 
@@ -116,12 +119,37 @@ int main() {
 
                 break;
 
-            default:
+            case 7: { // Listar contas
+                    int filtro;
+                    printf("\n--- Listar Contas ---\n");
+                    printf("Qual filtro deseja aplicar?\n");
+                    printf(" (1) Somente Encerradas\n");
+                    printf(" (2) Somente Ativas\n");
+                    printf(" (3) Todas as Contas\n");
+                    printf("Escolha: ");
+                    scanf("%d", &filtro);
+
+                    limpa_buffer();
+
+                    // Verifica se o filtro é válido ANTES de chamar a função
+                    if (filtro < 1 || filtro > 3) {
+                        printf("Erro: Opcao de filtro invalida!\n");
+                    } else {
+                        // Se o filtro for válido, chama a função
+                        listar_contas(vetor_de_contas, quantidade_atual, filtro);
+                    }
+
+                    break;
+                }
+
+                default:
                 printf("\nErro: Opcao invalida!");
                 break;
+
         }
 
     } while (opcao != 9);
 
     return 0;
+
 }

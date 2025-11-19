@@ -36,6 +36,8 @@ void limpa_tela();
 
 void limpa_buffer();
 
+void exibir_menu();
+
 void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCIA_temp[], char TELEFONE_temp[]);
 
 int verifica_fgets(char INFO[]);
@@ -51,7 +53,7 @@ int realizar_deposito(Conta contas[], int indice_conta, double valor_deposito);
 
 int valida_conta_ativa(Conta contas[], int indice_conta);
 
-int coletar_numero_conta(Conta contas[]);
+int coletar_numero_conta(void);
 
 int verifica_digitos(char INFO[]);
 
@@ -60,6 +62,10 @@ void coletar_novos_dados_tel_agencia (char TEL_TEMP[], char AGENCIA_TEMP[]);
 void atualizar_dados_tel_agencia (Conta contas[], char TEL_NOVO[], char AGENCIA_NOVA[], int indice);
 
 int verifica_letras(char INFO[]);
+
+void listar_contas(const Conta contas[], int qtd, int filtro_status);
+
+void mostrar_dados(const Conta* c);
 
 /* Funções dos seus amigos (eles adicionarão aqui depois) */
 // void depositar(Conta contas[], int quant);

@@ -14,5 +14,7 @@ add_executable(banco
     banco/funcoes_abrir_conta.c
     banco/utils.c
         banco/funcao-deposito.c
+        banco/listar_contas.c
+        banco/mostrar_dados.c
         banco/funcao-atualizar-telefone-agencia.c
 )
