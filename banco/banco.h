@@ -61,6 +61,8 @@ void atualizar_dados_tel_agencia (Conta contas[], char TEL_NOVO[], char AGENCIA_
 
 int verifica_letras(char INFO[]);
 
+int realizar_saque(Conta contas[], int indice_conta, double valor_saque);
+
 /* Funções dos seus amigos (eles adicionarão aqui depois) */
 // void depositar(Conta contas[], int quant);
 // void sacar(Conta contas[], int quant);
