@@ -53,7 +53,7 @@ int realizar_deposito(Conta contas[], int indice_conta, double valor_deposito);
 
 int valida_conta_ativa(Conta contas[], int indice_conta);
 
-int coletar_numero_conta(Conta contas[]);
+int coletar_numero_conta(void);
 
 int verifica_digitos(char INFO[]);
 

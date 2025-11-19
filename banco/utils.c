@@ -96,7 +96,7 @@ int verifica_letras(char INFO[]) {
     return 0;
 }
 
-int coletar_numero_conta(Conta contas[]) { //coleta o numero de uma conta de forma segura e retorna um int
+int coletar_numero_conta(void) { //coleta o numero de uma conta de forma segura e retorna um int
     int entrada_valida = 0, num_conta_digito;
     char num_conta[4]; // 1 espaço para numero e outro para o \n da verificao do fgets
 
