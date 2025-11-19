@@ -87,6 +87,12 @@ int main() {
 
                 break;
 
+            case 4:
+                break;
+
+            case 5:
+                break;
+
             case 6:
                 char TELEFONE_TEMP[TAM_TELEFONE], AGENCIA_TEMP[TAM_AGENCIA];
                 int sucesso_atualizacao, numero_conta;
@@ -113,19 +119,6 @@ int main() {
 
                 break;
 
-            default:
-                printf("\nErro: Opcao invalida!");
-                break;
-
-            case 4:
-                break;
-
-            case 5:
-                break;
-
-            case 6:
-                break;
-
             case 7: { // Listar contas
                     int filtro;
                     printf("\n--- Listar Contas ---\n");
@@ -148,6 +141,10 @@ int main() {
 
                     break;
                 }
+
+                default:
+                printf("\nErro: Opcao invalida!");
+                break;
 
         }
 

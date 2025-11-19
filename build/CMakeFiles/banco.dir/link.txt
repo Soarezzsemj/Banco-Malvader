@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/banco.dir/banco/main.c.o CMakeFiles/banco.dir/banco/funcoes_abrir_conta.c.o CMakeFiles/banco.dir/banco/utils.c.o "CMakeFiles/banco.dir/banco/funcao-deposito.c.o" CMakeFiles/banco.dir/banco/listar_contas.c.o CMakeFiles/banco.dir/banco/mostrar_dados.c.o "CMakeFiles/banco.dir/banco/funcao-atualizar-telefone-agencia.c.o" -o banco 

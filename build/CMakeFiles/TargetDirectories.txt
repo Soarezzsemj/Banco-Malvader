@@ -1,0 +1,3 @@
+/workspaces/Banco-Malvader/build/CMakeFiles/banco.dir
+/workspaces/Banco-Malvader/build/CMakeFiles/edit_cache.dir
+/workspaces/Banco-Malvader/build/CMakeFiles/rebuild_cache.dir
