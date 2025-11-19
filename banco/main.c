@@ -83,9 +83,26 @@ int main() {
 
             case 3:
                 printf("Voce escolheu sacar seu saldo.");
-                // chamada aqui
 
+                int num_conta_saque, indice_saque, sucesso_saque;
+                double valor_saque;
+
+                coletar_info_saque(&num_conta_saque, &valor_saque);
+
+                indice_saque = encontrar_conta_por_numero(vetor_de_contas, &num_conta_saque, quantidade_atual);
+
+                if (indice_saque == -1) {
+                    printf("\nErro: Conta inexistente!");
+                    break;
+                }
+
+                sucesso_saque = realizar_saque(vetor_de_contas, indice_saque, valor_saque);
+
+                if (sucesso_saque == 0) {
+                    printf("\nSaque realizado com sucesso!\n");
+                }
                 break;
+
 
             case 4:
                 break;
