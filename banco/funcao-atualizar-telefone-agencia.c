@@ -15,6 +15,7 @@ void coletar_novos_dados_tel_agencia (char TEL_TEMP[], char AGENCIA_TEMP[]) {
 
             if (entrada_valida == -1) {
                 printf("\nErro: Informe um numero de ate %d digitos!", TAM_TELEFONE - 2);
+                limpa_buffer();
                 continue;
             }
 
@@ -34,6 +35,7 @@ void coletar_novos_dados_tel_agencia (char TEL_TEMP[], char AGENCIA_TEMP[]) {
 
             if (entrada_valida == -1) {
                 printf("\nErro: Informe um numero de ate %d digitos!", TAM_AGENCIA - 2);
+                limpa_buffer();
                 continue;
             }
 

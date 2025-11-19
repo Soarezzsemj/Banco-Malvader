@@ -91,6 +91,7 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
         if (entrada_valida == -1) {
             printf("\nErro: Nome de agencia muito longo! O limite eh %d caracteres.\n", TAM_AGENCIA - 2);
             limpa_buffer();
+            continue;
         }
 
         entrada_valida = verifica_digitos(AGENCIA_temp);
