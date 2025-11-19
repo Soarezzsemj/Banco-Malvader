@@ -23,7 +23,7 @@ void limpa_buffer() {
 }
 
 /*
- * Função para exibir o menu principal (Refatoração)
+ * Função para exibir o menu principal 
  */
 void exibir_menu() {
     printf("\n------Menu------\n");

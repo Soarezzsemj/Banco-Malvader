@@ -8,7 +8,7 @@ int main() {
     int opcao, sucesso_leitura, resultado_da_conta;
 
     do {
-        // CORREÇÃO: Substituindo os 10 printf's pela função de utilidade
+        // imprime na tela todas as opções do sistema bancário
         exibir_menu();
 
         sucesso_leitura = scanf("%d", &opcao); // se ler um numero ele retorna 1
