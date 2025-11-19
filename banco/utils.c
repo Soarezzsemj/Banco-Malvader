@@ -2,7 +2,9 @@
 
 #include "banco.h" // 1. Inclui o "contrato"
 #include <stdio.h> // 2. Inclui as bibliotecas que ESTAS funções usam
+#include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 void limpa_tela() {
     int i;
@@ -50,4 +52,75 @@ int verifica_fgets(char INFO[]) {
         // se nao tiver \n nao teve espaço para armazenar toda a string
         return -1;
     }
+}
+
+int encontrar_conta_por_numero(const Conta contas[], int *num_conta, int quant_atual) {
+    int i;
+    for (i = 0; i < quant_atual; i++) { /*quantidade de contas*/
+        if (contas[i].numero == *num_conta) {
+            *num_conta = i;
+            return i;
+        }
+    }
+    return -1;
+}
+
+int valida_conta_ativa(Conta contas[], int indice_conta) {
+    if (contas[indice_conta].status == ENCERRADA) {
+        return -1;
+    }
+    return 0;
+}
+
+int verifica_digitos(char INFO[]) {
+    int i, tamanho = strlen(INFO);
+
+    for (i = 0; i < tamanho; i++) {
+        if (!isdigit(INFO[i])) { /* se a posição atual da string NAO FOR um digito
+                                         mande um codigo de erro */
+            return -1; // codigo de erro
+        }
+    }
+    return 0;
+}
+
+int verifica_letras(char INFO[]) {
+    int i, tamanho = strlen(INFO);
+
+    for (i = 0; i < tamanho; i++) {
+        if (isdigit(INFO[i])) { /* se a posição atual da string FOR um digito
+                                         mande um codigo de erro */
+            return -1; // codigo de erro
+        }
+    }
+    return 0;
+}
+
+int coletar_numero_conta(Conta contas[]) { //coleta o numero de uma conta de forma segura e retorna um int
+    int entrada_valida = 0, num_conta_digito;
+    char num_conta[4]; // 1 espaço para numero e outro para o \n da verificao do fgets
+
+    do {
+        printf("Informe o numero da conta: ");
+        fgets(num_conta, 4, stdin);
+
+        entrada_valida = verifica_fgets(num_conta);
+
+        if (entrada_valida == -1) {
+            printf("\nErro: Informe apenas o numero da conta!");
+            continue;
+        }
+
+        entrada_valida = verifica_digitos(num_conta);
+
+        if (entrada_valida == -1) {
+            printf("\nErro: Informe somente numeros!");
+            continue; //return para dar a possibilidade do usuario criar uma conta caso nao tenha
+        }
+
+        num_conta_digito = atoi(num_conta); //transforma a string ja verificada em um int
+
+        return num_conta_digito;
+
+    }while (entrada_valida == -1);
 }
