@@ -123,4 +123,6 @@ int coletar_numero_conta(void) { //coleta o numero de uma conta de forma segura 
         return num_conta_digito;
 
     }while (entrada_valida == -1);
+
+    return -1;
 }

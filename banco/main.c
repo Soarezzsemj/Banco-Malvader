@@ -97,7 +97,7 @@ int main() {
                 char TELEFONE_TEMP[TAM_TELEFONE], AGENCIA_TEMP[TAM_AGENCIA];
                 int sucesso_atualizacao, numero_conta;
 
-                numero_conta = coletar_numero_conta(vetor_de_contas); //coleta os dados
+                numero_conta = coletar_numero_conta(); //coleta os dados
 
                 sucesso_atualizacao = encontrar_conta_por_numero(vetor_de_contas, &numero_conta, quantidade_atual); //ve se a conta existe
 
