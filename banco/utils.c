@@ -22,6 +22,23 @@ void limpa_buffer() {
                                                      nao limpar a fila toda), o buffer que causa o loop */
 }
 
+/*
+ * Função para exibir o menu principal (Refatoração)
+ */
+void exibir_menu() {
+    printf("\n------Menu------\n");
+    printf("1. Abrir conta\n");
+    printf("2. Depositar\n");
+    printf("3. Sacar\n");
+    printf("4. Transferir\n");
+    printf("5. Consultar saldo e dados\n");
+    printf("6. Atualizar telefone e agencia\n");
+    printf("7. Listar contas\n");
+    printf("8. Encerrar conta\n");
+    printf("9. Sair\n");
+    printf("Escolha: ");
+}
+
 int verifica_fgets(char INFO[]) {
     char *ponteiro_enter;
     ponteiro_enter = strchr(INFO, '\n'); // procura o /n na string, se tiver o limite de char foi respeitado

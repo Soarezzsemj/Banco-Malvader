@@ -8,17 +8,8 @@ int main() {
     int opcao, sucesso_leitura, resultado_da_conta;
 
     do {
-        printf("\n------Menu------\n");
-        printf("1. Abrir conta\n");
-        printf("2. Depositar\n");
-        printf("3. Sacar\n");
-        printf("4. Transferir\n");
-        printf("5. Consultar saldo e dados\n");
-        printf("6. Atualizar telefone e agencia\n");
-        printf("7. Listar contas\n");
-        printf("8. Encerrar conta\n");
-        printf("9. Sair\n");
-        printf("Escolha: ");
+        // CORREÇÃO: Substituindo os 10 printf's pela função de utilidade
+        exibir_menu();
 
         sucesso_leitura = scanf("%d", &opcao); // se ler um numero ele retorna 1
 
@@ -111,21 +102,27 @@ int main() {
                 break;
 
             case 7: { // Listar contas
-                int filtro;
-                printf("\n--- Listar Contas ---\n");
-                printf("Qual filtro deseja aplicar?\n");
-                printf(" (1) Somente Encerradas\n");
-                printf(" (2) Somente Ativas\n");
-                printf(" (3) Todas as Contas\n");
-                printf("Escolha: ");
-                scanf("%d", &filtro);
+                    int filtro;
+                    printf("\n--- Listar Contas ---\n");
+                    printf("Qual filtro deseja aplicar?\n");
+                    printf(" (1) Somente Encerradas\n");
+                    printf(" (2) Somente Ativas\n");
+                    printf(" (3) Todas as Contas\n");
+                    printf("Escolha: ");
+                    scanf("%d", &filtro);
 
-                limpa_buffer();
+                    limpa_buffer();
 
-                listar_contas(vetor_de_contas, quantidade_atual, filtro);
+                    // Verifica se o filtro é válido ANTES de chamar a função
+                    if (filtro < 1 || filtro > 3) {
+                        printf("Erro: Opcao de filtro invalida!\n");
+                    } else {
+                        // Se o filtro for válido, chama a função
+                        listar_contas(vetor_de_contas, quantidade_atual, filtro);
+                    }
 
-                break;
-            }
+                    break;
+                }
 
         }
 

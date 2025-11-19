@@ -7,8 +7,10 @@ void listar_contas(const Conta contas[], int qtd, int filtro_status) {
     // Variavel pra saber se a gente achou alguma conta pra imprimir
     int encontrou_alguma = 0;
 
-    // Vou usar 2 pra ser "TODAS", ja que 1 é ATIVA e 0 é ENCERRADA
-    const int FILTRO_TODAS = 2;
+    // Mudei os filtros pra bater com o menu novo
+    const int FILTRO_ENCERRADAS = 1;
+    const int FILTRO_ATIVAS = 2;
+    const int FILTRO_TODAS = 3;
 
     printf("\n--- Lista de Contas ---\n");
 
@@ -20,33 +22,29 @@ void listar_contas(const Conta contas[], int qtd, int filtro_status) {
 
     // Loop principal, passa por todas as contas
     for (int i = 0; i < qtd; i++) {
-        // Pega a conta atual pra ficar mais facil
-        const Conta c = contas[i];
 
         // Flag pra decidir se imprime essa conta especifica
         int imprimir = 0;
 
-        // Lógica dos filtros
-
-        // Se o filtro for 2 (TODAS), imprime sempre
+        // Se o filtro for 3 (TODAS), imprime sempre
         if (filtro_status == FILTRO_TODAS) {
             imprimir = 1;
-
-            // Se o filtro for 1 (ATIVA) e a conta ta ATIVA
-        } else if (filtro_status == ATIVA && c.status == ATIVA) {
+        }
+            // Se o filtro for 2 (ATIVAS) e a conta ta ATIVA
+        else if (filtro_status == FILTRO_ATIVAS && contas[i].status == ATIVA) {
             imprimir = 1;
-
-            // Se o filtro for 0 (ENCERRADA) e a conta ta ENCERRADA
-        } else if (filtro_status == ENCERRADA && c.status == ENCERRADA) {
+        }
+            // Se o filtro for 1 (ENCERRADA) e a conta ta ENCERRADA
+        else if (filtro_status == FILTRO_ENCERRADAS && contas[i].status == ENCERRADA) {
             imprimir = 1;
         }
 
         // Se a flag 'imprimir' for 1, entao mostra os dados
         if (imprimir) {
-            mostrar_dados(&c);
+            mostrar_dados(&contas[i]);
             printf("-------------------------\n");
 
-            // Avisa que achamos pelo menos uma
+            // Avisa que a gente achou pelo menos uma
             encontrou_alguma = 1;
         }
     }

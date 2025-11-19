@@ -36,6 +36,8 @@ void limpa_tela();
 
 void limpa_buffer();
 
+void exibir_menu();
+
 void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCIA_temp[], char TELEFONE_temp[]);
 
 int verifica_fgets(char INFO[]);
