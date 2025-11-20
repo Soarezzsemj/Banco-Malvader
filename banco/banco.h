@@ -16,6 +16,7 @@
 #define ATIVA 1
 #define ENCERRADA 0
 #define VALOR_MAX_DEPOSITO 1000000000.0 //valor maximo para um deposito, 10 milhoes
+#define VALOR_MAX_SAQUE 1000000000.0 //valor maximo para um saque, 10 milhoes
 
 // --- 2. ESTRUTURAS DE DADOS (O Molde) ---
 typedef struct {

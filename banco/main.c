@@ -100,7 +100,10 @@ int main() {
 
                 if (sucesso_saque == 0) {
                     printf("\nSaque realizado com sucesso!\n");
+                } else {
+                    printf("\nErro: Nao foi possivel realizar o saque.\n");
                 }
+
                 break;
 
 
