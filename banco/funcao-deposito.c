@@ -1,47 +1,51 @@
 #include <stdio.h>
+#include <stdlib.h>
+
 #include "banco.h"
 
-void coletar_info_deposito (int *num_conta, double *valor_deposito) {
+double coletar_info_deposito (const char *mensagem) {
     int opcao_valida = 0;
+    char valor[50];
+    double saldo;
 
     do {
-        printf("Informe o numero da conta que voce deseja fazer o deposito: ");
-        opcao_valida = scanf("%d", &*num_conta);
+        printf("%s", mensagem);
+        fgets(valor, 50, stdin);
 
-        if (opcao_valida != 1) { //evita que o usuario digite letras
-            limpa_buffer();
-            printf("\nErro: Informe somente numeros!\n");
-            continue;
-        }
-        if (*num_conta < 1) {
-            printf("\nErro: Informe uma conta valida!\n");
-            opcao_valida = -1;
-        }
-        limpa_buffer(); //evitar letras em caso de 22l ele pega o 22 e descarta o l
-    }while (opcao_valida != 1);
+        opcao_valida = verifica_fgets(valor);
 
-    do {
-        printf("Informe o valor do deposito: ");
-        opcao_valida = scanf("%lf", &*valor_deposito);
-
-        if (opcao_valida != 1) {
-            printf("\nErro: Informe somente numeros!");
+        if (opcao_valida == -1) {
+            printf("\nErro: Valor muito longo!");
             limpa_buffer();
             continue;
         }
 
-        if (*valor_deposito <= 0) {
-            printf("Informe um numero positivo maior que zero!\n");
+        opcao_valida = verifica_digitos_saldo(valor);
+
+        if (opcao_valida == -1) {
+            printf("Informe somente numeros!\n");
+            continue;
+        }
+
+        saldo = atof(valor);
+
+        if (saldo <= 0) {
+            printf("Erro: Informe um valor positivo maior que zero");
             opcao_valida = -1;
             continue;
         }
 
-        if (*valor_deposito > VALOR_MAX_DEPOSITO) {
-            printf("\nErro: o valor maximo de deposito eh %.2lf\n", VALOR_MAX_DEPOSITO);
+        if (saldo > VALOR_MAX_DEPOSITO) {
+            printf("\nErro: o valor maximo eh %.2lf\n", VALOR_MAX_DEPOSITO);
             opcao_valida = -1;
+            continue;
         }
-    limpa_buffer();
-    }while (opcao_valida != 1);
+
+        return saldo;
+
+    }while (opcao_valida == -1);
+
+    return -1; // o codigo nunca vai chegar aqui, mas é so por segurança mesmo
 }
 
 int realizar_deposito(Conta contas[], int indice_conta, double valor_deposito) {

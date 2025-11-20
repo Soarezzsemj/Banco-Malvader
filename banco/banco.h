@@ -45,7 +45,7 @@ int verifica_fgets(char INFO[]);
 int abrir_conta(Conta contas[], int *quant, int num_conta, const char *nome,
         const char *cpf, const char *agencia, const char *telefone);
 
-void coletar_info_deposito (int *num_conta, double *valor_deposito);
+double coletar_info_deposito (const char *mensagem);
 
 int encontrar_conta_por_numero(const Conta contas[], int *num_conta, int quant_atual);
 
@@ -66,6 +66,8 @@ int verifica_letras(char INFO[]);
 void listar_contas(const Conta contas[], int qtd, int filtro_status);
 
 void mostrar_dados(const Conta* c);
+
+int verifica_digitos_saldo(char SALDO[]);
 
 /* Funções dos seus amigos (eles adicionarão aqui depois) */
 // void depositar(Conta contas[], int quant);

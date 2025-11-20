@@ -84,6 +84,15 @@ int verifica_digitos(char INFO[]) {
     return 0;
 }
 
+int verifica_digitos_saldo(char SALDO[]) {
+    for (int i = 0; SALDO[i] != '\0'; i++) {
+        if (!isdigit(SALDO[i]) && SALDO[i] != '.') {
+            return -1;
+        }
+    }
+    return 0;
+}
+
 int verifica_letras(char INFO[]) {
     int i, tamanho = strlen(INFO);
 
@@ -98,7 +107,7 @@ int verifica_letras(char INFO[]) {
 
 int coletar_numero_conta(void) { //coleta o numero de uma conta de forma segura e retorna um int
     int entrada_valida = 0, num_conta_digito;
-    char num_conta[4]; // 1 espaço para numero e outro para o \n da verificao do fgets
+    char num_conta[5]; // 1 espaço para numero e outro para o \n da verificao do fgets, 5, limite para 100 contas
 
     do {
         printf("Informe o numero da conta: ");
@@ -107,14 +116,15 @@ int coletar_numero_conta(void) { //coleta o numero de uma conta de forma segura 
         entrada_valida = verifica_fgets(num_conta);
 
         if (entrada_valida == -1) {
-            printf("\nErro: Informe apenas o numero da conta!");
+            printf("\nErro: Informe apenas o numero da conta!\n");
+            limpa_buffer();
             continue;
         }
 
         entrada_valida = verifica_digitos(num_conta);
 
         if (entrada_valida == -1) {
-            printf("\nErro: Informe somente numeros!");
+            printf("\nErro: Informe somente numeros!\n");
             continue; //return para dar a possibilidade do usuario criar uma conta caso nao tenha
         }
 
