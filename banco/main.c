@@ -64,23 +64,24 @@ int main() {
 
                 num_conta = coletar_numero_conta();
 
-                verifica_sucesso = encontrar_conta_por_numero(vetor_de_contas, &num_conta, quantidade_atual);
+                indice = encontrar_conta_por_numero(vetor_de_contas, &num_conta, quantidade_atual);
 
-                if (verifica_sucesso == -1) {
+                if (indice == -1) {
                     printf("Erro: A conta nao existe!");
                     break;
                 }
 
-                indice = num_conta;
-
                 valor_deposito = coletar_info_deposito("\nInforme o valor do deposito: ");
 
                 verifica_sucesso = realizar_deposito(vetor_de_contas, indice, valor_deposito);
+
                 if (verifica_sucesso == -1) {
                     break;
-                } else {
+                }
+                else {
                     printf("\nSucesso no deposito!");
                 }
+
                 break;
             }
 
