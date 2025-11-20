@@ -44,8 +44,6 @@ double coletar_info_deposito (const char *mensagem) {
         return saldo;
 
     }while (opcao_valida == -1);
-
-    return -1; // o codigo nunca vai chegar aqui, mas é so por segurança mesmo
 }
 
 int realizar_deposito(Conta contas[], int indice_conta, double valor_deposito) {

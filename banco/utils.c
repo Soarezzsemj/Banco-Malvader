@@ -107,11 +107,11 @@ int verifica_letras(char INFO[]) {
 
 int coletar_numero_conta(void) { //coleta o numero de uma conta de forma segura e retorna um int
     int entrada_valida = 0, num_conta_digito;
-    char num_conta[5]; // 1 espaço para numero e outro para o \n da verificao do fgets, 5, limite para 100 contas
+    char num_conta[12];
 
     do {
         printf("Informe o numero da conta: ");
-        fgets(num_conta, 4, stdin);
+        fgets(num_conta, sizeof(num_conta), stdin);
 
         entrada_valida = verifica_fgets(num_conta);
 
