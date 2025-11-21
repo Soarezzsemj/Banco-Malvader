@@ -89,6 +89,10 @@ int main() {
                     break;
                 }
 
+                if (verifica_sucesso == ERR_PARA_COMPILADOR_D) {
+                    printf("\nErro inesperado: código %d\n", verifica_sucesso);
+                }
+
                 //se nao deu erro, avisar
                 printf("\nSucesso no deposito!");
                 break;
@@ -172,8 +176,8 @@ int main() {
                         }
                     }
 
-                    break;
-                }
+                break;
+            }
 
             case 8: {
                 int num_conta, idx_conta, verifica_sucesso;
@@ -187,14 +191,23 @@ int main() {
                     break;
                 }
 
-                verifica_sucesso = valida_conta_ativa(vetor_de_contas, idx_conta);
+                verifica_sucesso = encerrar_conta(vetor_de_contas, idx_conta, quantidade_atual);
+
+                if (verifica_sucesso == ERR_CONTA_INEXISTENTE) {
+                    printf("\nErro: A conta nao existe!\n");
+                    break;
+                }
 
                 if (verifica_sucesso == ERR_CONTA_INATIVA) {
                     printf("\nErro: A conta ja esta desativada!\n");
                     break;
                 }
 
-                verifica_sucesso = encerrar_conta(vetor_de_contas, idx_conta, quantidade_atual);
+                if (verifica_sucesso == ERR_SALDO_NAO_ZERO) {
+                    printf("\nErro: Por favor, faça transferencia do saldo da sua conta antes de encerra-la!");
+                    printf("\nO saldo da conta deve ser zero antes dela ser encerrada.\n");
+                    break;
+                }
 
                 if (verifica_sucesso == OK) {
                     printf("\nConta encerrada com sucesso!");
