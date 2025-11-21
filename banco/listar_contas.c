@@ -2,7 +2,7 @@
 #include "banco.h"
 #include <stdio.h>
 
-void listar_contas(const Conta contas[], int qtd, int filtro_status) {
+int listar_contas(const Conta contas[], int qtd, int filtro_status) {
 
     // Variavel pra saber se a gente achou alguma conta pra imprimir
     int encontrou_alguma = 0;
@@ -16,8 +16,7 @@ void listar_contas(const Conta contas[], int qtd, int filtro_status) {
 
     // Se nao tem conta nenhuma, so avisa e sai
     if (qtd == 0) {
-        printf("Nenhuma conta cadastrada no sistema.\n");
-        return;
+        return ERR_CONTA_INEXISTENTE; //nenhuma conta encontrada no sistema
     }
 
     // Loop principal, passa por todas as contas
@@ -52,6 +51,8 @@ void listar_contas(const Conta contas[], int qtd, int filtro_status) {
     // Se o loop terminou e 'encontrou_alguma' ainda é 0,
     // é porque ninguem passou no filtro
     if (encontrou_alguma == 0) {
-        printf("Nenhuma conta encontrada para este filtro.\n");
+        return ERR_NENHUMA_CONTA; //nenhuma conta encontrada com esse filtro
     }
+
+    return OK;
 }
