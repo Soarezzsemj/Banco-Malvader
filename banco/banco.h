@@ -67,6 +67,10 @@ void listar_contas(const Conta contas[], int qtd, int filtro_status);
 
 void mostrar_dados(const Conta* c);
 
+void consultar_conta(Conta contas[], int quant);
+
+
+
 /* Funções dos seus amigos (eles adicionarão aqui depois) */
 // void depositar(Conta contas[], int quant);
 // void sacar(Conta contas[], int quant);

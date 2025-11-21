@@ -7,6 +7,7 @@ int main() {
     int num_proxima_conta = 1; // vai ser incrementado depois apos a criação de uma nova conta
     int opcao, sucesso_leitura, resultado_da_conta;
 
+
     do {
         // imprime na tela todas as opções do sistema bancário
         exibir_menu();
@@ -91,6 +92,7 @@ int main() {
                 break;
 
             case 5:
+                consultar_conta(vetor_de_contas, quantidade_atual);
                 break;
 
             case 6:
