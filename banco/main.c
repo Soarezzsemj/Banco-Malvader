@@ -89,13 +89,15 @@ int main() {
                     break;
                 }
 
-                if (verifica_sucesso == ERR_PARA_COMPILADOR_D) {
-                    printf("\nErro inesperado: código %d\n", verifica_sucesso);
-                }
+                if (verifica_sucesso == OK) {
+                    printf("\nSucesso no deposito!");
+                    break;
 
-                //se nao deu erro, avisar
-                printf("\nSucesso no deposito!");
-                break;
+                }
+                else {
+                    printf("\nErro inesperado: código %d\n", verifica_sucesso);
+                    break;
+                }
 
             }
 
@@ -204,7 +206,7 @@ int main() {
                 }
 
                 if (verifica_sucesso == ERR_SALDO_NAO_ZERO) {
-                    printf("\nErro: Por favor, faça transferencia do saldo da sua conta antes de encerra-la!");
+                    printf("\nErro: Por favor, faca transferencia do saldo da sua conta antes de encerra-la!");
                     printf("\nO saldo da conta deve ser zero antes dela ser encerrada.\n");
                     break;
                 }
@@ -213,6 +215,8 @@ int main() {
                     printf("\nConta encerrada com sucesso!");
                     break;
                 }
+
+                break;
             }
 
             default:
