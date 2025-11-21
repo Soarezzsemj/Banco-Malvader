@@ -47,29 +47,33 @@ int verifica_fgets(char INFO[]) {
 
     if (ponteiro_enter != NULL) {
         *ponteiro_enter = '\0';
-        return 0;
+        return OK;
     } else {
         // se nao tiver \n nao teve espaço para armazenar toda a string
-        return -1;
+        return ERR_INPUT_MUITO_LONG;
     }
 }
 
-int encontrar_conta_por_numero(const Conta contas[], int *num_conta, int quant_atual) {
+int encontrar_conta_por_numero(const Conta contas[], int num_conta, int quant_atual) {
     int i;
+    /* a funcao pega o numero da conta,verifica se a conta existe,
+    e se for retorna O INDICE DA CONTA, por isso atencao ao uso dela*/
+
     for (i = 0; i < quant_atual; i++) { /*quantidade de contas*/
-        if (contas[i].numero == *num_conta) {
-            *num_conta = i;
+        if (contas[i].numero == num_conta) {
             return i;
         }
     }
-    return -1;
+    return ERR_CONTA_INEXISTENTE;
 }
 
 int valida_conta_ativa(Conta contas[], int indice_conta) {
+    //sempre garantam que essa funcao receba um indice valido ou seja
+    //indice >= 0 && indice < quant_atual
     if (contas[indice_conta].status == ENCERRADA) {
-        return -1;
+        return ERR_CONTA_INATIVA;
     }
-    return 0;
+    return OK;
 }
 
 int verifica_digitos(char INFO[]) {
@@ -78,19 +82,19 @@ int verifica_digitos(char INFO[]) {
     for (i = 0; i < tamanho; i++) {
         if (!isdigit(INFO[i])) { /* se a posição atual da string NAO FOR um digito
                                          mande um codigo de erro */
-            return -1; // codigo de erro
+            return ERR_LETRA_ENCONTRA; // codigo de erro
         }
     }
-    return 0;
+    return OK;
 }
 
 int verifica_digitos_saldo(char SALDO[]) {
     for (int i = 0; SALDO[i] != '\0'; i++) {
         if (!isdigit(SALDO[i]) && SALDO[i] != '.') {
-            return -1;
+            return ERR_LETRA_ENCONTRA;
         }
     }
-    return 0;
+    return OK;
 }
 
 int verifica_letras(char INFO[]) {
@@ -99,15 +103,15 @@ int verifica_letras(char INFO[]) {
     for (i = 0; i < tamanho; i++) {
         if (isdigit(INFO[i])) { /* se a posição atual da string FOR um digito
                                          mande um codigo de erro */
-            return -1; // codigo de erro
+            return ERR_DIGIT_ENCONTRA; // codigo de erro
         }
     }
-    return 0;
+    return OK;
 }
 
 int coletar_numero_conta(void) { //coleta o numero de uma conta de forma segura e retorna um int
     int entrada_valida = 0, num_conta_digito;
-    char num_conta[12];
+    char num_conta[5];
 
     do {
         printf("Informe o numero da conta: ");
@@ -115,7 +119,7 @@ int coletar_numero_conta(void) { //coleta o numero de uma conta de forma segura 
 
         entrada_valida = verifica_fgets(num_conta);
 
-        if (entrada_valida == -1) {
+        if (entrada_valida == ERR_INPUT_MUITO_LONG) {
             printf("\nErro: Informe apenas o numero da conta!\n");
             limpa_buffer();
             continue;
@@ -123,7 +127,7 @@ int coletar_numero_conta(void) { //coleta o numero de uma conta de forma segura 
 
         entrada_valida = verifica_digitos(num_conta);
 
-        if (entrada_valida == -1) {
+        if (entrada_valida == ERR_LETRA_ENCONTRA) {
             printf("\nErro: Informe somente numeros!\n");
             continue; //return para dar a possibilidade do usuario criar uma conta caso nao tenha
         }
@@ -132,7 +136,7 @@ int coletar_numero_conta(void) { //coleta o numero de uma conta de forma segura 
 
         return num_conta_digito;
 
-    }while (entrada_valida == -1);
+    }while (entrada_valida != OK);
 
-    return -1;
+    return ERR_PARA_COMPILADOR; //funcao nao chega aqui, so para o compilador nao reclamar
 }
