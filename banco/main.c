@@ -16,7 +16,7 @@ int main() {
 
         if (sucesso_leitura != 1) { // se for uma letra, ele ficou preso na fila, temos que limpa-lo
             limpa_tela();
-            printf("\nEntrada invalida! Por favor informe somente numeros.\n");
+            printf("\nErro: Entrada invalida! Por favor informe somente numeros.\n");
             limpa_buffer();
             opcao = 0;
             continue;
@@ -26,16 +26,15 @@ int main() {
 
         if (opcao < 1 || opcao > 9) { // se nao for uma das opcoes pede ao usuario para tentar novamente
             limpa_tela();
-            printf("\nOpcao invalida! Digite uma opcao valida por favor.\n");
+            printf("\nErro: Opcao invalida! Digite uma opcao valida por favor.\n");
             continue; // reinicia o loop
         }
 
         switch (opcao) { /* chamar as funções conforme a escolha */
 
-            // CHAVE ADICIONADA AQUI
+
             case 1: {
                 if (quantidade_atual >= MAX_CONTAS) {
-                    limpa_tela();
                     printf("\nErro: Limite de contas atingido!\n");
                     break; // volta para o menu
                 }
@@ -51,36 +50,52 @@ int main() {
                                                  cpf_temp, agencia_temp,
                                                  telefone_temp); //verifica se o CPF ja existe em outra conta
 
-                if (resultado_da_conta == 0) {
-                    printf("Conta criada com sucesso!\n");
+                if (resultado_da_conta == OK) {
+                    printf("\nConta criada com sucesso!\n");
                     num_proxima_conta++;
                 }
+                else { //erro se o cpf da conta for duplicado
+                    printf("\nErro: O CPF cadastrado já existe em uma conta ativa.");
+                }
 
                 break;
-            } // CHAVE ADICIONADA AQUI
+            }
 
-                // CHAVE ADICIONADA AQUI
+
             case 2: {
-                int num_conta, indice, sucesso_deposito;
+                int indice, num_conta, verifica_sucesso;
                 double valor_deposito;
 
-                coletar_info_deposito(&num_conta, &valor_deposito);
+                num_conta = coletar_numero_conta();
 
-                indice = encontrar_conta_por_numero(vetor_de_contas, &num_conta, quantidade_atual);
+                /* a funcao encontrar_conta_por_numero pega o numero da conta,
+                verifica se a conta e valida, e se for retorna O INDICE DA CONTA*/
+                indice = encontrar_conta_por_numero(vetor_de_contas, num_conta, quantidade_atual);
 
-                if (indice == -1) {
-                    printf("\nErro: Conta inexistente!");
+                if (indice == ERR_CONTA_INEXISTENTE) {
+                    printf("Erro: A conta nao existe!");
                     break;
                 }
 
-                sucesso_deposito = realizar_deposito(vetor_de_contas, indice, valor_deposito);
-                if (sucesso_deposito == -1) {
+                valor_deposito = coletar_info_deposito("\nInforme o valor do deposito: ");
+
+                verifica_sucesso = realizar_deposito(vetor_de_contas, indice, valor_deposito);
+
+                if (verifica_sucesso == ERR_VALOR_INVALIDO) {
+                    printf("Erro: Informe um valor maior que 0!\n");
                     break;
-                } else {
+                }
+                if (verifica_sucesso == ERR_CONTA_INATIVA) {
+                    printf("Erro: A conta informada esta desativada!\n");
+                    break;
+                }
+                else {
                     printf("\nSucesso no deposito!");
+                    break;
                 }
+
                 break;
-            } // CHAVE ADICIONADA AQUI
+            }
 
             case 3:
                 printf("Voce escolheu sacar seu saldo.");
@@ -97,61 +112,80 @@ int main() {
 
             case 6:
                 char TELEFONE_TEMP[TAM_TELEFONE], AGENCIA_TEMP[TAM_AGENCIA];
-                int sucesso_atualizacao, numero_conta;
+                int sucesso_atualizacao, numero_conta, idx_conta;
 
                 numero_conta = coletar_numero_conta(); //coleta os dados
 
-                sucesso_atualizacao = encontrar_conta_por_numero(vetor_de_contas, &numero_conta, quantidade_atual); //ve se a conta existe
+                idx_conta = encontrar_conta_por_numero(vetor_de_contas, numero_conta, quantidade_atual); //ve se a conta existe
 
-                if (sucesso_atualizacao == -1) {
+                if (idx_conta == ERR_CONTA_INEXISTENTE) {
                     printf("\nErro: A conta nao existe!");
                     break;
                 }
 
-                sucesso_atualizacao = valida_conta_ativa(vetor_de_contas, numero_conta); //ve se a conta esta ativa
+                sucesso_atualizacao = valida_conta_ativa(vetor_de_contas, idx_conta); //ve se a conta esta ativa
 
-                if (sucesso_atualizacao == -1) {
+                if (sucesso_atualizacao == ERR_CONTA_INATIVA) {
                     printf("\nErro: A conta esta desativada!");
                     break;
                 }
 
                 coletar_novos_dados_tel_agencia(TELEFONE_TEMP, AGENCIA_TEMP); //pega os dados novos
 
-                atualizar_dados_tel_agencia(vetor_de_contas, TELEFONE_TEMP, AGENCIA_TEMP, numero_conta); //atualiza os dados de fato
+                atualizar_dados_tel_agencia(vetor_de_contas, TELEFONE_TEMP,
+                    AGENCIA_TEMP, idx_conta); //atualiza os dados de fato
 
                 break;
 
             case 7: { // Listar contas
-                    int filtro;
+                    int filtro, sucesso_scanf, valida_listar;
                     printf("\n--- Listar Contas ---\n");
                     printf("Qual filtro deseja aplicar?\n");
                     printf(" (1) Somente Encerradas\n");
                     printf(" (2) Somente Ativas\n");
                     printf(" (3) Todas as Contas\n");
                     printf("Escolha: ");
-                    scanf("%d", &filtro);
+                    sucesso_scanf = scanf("%d", &filtro);
 
-                    limpa_buffer();
+                    if (sucesso_scanf != 1) { // se for uma letra, ele ficou preso na fila, temos que limpa-lo
+                        limpa_tela();
+                        printf("\nErro: Entrada invalida! Por favor informe somente numeros.\n");
+                        limpa_buffer();
+                        continue;
+                    }
+
+                    limpa_buffer(); //tira /n para proximo fgets
 
                     // Verifica se o filtro é válido ANTES de chamar a função
                     if (filtro < 1 || filtro > 3) {
                         printf("Erro: Opcao de filtro invalida!\n");
-                    } else {
+                    }
+                    else {
                         // Se o filtro for válido, chama a função
-                        listar_contas(vetor_de_contas, quantidade_atual, filtro);
+                        valida_listar = listar_contas(vetor_de_contas, quantidade_atual, filtro);
+
+                        if (valida_listar == ERR_CONTA_INEXISTENTE) {
+                            printf("Erro: Nenhuma conta cadastrada no sistema.\n");
+                            break;
+                        }
+
+                        if (valida_listar == ERR_NENHUMA_CONTA) {
+                            printf("Erro: Nenhuma conta encontrada para este filtro.\n");
+                            break;
+                        }
                     }
 
                     break;
                 }
 
                 default:
-                printf("\nErro: Opcao invalida!");
-                break;
+                    printf("\nErro: Opcao invalida!");
+                    break;
 
         }
 
     } while (opcao != 9);
 
-    return 0;
+    return OK;
 
 }
