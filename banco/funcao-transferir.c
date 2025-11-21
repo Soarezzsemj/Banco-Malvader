@@ -6,48 +6,47 @@
 #include "banco.h"
 
 int realizar_transferencia(Conta contas[], int quant_atual, int conta_origem, int conta_destino, double valor) {
-
     // Verifica se o valor é válido
     if (valor <= 0) {
         printf("Erro: o valor deve ser maior que zero.\n");
-        return 0;
+        return -1;
     }
 
     // Encontrar conta de origem
-    int idx_origem = encontrar_conta_por_numero(contas, conta_origem, quant_atual);
+    int idx_origem = encontrar_conta_por_numero(contas, quant_atual, conta_origem);
     if (idx_origem == -1) {
         printf("Erro: conta de origem nao encontrada.\n");
-        return 0;
+        return -1;
     }
 
     // Encontrar conta de destino
-    int idx_destino = encontrar_conta_por_numero(contas, conta_destino, quant_atual);
+    int idx_destino = encontrar_conta_por_numero(contas, quant_atual, conta_destino);
     if (idx_destino == -1) {
         printf("Erro: conta de destino nao encontrada.\n");
-        return 0;
+        return -1;
     }
 
     // Verifica se as contas estão ativas
     if (contas[idx_origem].status != ATIVA) {
         printf("Erro: conta de origem esta encerrada.\n");
-        return 0;
+        return -1;
     }
 
     if (contas[idx_destino].status != ATIVA) {
         printf("Erro: conta de destino esta encerrada.\n");
-        return 0;
+        return -1;
     }
 
     // Verificar saldo
     if (contas[idx_origem].saldo < valor) {
         printf("Erro: saldo insuficiente.\n");
-        return 0;
+        return -1;
     }
 
-    // 6. Realizar transferência
+    // Realizar transferência
     contas[idx_origem].saldo -= valor;
     contas[idx_destino].saldo += valor;
 
     printf("Transferencia de %.2f realizada com sucesso!\n", valor);
-    return 1; // Sucesso
+    return 0; // Sucesso
 }

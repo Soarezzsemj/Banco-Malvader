@@ -6,6 +6,8 @@ int main() {
     int quantidade_atual = 0; // numero de contas criadas
     int num_proxima_conta = 1; // vai ser incrementado depois apos a criação de uma nova conta
     int opcao, sucesso_leitura, resultado_da_conta;
+    int ler_int(const char *mensagem);
+    double ler_double(const char *mensagem);
 
     do {
         printf("\n------Menu------\n");
@@ -91,33 +93,23 @@ int main() {
                 // chamada aqui
                 break;
 
-            case 4:
-            {
-                int num_origem, num_destino;
-                double valor_transferencia;
-
-                printf("Informe o numero da conta de origem: ");
-                scanf("%d", &num_origem);
-                limpa_buffer();
-
-                printf("Informe o numero da conta de destino: ");
-                scanf("%d", &num_destino);
-                limpa_buffer();
-
-                printf("Informe o valor da transferencia: ");
-                scanf("%lf", &valor_transferencia);
-                limpa_buffer();
+             case 4: {
+                int num_origem = ler_int("Informe o numero da conta de origem: ");
+                int num_destino = ler_int("Informe o numero da conta de destino: ");
+                double valor_transferencia = ler_double("Informe o valor da transferencia: ");
 
                 int resultado = realizar_transferencia(
-                        vetor_de_contas,
-                        quantidade_atual,
-                        num_origem,
-                        num_destino,
-                        valor_transferencia
+                    vetor_de_contas,
+                    quantidade_atual,
+                    num_origem,
+                    num_destino,
+                    valor_transferencia
                 );
 
                 if (resultado == 0) {
-                    printf("\nTransferencia concluida!\n");
+                    printf("\nTransferencia concluida com sucesso!\n");
+                } else {
+                    printf("\nErro na transferencia! Verifique os dados e tente novamente.\n");
                 }
                 break;
 
