@@ -140,3 +140,35 @@ int coletar_numero_conta(void) { //coleta o numero de uma conta de forma segura 
 
     return ERR_PARA_COMPILADOR; //funcao nao chega aqui, so para o compilador nao reclamar
 }
+
+/* Lê um inteiro com validação */
+int ler_int(const char *mensagem) {
+    int valor;
+    char c;
+    while (1) {
+        printf("%s", mensagem);
+        if (scanf("%d", &valor) == 1) {
+            while ((c = getchar()) != '\n' && c != EOF); // limpa buffer
+            return valor;
+        } else {
+            printf("Entrada invalida! Digite um numero.\n");
+            while ((c = getchar()) != '\n' && c != EOF);
+        }
+    }
+}
+
+/* Lê um double com validação */
+double ler_double(const char *mensagem) {
+    double valor;
+    char c;
+    while (1) {
+        printf("%s", mensagem);
+        if (scanf("%lf", &valor) == 1) {
+            while ((c = getchar()) != '\n' && c != EOF); // limpa buffer
+            return valor;
+        } else {
+            printf("Entrada invalida! Digite um numero.\n");
+            while ((c = getchar()) != '\n' && c != EOF);
+        }
+    }
+}
