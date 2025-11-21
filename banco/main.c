@@ -88,12 +88,11 @@ int main() {
                     printf("Erro: A conta informada esta desativada!\n");
                     break;
                 }
-                else {
-                    printf("\nSucesso no deposito!");
-                    break;
-                }
 
+                //se nao deu erro, avisar
+                printf("\nSucesso no deposito!");
                 break;
+
             }
 
             case 3:
@@ -176,9 +175,36 @@ int main() {
                     break;
                 }
 
-                default:
-                    printf("\nErro: Opcao invalida!");
+            case 8: {
+                int num_conta, idx_conta, verifica_sucesso;
+
+                num_conta = coletar_numero_conta();
+
+                idx_conta = encontrar_conta_por_numero(vetor_de_contas, num_conta, quantidade_atual);
+
+                if (idx_conta == ERR_CONTA_INEXISTENTE) {
+                    printf("\nErro: A conta nao existe!\n");
                     break;
+                }
+
+                verifica_sucesso = valida_conta_ativa(vetor_de_contas, idx_conta);
+
+                if (verifica_sucesso == ERR_CONTA_INATIVA) {
+                    printf("\nErro: A conta ja esta desativada!\n");
+                    break;
+                }
+
+                verifica_sucesso = encerrar_conta(vetor_de_contas, idx_conta, quantidade_atual);
+
+                if (verifica_sucesso == OK) {
+                    printf("\nConta encerrada com sucesso!");
+                    break;
+                }
+            }
+
+            default:
+                printf("\nErro: Opcao invalida!");
+                break;
 
         }
 

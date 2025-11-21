@@ -97,6 +97,8 @@ void mostrar_dados(const Conta* c);
 
 int verifica_digitos_saldo(char SALDO[]);
 
+int encerrar_conta(Conta contas[], int idx_conta, int quant_atual);
+
 /* Funções dos seus amigos (eles adicionarão aqui depois) */
 // void depositar(Conta contas[], int quant);
 // void sacar(Conta contas[], int quant);
