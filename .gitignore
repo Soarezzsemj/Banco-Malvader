@@ -3,6 +3,10 @@
 *.o
 *.out
 
+# Ignorar especificamente o executável Linux dentro da pasta
+# (Isso evita ignorar a pasta 'banco' inteira por engano)
+banco/banco
+
 # Pastas de IDE
 .vscode/
 .idea/
