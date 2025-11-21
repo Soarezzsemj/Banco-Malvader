@@ -11,8 +11,11 @@ include_directories(banco)
 # Cria um executável chamado "banco" juntando todos os seus arquivos .c
 add_executable(banco
     banco/main.c
-    banco/funcoes_abrir_conta.c
+        banco/abrir_conta.c
     banco/utils.c
-        banco/funcao-deposito.c
+        banco/deposito.c
         banco/funcao-transferir.c
+        banco/listar_contas.c
+        banco/mostrar_dados.c
+        banco/atualizar-telefone-agencia.c
 )
