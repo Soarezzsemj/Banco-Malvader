@@ -34,11 +34,11 @@ int realizar_transferencia(Conta contas[], int quant_atual, int conta_origem, in
     }
 
     // Verifica se as contas estão ativas
-    if (contas[idx_origem].status != ATIVA) {
+    if (!valida_conta_ativa(contas, idx_origem)) {
         return 0;
     }
 
-    if (contas[idx_destino].status != ATIVA) {
+    if (!valida_conta_ativa(contas, idx_destino)) {
         return 0;
     }
 

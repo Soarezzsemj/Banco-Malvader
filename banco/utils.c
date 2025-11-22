@@ -82,7 +82,7 @@ int verifica_digitos(char INFO[]) {
     for (i = 0; i < tamanho; i++) {
         if (!isdigit(INFO[i])) { /* se a posição atual da string NAO FOR um digito
                                          mande um codigo de erro */
-            return ERR_LETRA_EM_NUMERO; // codigo de erro
+            return ERR_DIGIT_EM_NOME; // codigo de erro
         }
     }
     return OK;
@@ -91,7 +91,7 @@ int verifica_digitos(char INFO[]) {
 int verifica_digitos_saldo(char SALDO[]) {
     for (int i = 0; SALDO[i] != '\0'; i++) {
         if (!isdigit(SALDO[i]) && SALDO[i] != '.') {
-            return ERR_LETRA_EM_NUMERO;
+            return ERR_DIGIT_EM_NOME;
         }
     }
     return OK;
