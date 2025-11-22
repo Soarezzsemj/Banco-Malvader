@@ -97,6 +97,12 @@ void mostrar_dados(const Conta* c);
 
 int verifica_digitos_saldo(char SALDO[]);
 
+int realizar_transferencia(Conta contas[],
+                           int quant_atual,
+                           int conta_origem,
+                           int conta_destino,
+                           double valor);
+
 /* Funções dos seus amigos (eles adicionarão aqui depois) */
 // void depositar(Conta contas[], int quant);
 // void sacar(Conta contas[], int quant);
