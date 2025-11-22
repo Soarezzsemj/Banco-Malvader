@@ -89,7 +89,7 @@ int main() {
 
                 coletar_info_saque(&num_conta_saque, &valor_saque);
 
-                indice_saque = encontrar_conta_por_numero(vetor_de_contas, &num_conta_saque, quantidade_atual);
+                indice_saque = encontrar_conta_por_numero(vetor_de_contas, num_conta_saque, quantidade_atual);
 
                 if (indice_saque == -1) {
                     printf("\nErro: Conta inexistente!");
