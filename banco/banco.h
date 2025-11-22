@@ -33,7 +33,7 @@ typedef enum {
     ERR_CPF_DUPLICADO     = -5, // ao criar conta, CPF já cadastrado em conta ativa
     ERR_NENHUMA_CONTA     = -6, // lista vazia / nenhuma conta no sistema
     ERR_SALDO_NAO_ZERO    = -7, //para funcao encerrar conta
-    SAQUE_PARCIAL         = -8, // saldo insuficiente; saque parcial foi realizado
+    ERR_SAQUE_PARCIAL         = -8, // saldo insuficiente; saque parcial foi realizado
 
     /*  Erros de input / validação */
     ERR_INPUT_MUITO_LONG  = -9, // fgets ultrapassou buffer

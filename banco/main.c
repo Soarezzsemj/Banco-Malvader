@@ -94,7 +94,7 @@ int main() {
                         break;
                     }
 
-                    case ERR_CONTA_INEXISTENTE: {
+                    case ERR_CONTA_INATIVA: {
                         printf("Erro: A conta informada esta desativada!\n");
                         break;
                     }
@@ -144,7 +144,7 @@ int main() {
                         printf("\nSaque realizado com sucesso!\n");
                         break;
 
-                    case SAQUE_PARCIAL:
+                    case ERR_SAQUE_PARCIAL:
                         printf("\nAviso: Saldo insuficiente. Saque parcial realizado.\n");
                         break;
 

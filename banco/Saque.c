@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "banco.h"
 
 void coletar_info_saque(int *num_conta, double *valor_saque) {
@@ -26,9 +27,10 @@ int realizar_saque(Conta contas[], int indice_conta, double valor_saque) {
     double saldo_atual = contas[indice_conta].saldo;
 
     // --- Saque parcial --- //
-    if (saldo_atual < valor_saque) {
+    const double EPS = 1e-9; //EPS = 0.0000000001
+    if (saldo_atual + EPS < valor_saque) { //evitar problemas com precisao no double
         contas[indice_conta].saldo = 0;
-        return SAQUE_PARCIAL;
+        return ERR_SAQUE_PARCIAL;
     }
 
     // --- Saque normal --- //
