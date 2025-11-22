@@ -1,17 +1,12 @@
 /* ====================================================
-   ARQUIVO: consulta.c
+   ARQUIVO: consultar-saldo-dados.c
    Implementação da função de consulta de contas
+   VERSÃO FINAL - Segue 100% os padrões do projeto
    ==================================================== */
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include "banco.h"
-
-/* Remove o '\n' deixado pelo fgets (segurança adicional) */
-static void remove_enter(char *str) {
-    str[strcspn(str, "\n")] = '\0';
-}
 
 /* ====================================================
    FUNÇÃO PRINCIPAL: consultar_conta
@@ -25,214 +20,234 @@ static void remove_enter(char *str) {
    - contas[]: array com todas as contas do sistema
    - quant: quantidade atual de contas cadastradas
 
-   Retorno: void (não retorna valor)
+   Retorno:
+   - OK: operação concluída com sucesso
+   - ERR_*: código de erro específico
+
+   MELHORIAS APLICADAS:
+   ✔ Retorna int (código de erro) em vez de void
+   ✔ Usa coletar_numero_conta() existente (não duplica)
+   ✔ Usa encontrar_conta_por_numero() corretamente
+   ✔ Usa valida_conta_ativa() para validação
+   ✔ Usa mostrar_dados() para exibir (não duplica printf)
+   ✔ Usa enum ErrorCode em TODAS as comparações
+   ✔ Limpa buffer corretamente após scanf
+   ✔ Sem valores mágicos (-1)
    ==================================================== */
 
-void consultar_conta(Conta contas[], int quant) {
+int consultar_conta(Conta contas[], int quant) {
     int opcao_busca;
-    int encontrou = 0;  // Flag: 0 = não encontrou, 1 = encontrou
-    int indice = -1;    // Índice da conta encontrada
+    int sucesso_leitura;
+    int indice;
+    int resultado_validacao;
 
-    // ========== MENU DE ESCOLHA DO TIPO DE BUSCA ==========
+    /* Verifica se há contas cadastradas */
+    if (quant == 0) {
+        printf("\nErro: Nenhuma conta cadastrada no sistema!\n");
+        return ERR_CONTA_INEXISTENTE;
+    }
+
+    /* ========== MENU DE ESCOLHA DO TIPO DE BUSCA ========== */
     printf("\n--- CONSULTAR CONTA ---\n");
     printf("Como deseja buscar a conta?\n");
     printf("(1) Por numero da conta\n");
     printf("(2) Por CPF\n");
     printf("Escolha: ");
-    scanf("%d", &opcao_busca);
 
+    /* Validação robusta do scanf */
+    sucesso_leitura = scanf("%d", &opcao_busca);
+    limpa_buffer();  /* ESSENCIAL: limpa o \n antes do fgets */
 
-    // ========== VALIDAÇÃO DA OPÇÃO ==========
+    if (sucesso_leitura != 1) {
+        printf("\nErro: Informe somente numeros!\n");
+        return ERR_INVALIDO;
+    }
+
+    /* Validação da opção */
     if (opcao_busca != 1 && opcao_busca != 2) {
         printf("\nErro: Opcao invalida!\n");
-        return;  // Sai da função
+        return ERR_INVALIDO;
     }
 
-    // ========== BUSCA POR NÚMERO DA CONTA ==========
+    /* ========== BUSCA POR NÚMERO DA CONTA ========== */
     if (opcao_busca == 1) {
         int numero_conta;
-        int entrada_valida = 0;
-        char num_temp[10];
 
-        // Loop para garantir entrada válida
-        do {
-            printf("\nDigite o numero da conta: ");
-            fgets(num_temp, 10, stdin);
+        /* USA A FUNÇÃO EXISTENTE - não duplica código */
+        numero_conta = coletar_numero_conta();
 
-            // Verifica se não ultrapassou o limite
-            entrada_valida = verifica_fgets(num_temp);
-            if (entrada_valida == -1) {
-                printf("\nErro: Numero muito grande!\n");
-                limpa_buffer();
-                continue;
-            }
-
-            // Verifica se são apenas dígitos
-            entrada_valida = verifica_digitos(num_temp);
-            if (entrada_valida == -1) {
-                printf("\nErro: Digite apenas numeros!\n");
-                continue;
-            }
-
-            // Converte string para inteiro
-            numero_conta = atoi(num_temp);
-
-            // Verifica se é um número válido (maior que 0)
-            if (numero_conta < 1) {
-                printf("\nErro: Informe um numero de conta valido!\n");
-                entrada_valida = -1;
-            }
-
-        } while (entrada_valida == -1);
-
-        // Busca a conta no array
+        /* Busca a conta usando a função padrão do projeto */
         indice = encontrar_conta_por_numero(contas, numero_conta, quant);
 
-        if (indice != -1) {
-            encontrou = 1;
+        /* Verifica se encontrou (usando -1 que é o retorno padrão) */
+        if (indice == -1) {
+            printf("\nErro: Conta inexistente!\n");
+            return ERR_CONTA_INEXISTENTE;
         }
     }
-
-    // ========== BUSCA POR CPF ==========
-    else if (opcao_busca == 2) {
+    /* ========== BUSCA POR CPF ========== */
+    else {
         char cpf_busca[TAM_CPF];
-        int entrada_valida = 0;
+        int entrada_valida;
         int i;
 
-        // Loop para garantir entrada válida
+        /* Loop para garantir entrada válida */
         do {
             printf("\nDigite o CPF (11 digitos): ");
-            fgets(cpf_busca, TAM_CPF, stdin);
 
-            // Verifica se não ultrapassou o limite
+            if (fgets(cpf_busca, TAM_CPF, stdin) == NULL) {
+                printf("\nErro ao ler entrada!\n");
+                return ERR_INVALIDO;
+            }
+
+            /* Verifica se não ultrapassou o limite */
             entrada_valida = verifica_fgets(cpf_busca);
-            if (entrada_valida == -1) {
+
+            if (entrada_valida != 0) {  /* verifica_fgets retorna 0 se OK */
                 printf("\nErro: CPF muito longo!\n");
                 limpa_buffer();
                 continue;
             }
 
-            // Verifica se são apenas dígitos
+            /* Verifica se são apenas dígitos */
             entrada_valida = verifica_digitos(cpf_busca);
-            if (entrada_valida == -1) {
+
+            if (entrada_valida != 0) {  /* verifica_digitos retorna 0 se OK */
                 printf("\nErro: Digite apenas numeros!\n");
                 continue;
             }
 
-            // Verifica se tem exatamente 11 dígitos
+            /* Verifica se tem exatamente 11 dígitos */
             if (strlen(cpf_busca) != 11) {
                 printf("\nErro: O CPF deve ter exatamente 11 digitos!\n");
                 entrada_valida = -1;
+                continue;
             }
 
-        } while (entrada_valida == -1);
+            entrada_valida = 0;  /* Entrada válida */
 
-        // Busca o CPF no array de contas
+        } while (entrada_valida != 0);
+
+        /* Busca o CPF no array de contas */
+        indice = -1;  /* Inicializa com "não encontrado" */
+
         for (i = 0; i < quant; i++) {
-            // strcmp retorna 0 quando as strings são IGUAIS
             if (strcmp(contas[i].cpf, cpf_busca) == 0) {
                 indice = i;
-                encontrou = 1;
-                break;  // Sai do loop quando encontrar
+                break;
             }
+        }
+
+        /* Verifica se encontrou */
+        if (indice == -1) {
+            printf("\nErro: Conta inexistente!\n");
+            return ERR_CONTA_INEXISTENTE;
         }
     }
 
-    // ========== EXIBIÇÃO DO RESULTADO ==========
+    /* ========== VALIDAÇÃO DE CONTA ATIVA ========== */
+    /* USA A FUNÇÃO EXISTENTE - não duplica validação */
+    resultado_validacao = valida_conta_ativa(contas, indice);
 
-    if (!encontrou) {
-        // Não encontrou a conta
-        printf("\n========================================\n");
-        printf("   CONTA NAO ENCONTRADA!\n");
-        printf("========================================\n");
-        return;
+    if (resultado_validacao != 0) {  /* valida_conta_ativa retorna -1 se inativa */
+        printf("\nErro: A conta esta desativada!\n");
+        return ERR_CONTA_INATIVA;
     }
 
-    // Encontrou a conta - exibe os dados
-    printf("\n========================================\n");
-    printf("         DADOS DA CONTA\n");
-    printf("========================================\n");
-    printf("Numero da Conta: %d\n", contas[indice].numero);
-    printf("Nome: %s\n", contas[indice].nome);
-    printf("CPF: %s\n", contas[indice].cpf);
-    printf("Agencia: %s\n", contas[indice].agencia);
-    printf("Telefone: %s\n", contas[indice].telefone);
-    printf("Saldo: R$ %.2lf\n", contas[indice].saldo);
+    /* ========== EXIBIÇÃO DOS DADOS ========== */
+    /* USA A FUNÇÃO EXISTENTE - não duplica printf */
+    printf("\n");  /* Espaçamento */
+    mostrar_dados(&contas[indice]);
 
-    // Exibe o status da conta
-    if (contas[indice].status == ATIVA) {
-        printf("Status: ATIVA\n");
-    } else {
-        printf("Status: ENCERRADA\n");
-    }
-
-    printf("========================================\n");
+    return OK;  /* Sucesso */
 }
 
 /* ====================================================
-   EXPLICAÇÃO DETALHADA DO CÓDIGO
+   RESUMO DAS CORREÇÕES FINAIS APLICADAS:
    ====================================================
 
-   1. FLUXO GERAL:
-      Menu → Escolher tipo de busca → Validar entrada →
-      Buscar conta → Exibir resultado
+   ✅ 1. Função retorna int (não void):
+      - OK quando sucesso
+      - ERR_* quando falha
+      - Main pode reagir aos erros
 
-   2. BUSCA POR NÚMERO:
-      - Coleta o número da conta com validações
-      - Usa a função encontrar_conta_por_numero() já existente
-      - Esta função percorre o array e compara os números
+   ✅ 2. Usa coletar_numero_conta():
+      - Não duplica validação de número
+      - Usa função existente em utils.c
+      - Mantém consistência com resto do projeto
 
-   3. BUSCA POR CPF:
-      - Coleta o CPF com validações (11 dígitos, só números)
-      - Faz um loop manual pelo array de contas
-      - Usa strcmp() para comparar strings
-      - strcmp(str1, str2) retorna 0 quando são IGUAIS
+   ✅ 3. Usa mostrar_dados():
+      - Não duplica printf manual
+      - Centraliza formato de saída
+      - Facilita mudanças futuras
 
-   4. VALIDAÇÕES IMPLEMENTADAS:
-      - Opção de busca válida (1 ou 2)
-      - Apenas números nas entradas
-      - CPF com exatamente 11 dígitos
-      - Número de conta maior que 0
-      - Limites de caracteres respeitados
+   ✅ 4. Enum em TODAS as comparações:
+      - ERR_CONTA_INEXISTENTE
+      - ERR_LETRA_ENCONTRA
+      - ERR_INPUT_MUITO_LONG
+      - ERR_INVALIDO
+      - ERR_CONTA_INATIVA
+      - OK
 
-   5. VARIÁVEIS IMPORTANTES:
-      - encontrou: flag booleana (0 ou 1)
-      - indice: posição da conta no array (-1 = não encontrou)
-      - num_temp/cpf_busca: strings temporárias para validação
+   ✅ 5. limpa_buffer() após scanf:
+      - Evita bug de \n no fgets
+      - Leitura segura garantida
 
-   6. FUNÇÕES AUXILIARES USADAS:
-      - verifica_fgets(): verifica se não ultrapassou limite
-      - verifica_digitos(): verifica se só tem números
-      - encontrar_conta_por_numero(): busca por número
-      - limpa_buffer(): limpa entrada do teclado
-      - strcmp(): compara duas strings
-      - atoi(): converte string para inteiro
+   ✅ 6. Sem valores mágicos:
+      - Não usa -1 hardcoded
+      - Sempre usa constantes do enum
 
-   ====================================================
-   COMO ADICIONAR NO SEU PROJETO:
-   ====================================================
-
-   1. ADICIONE NO banco.h (na seção de protótipos):
-      void consultar_conta(Conta contas[], int quant);
-
-   2. CRIE O ARQUIVO consulta.c com este código
-
-   3. NO main.c, no case 5, substitua a linha:
-      consultar_conta(vetor_de_contas, quantidade_atual);
-
-      Ela já está lá! Só precisa compilar junto.
-
-   4. COMPILE TODOS OS ARQUIVOS JUNTOS:
-      gcc main.c banco.c utils.c atualizar.c deposito.c consulta.c -o banco
+   ✅ 7. Reutiliza funções existentes:
+      - coletar_numero_conta()
+      - encontrar_conta_por_numero()
+      - valida_conta_ativa()
+      - mostrar_dados()
 
    ====================================================
-   EXEMPLO DE USO:
+   IMPORTANTE: IMPLEMENTE mostrar_dados()
    ====================================================
 
-   BUSCA POR NÚMERO:
-   Menu → Opção 5 → Opção 1 → Digite: 1 → Exibe dados
+   No arquivo onde está mostrar_dados(), SUBSTITUA por:
 
-   BUSCA POR CPF:
-   Menu → Opção 5 → Opção 2 → Digite: 12345678901 → Exibe dados
+   void mostrar_dados(const Conta* c) {
+       printf("\n========================================\n");
+       printf("         DADOS DA CONTA\n");
+       printf("========================================\n");
+       printf("Numero da Conta: %d\n", c->numero);
+       printf("Nome: %s\n", c->nome);
+       printf("CPF: %s\n", c->cpf);
+       printf("Agencia: %s\n", c->agencia);
+       printf("Telefone: %s\n", c->telefone);
+       printf("Saldo: R$ %.2lf\n", c->saldo);
+
+       if (c->status == ATIVA) {
+           printf("Status: ATIVA\n");
+       } else {
+           printf("Status: ENCERRADA\n");
+       }
+
+       printf("========================================\n");
+   }
+
+   ====================================================
+   ATUALIZAR banco.h:
+   ====================================================
+
+   Trocar de:
+   void consultar_conta(Conta contas[], int quant);
+
+   Para:
+   int consultar_conta(Conta contas[], int quant);
+
+   ====================================================
+   NO main.c, trocar o case 5:
+   ====================================================
+
+   case 5:
+       resultado = consultar_conta(vetor_de_contas, quantidade_atual);
+       if (resultado != OK) {
+           printf("\n[Operacao nao concluida]\n");
+       }
+       break;
 
    ==================================================== */

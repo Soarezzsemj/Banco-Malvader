@@ -169,7 +169,10 @@ int main() {
                 break;
 
             case 5:
-                consultar_conta(vetor_de_contas, quantidade_atual);
+                resultado = consultar_conta(vetor_de_contas, quantidade_atual);
+                if (resultado != OK) {
+                    printf("\n[Operacao nao concluida]\n");
+                }
                 break;
 
             case 6: {
