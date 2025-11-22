@@ -33,6 +33,8 @@ int main() {
 
 
             case 1: {
+                limpa_tela();
+
                 if (quantidade_atual >= MAX_CONTAS) {
                     printf("\nErro: Limite de contas atingido!\n");
                     break; // volta para o menu
@@ -50,7 +52,7 @@ int main() {
                                                  telefone_temp); //verifica se o CPF ja existe em outra conta
 
                 if (resultado_da_conta == OK) {
-                    printf("\nConta criada com sucesso!\n");
+                    printf("\nConta criada com sucesso! Numero da conta: %d\n", num_proxima_conta);
                     num_proxima_conta++;
                 }
                 else { //erro se o cpf da conta for duplicado
@@ -62,23 +64,27 @@ int main() {
 
 
             case 2: {
-                int indice, num_conta, verifica_sucesso;
+                int idx_conta, num_conta, verifica_sucesso;
                 double valor_deposito;
+
+                limpa_tela();
+
+                printf("\n --- Fazer deposito --- \n");
 
                 num_conta = coletar_numero_conta();
 
                 /* a funcao encontrar_conta_por_numero pega o numero da conta,
                 verifica se a conta e valida, e se for retorna O INDICE DA CONTA*/
-                indice = encontrar_conta_por_numero(vetor_de_contas, num_conta, quantidade_atual);
+                idx_conta = encontrar_conta_por_numero(vetor_de_contas, num_conta, quantidade_atual);
 
-                if (indice == ERR_CONTA_INEXISTENTE) {
+                if (idx_conta == ERR_CONTA_INEXISTENTE) {
                     printf("Erro: A conta nao existe!");
                     break;
                 }
 
                 valor_deposito = coletar_info_deposito("\nInforme o valor do deposito: ");
 
-                verifica_sucesso = realizar_deposito(vetor_de_contas, indice, valor_deposito);
+                verifica_sucesso = realizar_deposito(vetor_de_contas, idx_conta, valor_deposito);
 
                 if (verifica_sucesso == ERR_VALOR_INVALIDO) {
                     printf("Erro: Informe um valor maior que 0!\n");
@@ -88,12 +94,18 @@ int main() {
                     printf("Erro: A conta informada esta desativada!\n");
                     break;
                 }
+
+                if (verifica_sucesso == OK) {
+                    printf("\nSucesso no deposito! Saldo atual: R$ %.2lf\n", vetor_de_contas[idx_conta].saldo);
+                    break;
+
+                }
+
                 else {
-                    printf("\nSucesso no deposito!");
+                    printf("\nErro inesperado: código %d\n", verifica_sucesso);
                     break;
                 }
 
-                break;
             }
 
             case 3:
@@ -108,9 +120,13 @@ int main() {
             case 5:
                 break;
 
-            case 6:
+            case 6: {
                 char TELEFONE_TEMP[TAM_TELEFONE], AGENCIA_TEMP[TAM_AGENCIA];
                 int sucesso_atualizacao, numero_conta, idx_conta;
+
+                limpa_tela();
+
+                printf("\n --- Atualizar telefone e agencia --- \n");
 
                 numero_conta = coletar_numero_conta(); //coleta os dados
 
@@ -134,9 +150,13 @@ int main() {
                     AGENCIA_TEMP, idx_conta); //atualiza os dados de fato
 
                 break;
+            }
 
             case 7: { // Listar contas
                     int filtro, sucesso_scanf, valida_listar;
+
+                    limpa_tela();
+
                     printf("\n--- Listar Contas ---\n");
                     printf("Qual filtro deseja aplicar?\n");
                     printf(" (1) Somente Encerradas\n");
@@ -173,12 +193,59 @@ int main() {
                         }
                     }
 
+                break;
+            }
+
+            case 8: {
+                int num_conta, idx_conta, verifica_sucesso;
+
+                limpa_tela();
+
+                printf("\n--- Encerrar conta ---\n");
+
+                num_conta = coletar_numero_conta();
+
+                idx_conta = encontrar_conta_por_numero(vetor_de_contas, num_conta, quantidade_atual);
+
+                if (idx_conta == ERR_CONTA_INEXISTENTE) {
+                    printf("\nErro: A conta nao existe!\n");
                     break;
                 }
 
-                default:
-                    printf("\nErro: Opcao invalida!");
+                verifica_sucesso = encerrar_conta(vetor_de_contas, idx_conta, quantidade_atual);
+
+                if (verifica_sucesso == ERR_CONTA_INEXISTENTE) {
+                    printf("\nErro: A conta nao existe!\n");
                     break;
+                }
+
+                if (verifica_sucesso == ERR_CONTA_INATIVA) {
+                    printf("\nErro: A conta ja esta desativada!\n");
+                    break;
+                }
+
+                if (verifica_sucesso == ERR_SALDO_NAO_ZERO) {
+                    printf("\nErro: Por favor, faca transferencia do saldo da sua conta antes de encerra-la!");
+                    printf("\nO saldo da conta deve ser zero antes dela ser encerrada.\n");
+                    break;
+                }
+
+                if (verifica_sucesso == OK) {
+                    printf("\nConta encerrada com sucesso!");
+                    break;
+                }
+
+                break;
+            }
+
+            case 9: {
+                printf("\nEncerrando o programa...\n");
+                return OK;
+            }
+
+            default:
+                printf("\nErro: Opcao invalida!");
+                break;
 
         }
 
