@@ -29,7 +29,8 @@ int main() {
             continue; // reinicia o loop
         }
 
-        switch (opcao) { /* chamar as funções conforme a escolha */
+        switch (opcao) {
+            /* chamar as funções conforme a escolha */
 
 
             case 1: {
@@ -86,26 +87,29 @@ int main() {
 
                 verifica_sucesso = realizar_deposito(vetor_de_contas, idx_conta, valor_deposito);
 
-                if (verifica_sucesso == ERR_VALOR_INVALIDO) {
-                    printf("Erro: Informe um valor maior que 0!\n");
-                    break;
-                }
-                if (verifica_sucesso == ERR_CONTA_INATIVA) {
-                    printf("Erro: A conta informada esta desativada!\n");
-                    break;
+                switch (verifica_sucesso) {
+
+                    case ERR_VALOR_INVALIDO: {
+                        printf("Erro: Informe um valor maior que 0!\n");
+                        break;
+                    }
+
+                    case ERR_CONTA_INEXISTENTE: {
+                        printf("Erro: A conta informada esta desativada!\n");
+                        break;
+                    }
+
+                    case OK: {
+                        printf("\nSucesso no deposito! Saldo atual: R$ %.2lf\n", vetor_de_contas[idx_conta].saldo);
+                        break;
+                    }
+
+                    default:
+                        printf("\nErro inesperado: código %d\n", verifica_sucesso);
+                        break;
                 }
 
-                if (verifica_sucesso == OK) {
-                    printf("\nSucesso no deposito! Saldo atual: R$ %.2lf\n", vetor_de_contas[idx_conta].saldo);
-                    break;
-
-                }
-
-                else {
-                    printf("\nErro inesperado: código %d\n", verifica_sucesso);
-                    break;
-                }
-
+                break;
             }
 
             case 3:
@@ -153,45 +157,45 @@ int main() {
             }
 
             case 7: { // Listar contas
-                    int filtro, sucesso_scanf, valida_listar;
+                int filtro, sucesso_scanf, valida_listar;
 
+                limpa_tela();
+
+                printf("\n--- Listar Contas ---\n");
+                printf("Qual filtro deseja aplicar?\n");
+                printf(" (1) Somente Encerradas\n");
+                printf(" (2) Somente Ativas\n");
+                printf(" (3) Todas as Contas\n");
+                printf("Escolha: ");
+                sucesso_scanf = scanf("%d", &filtro);
+
+                if (sucesso_scanf != 1) { // se for uma letra, ele ficou preso na fila, temos que limpa-lo
                     limpa_tela();
+                    printf("\nErro: Entrada invalida! Por favor informe somente numeros.\n");
+                    limpa_buffer();
+                    continue;
+                }
 
-                    printf("\n--- Listar Contas ---\n");
-                    printf("Qual filtro deseja aplicar?\n");
-                    printf(" (1) Somente Encerradas\n");
-                    printf(" (2) Somente Ativas\n");
-                    printf(" (3) Todas as Contas\n");
-                    printf("Escolha: ");
-                    sucesso_scanf = scanf("%d", &filtro);
+                limpa_buffer(); //tira /n para proximo fgets
 
-                    if (sucesso_scanf != 1) { // se for uma letra, ele ficou preso na fila, temos que limpa-lo
-                        limpa_tela();
-                        printf("\nErro: Entrada invalida! Por favor informe somente numeros.\n");
-                        limpa_buffer();
-                        continue;
+                // Verifica se o filtro é válido ANTES de chamar a função
+                if (filtro < 1 || filtro > 3) {
+                    printf("Erro: Opcao de filtro invalida!\n");
+                }
+                else {
+                    // Se o filtro for válido, chama a função
+                    valida_listar = listar_contas(vetor_de_contas, quantidade_atual, filtro);
+
+                    if (valida_listar == ERR_CONTA_INEXISTENTE) {
+                        printf("Erro: Nenhuma conta cadastrada no sistema.\n");
+                        break;
                     }
 
-                    limpa_buffer(); //tira /n para proximo fgets
-
-                    // Verifica se o filtro é válido ANTES de chamar a função
-                    if (filtro < 1 || filtro > 3) {
-                        printf("Erro: Opcao de filtro invalida!\n");
+                    if (valida_listar == ERR_NENHUMA_CONTA) {
+                        printf("Erro: Nenhuma conta encontrada para este filtro.\n");
+                        break;
                     }
-                    else {
-                        // Se o filtro for válido, chama a função
-                        valida_listar = listar_contas(vetor_de_contas, quantidade_atual, filtro);
-
-                        if (valida_listar == ERR_CONTA_INEXISTENTE) {
-                            printf("Erro: Nenhuma conta cadastrada no sistema.\n");
-                            break;
-                        }
-
-                        if (valida_listar == ERR_NENHUMA_CONTA) {
-                            printf("Erro: Nenhuma conta encontrada para este filtro.\n");
-                            break;
-                        }
-                    }
+                }
 
                 break;
             }
@@ -204,7 +208,6 @@ int main() {
                 printf("\n--- Encerrar conta ---\n");
 
                 num_conta = coletar_numero_conta();
-
                 idx_conta = encontrar_conta_por_numero(vetor_de_contas, num_conta, quantidade_atual);
 
                 if (idx_conta == ERR_CONTA_INEXISTENTE) {
@@ -214,25 +217,27 @@ int main() {
 
                 verifica_sucesso = encerrar_conta(vetor_de_contas, idx_conta, quantidade_atual);
 
-                if (verifica_sucesso == ERR_CONTA_INEXISTENTE) {
-                    printf("\nErro: A conta nao existe!\n");
-                    break;
-                }
+                switch (verifica_sucesso) {
+                    case ERR_CONTA_INEXISTENTE:
+                        printf("\nErro: A conta nao existe!\n");
+                        break;
 
-                if (verifica_sucesso == ERR_CONTA_INATIVA) {
-                    printf("\nErro: A conta ja esta desativada!\n");
-                    break;
-                }
+                    case ERR_CONTA_INATIVA:
+                        printf("\nErro: A conta ja esta desativada!\n");
+                        break;
 
-                if (verifica_sucesso == ERR_SALDO_NAO_ZERO) {
-                    printf("\nErro: Por favor, faca transferencia do saldo da sua conta antes de encerra-la!");
-                    printf("\nO saldo da conta deve ser zero antes dela ser encerrada.\n");
-                    break;
-                }
+                    case ERR_SALDO_NAO_ZERO:
+                        printf("\nErro: Por favor, faca transferencia do saldo da sua conta antes de encerra-la!");
+                        printf("\nO saldo da conta deve ser zero antes dela ser encerrada.\n");
+                        break;
 
-                if (verifica_sucesso == OK) {
-                    printf("\nConta encerrada com sucesso!");
-                    break;
+                    case OK:
+                        printf("\nConta encerrada com sucesso!");
+                        break;
+
+                    default:
+                        printf("\nErro inesperado: código %d\n", verifica_sucesso);
+                        break;
                 }
 
                 break;
@@ -246,11 +251,9 @@ int main() {
             default:
                 printf("\nErro: Opcao invalida!");
                 break;
-
         }
 
     } while (opcao != 9);
 
     return OK;
-
 }
