@@ -8,6 +8,8 @@ int main() {
     int opcao, sucesso_leitura, resultado_da_conta;
     int ler_int(const char *mensagem);
     double ler_double(const char *mensagem);
+    void coletar_info_saque(int *num_conta, double *valor_saque);
+    int realizar_saque(Conta contas[], int indice_conta, double valor_saque);
 
     do {
         // imprime na tela todas as opções do sistema bancário
