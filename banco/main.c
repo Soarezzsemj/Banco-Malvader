@@ -116,9 +116,17 @@ int main() {
 
                 coletar_info_saque(&num_conta_saque, &valor_saque);
 
-                indice_saque = encontrar_conta_por_numero(vetor_de_contas, num_conta_saque, quantidade_atual);
+                // Verifica se o número da conta é válido
+                if (num_conta_saque <= 0) {
+                    printf("\nErro: Numero da conta invalido!\n");
+                    break;
+                }
 
-                if (indice_saque == -1) {
+                indice_saque = encontrar_conta_por_numero(vetor_de_contas,
+                                                          num_conta_saque,
+                                                          quantidade_atual);
+
+                if (indice_saque == ERR_CONTA_INEXISTENTE) {
                     printf("\nErro: Conta inexistente!\n");
                     break;
                 }
@@ -131,16 +139,16 @@ int main() {
                         printf("\nSaque realizado com sucesso!\n");
                         break;
 
-                    case 1:  // saque parcial
+                    case SAQUE_PARCIAL:                                         
                         printf("\nAviso: Saldo insuficiente. Saque parcial realizado.\n");
                         break;
 
                     case ERR_CONTA_INATIVA:
-                        printf("\nErro: A conta está encerrada!\n");
+                        printf("\nErro: A conta esta encerrada!\n");
                         break;
 
                     case ERR_VALOR_INVALIDO:
-                        printf("\nErro: Valor do saque inválido!\n");
+                        printf("\nErro: Valor do saque invalido!\n");
                         break;
 
                     default:
@@ -150,7 +158,6 @@ int main() {
 
                 break;
 
-                break;
 
             case 4:
                 break;
