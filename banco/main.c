@@ -30,8 +30,6 @@ int main() {
         }
 
         switch (opcao) {
-            /* chamar as funções conforme a escolha */
-
 
             case 1: {
                 limpa_tela();
@@ -48,9 +46,10 @@ int main() {
 
                 coletar_dados_abertura_conta(nome_temp, cpf_temp, agencia_temp, telefone_temp); // preenche os dados
 
-                resultado_da_conta = abrir_conta(vetor_de_contas, &quantidade_atual, num_proxima_conta, nome_temp,
-                                                 cpf_temp, agencia_temp,
-                                                 telefone_temp); //verifica se o CPF ja existe em outra conta
+                resultado_da_conta = abrir_conta(
+                    vetor_de_contas, &quantidade_atual, num_proxima_conta,
+                    nome_temp, cpf_temp, agencia_temp, telefone_temp
+                ); //verifica se o CPF ja existe em outra conta
 
                 if (resultado_da_conta == OK) {
                     printf("\nConta criada com sucesso! Numero da conta: %d\n", num_proxima_conta);
@@ -63,7 +62,6 @@ int main() {
                 break;
             }
 
-
             case 2: {
                 int idx_conta, num_conta, verifica_sucesso;
                 double valor_deposito;
@@ -74,9 +72,9 @@ int main() {
 
                 num_conta = coletar_numero_conta();
 
-                /* a funcao encontrar_conta_por_numero pega o numero da conta,
-                verifica se a conta e valida, e se for retorna O INDICE DA CONTA*/
-                idx_conta = encontrar_conta_por_numero(vetor_de_contas, num_conta, quantidade_atual);
+                idx_conta = encontrar_conta_por_numero(
+                    vetor_de_contas, num_conta, quantidade_atual
+                ); // pega O INDICE DA CONTA
 
                 if (idx_conta == ERR_CONTA_INEXISTENTE) {
                     printf("Erro: A conta nao existe!");
@@ -85,7 +83,9 @@ int main() {
 
                 valor_deposito = coletar_info_deposito("\nInforme o valor do deposito: ");
 
-                verifica_sucesso = realizar_deposito(vetor_de_contas, idx_conta, valor_deposito);
+                verifica_sucesso = realizar_deposito(
+                    vetor_de_contas, idx_conta, valor_deposito
+                );
 
                 switch (verifica_sucesso) {
 
@@ -100,7 +100,8 @@ int main() {
                     }
 
                     case OK: {
-                        printf("\nSucesso no deposito! Saldo atual: R$ %.2lf\n", vetor_de_contas[idx_conta].saldo);
+                        printf("\nSucesso no deposito! Saldo atual: R$ %.2lf\n",
+                               vetor_de_contas[idx_conta].saldo);
                         break;
                     }
 
@@ -115,7 +116,6 @@ int main() {
             case 3:
                 printf("Voce escolheu sacar seu saldo.");
                 // chamada aqui
-
                 break;
 
             case 4:
@@ -132,31 +132,34 @@ int main() {
 
                 printf("\n --- Atualizar telefone e agencia --- \n");
 
-                numero_conta = coletar_numero_conta(); //coleta os dados
+                numero_conta = coletar_numero_conta(); // coleta os dados
 
-                idx_conta = encontrar_conta_por_numero(vetor_de_contas, numero_conta, quantidade_atual); //ve se a conta existe
+                idx_conta = encontrar_conta_por_numero(
+                    vetor_de_contas, numero_conta, quantidade_atual
+                );
 
                 if (idx_conta == ERR_CONTA_INEXISTENTE) {
                     printf("\nErro: A conta nao existe!");
                     break;
                 }
 
-                sucesso_atualizacao = valida_conta_ativa(vetor_de_contas, idx_conta); //ve se a conta esta ativa
+                sucesso_atualizacao = valida_conta_ativa(vetor_de_contas, idx_conta);
 
                 if (sucesso_atualizacao == ERR_CONTA_INATIVA) {
                     printf("\nErro: A conta esta desativada!");
                     break;
                 }
 
-                coletar_novos_dados_tel_agencia(TELEFONE_TEMP, AGENCIA_TEMP); //pega os dados novos
+                coletar_novos_dados_tel_agencia(TELEFONE_TEMP, AGENCIA_TEMP);
 
-                atualizar_dados_tel_agencia(vetor_de_contas, TELEFONE_TEMP,
-                    AGENCIA_TEMP, idx_conta); //atualiza os dados de fato
+                atualizar_dados_tel_agencia(
+                    vetor_de_contas, TELEFONE_TEMP, AGENCIA_TEMP, idx_conta
+                );
 
                 break;
             }
 
-            case 7: { // Listar contas
+            case 7: {
                 int filtro, sucesso_scanf, valida_listar;
 
                 limpa_tela();
@@ -167,24 +170,25 @@ int main() {
                 printf(" (2) Somente Ativas\n");
                 printf(" (3) Todas as Contas\n");
                 printf("Escolha: ");
+
                 sucesso_scanf = scanf("%d", &filtro);
 
-                if (sucesso_scanf != 1) { // se for uma letra, ele ficou preso na fila, temos que limpa-lo
+                if (sucesso_scanf != 1) {
                     limpa_tela();
                     printf("\nErro: Entrada invalida! Por favor informe somente numeros.\n");
                     limpa_buffer();
                     continue;
                 }
 
-                limpa_buffer(); //tira /n para proximo fgets
+                limpa_buffer();
 
-                // Verifica se o filtro é válido ANTES de chamar a função
                 if (filtro < 1 || filtro > 3) {
                     printf("Erro: Opcao de filtro invalida!\n");
                 }
                 else {
-                    // Se o filtro for válido, chama a função
-                    valida_listar = listar_contas(vetor_de_contas, quantidade_atual, filtro);
+                    valida_listar = listar_contas(
+                        vetor_de_contas, quantidade_atual, filtro
+                    );
 
                     if (valida_listar == ERR_CONTA_INEXISTENTE) {
                         printf("Erro: Nenhuma conta cadastrada no sistema.\n");
@@ -208,16 +212,22 @@ int main() {
                 printf("\n--- Encerrar conta ---\n");
 
                 num_conta = coletar_numero_conta();
-                idx_conta = encontrar_conta_por_numero(vetor_de_contas, num_conta, quantidade_atual);
+
+                idx_conta = encontrar_conta_por_numero(
+                    vetor_de_contas, num_conta, quantidade_atual
+                );
 
                 if (idx_conta == ERR_CONTA_INEXISTENTE) {
                     printf("\nErro: A conta nao existe!\n");
                     break;
                 }
 
-                verifica_sucesso = encerrar_conta(vetor_de_contas, idx_conta, quantidade_atual);
+                verifica_sucesso = encerrar_conta(
+                    vetor_de_contas, idx_conta, quantidade_atual
+                );
 
                 switch (verifica_sucesso) {
+
                     case ERR_CONTA_INEXISTENTE:
                         printf("\nErro: A conta nao existe!\n");
                         break;
