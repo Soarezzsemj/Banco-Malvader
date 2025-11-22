@@ -22,7 +22,7 @@ double coletar_info_deposito (const char *mensagem) {
 
         opcao_valida = verifica_digitos_saldo(valor);
 
-        if (opcao_valida == ERR_LETRA_ENCONTRA) {
+        if (opcao_valida == ERR_LETRA_EM_NUMERO) {
             printf("Informe somente numeros!\n");
             continue;
         }

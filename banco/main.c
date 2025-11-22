@@ -6,8 +6,6 @@ int main() {
     int quantidade_atual = 0; // numero de contas criadas
     int num_proxima_conta = 1; // vai ser incrementado depois apos a criação de uma nova conta
     int opcao, sucesso_leitura, resultado_da_conta;
-    int ler_int(const char *mensagem);
-    double ler_double(const char *mensagem);
 
     do {
         // imprime na tela todas as opções do sistema bancário
@@ -104,33 +102,13 @@ int main() {
 
                 break;
 
-
-            case 4: { // Transferir
-                int num_origem = ler_int("Informe o numero da conta de origem: ");
-                int num_destino = ler_int("Informe o numero da conta de destino: ");
-                double valor_transferencia = ler_double("Informe o valor da transferencia: ");
-
-                int resultado = realizar_transferencia(
-                        vetor_de_contas,
-                        quantidade_atual,
-                        num_origem,
-                        num_destino,
-                        valor_transferencia
-                );
-
-                if (resultado == OK) {
-                    printf("\nTransferencia concluida com sucesso!\n");
-                } else {
-                    printf("\nErro na transferencia! Verifique os dados e tente novamente.\n");
-                }
-
-                break;
-            }
-
-                case 5:
+            case 4:
                 break;
 
-                case 6:
+            case 5:
+                break;
+
+            case 6:
                 char TELEFONE_TEMP[TAM_TELEFONE], AGENCIA_TEMP[TAM_AGENCIA];
                 int sucesso_atualizacao, numero_conta, idx_conta;
 
@@ -157,7 +135,7 @@ int main() {
 
                 break;
 
-                case 7: { // Listar contas
+            case 7: { // Listar contas
                     int filtro, sucesso_scanf, valida_listar;
                     printf("\n--- Listar Contas ---\n");
                     printf("Qual filtro deseja aplicar?\n");
@@ -199,13 +177,13 @@ int main() {
                 }
 
                 default:
-                printf("\nErro: Opcao invalida!");
-                break;
+                    printf("\nErro: Opcao invalida!");
+                    break;
 
-            }
+        }
 
-        } while (opcao != 9);
+    } while (opcao != 9);
 
-        return OK;
+    return OK;
 
-    }
+}

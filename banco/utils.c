@@ -82,7 +82,7 @@ int verifica_digitos(char INFO[]) {
     for (i = 0; i < tamanho; i++) {
         if (!isdigit(INFO[i])) { /* se a posição atual da string NAO FOR um digito
                                          mande um codigo de erro */
-            return ERR_LETRA_ENCONTRA; // codigo de erro
+            return ERR_LETRA_EM_NUMERO; // codigo de erro
         }
     }
     return OK;
@@ -91,7 +91,7 @@ int verifica_digitos(char INFO[]) {
 int verifica_digitos_saldo(char SALDO[]) {
     for (int i = 0; SALDO[i] != '\0'; i++) {
         if (!isdigit(SALDO[i]) && SALDO[i] != '.') {
-            return ERR_LETRA_ENCONTRA;
+            return ERR_LETRA_EM_NUMERO;
         }
     }
     return OK;
@@ -103,7 +103,7 @@ int verifica_letras(char INFO[]) {
     for (i = 0; i < tamanho; i++) {
         if (isdigit(INFO[i])) { /* se a posição atual da string FOR um digito
                                          mande um codigo de erro */
-            return ERR_DIGIT_ENCONTRA; // codigo de erro
+            return ERR_DIGIT_EM_NOME; // codigo de erro
         }
     }
     return OK;
@@ -127,7 +127,7 @@ int coletar_numero_conta(void) { //coleta o numero de uma conta de forma segura 
 
         entrada_valida = verifica_digitos(num_conta);
 
-        if (entrada_valida == ERR_LETRA_ENCONTRA) {
+        if (entrada_valida == ERR_LETRA_EM_NUMERO) {
             printf("\nErro: Informe somente numeros!\n");
             continue; //return para dar a possibilidade do usuario criar uma conta caso nao tenha
         }
