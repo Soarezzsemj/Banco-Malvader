@@ -100,6 +100,8 @@ void mostrar_dados(const Conta* c);
 
 int verifica_digitos_saldo(char SALDO[]);
 
+int encerrar_conta(Conta contas[], int idx_conta, int quant_atual);
+
 int realizar_transferencia(Conta contas[],
                            int quant_atual,
                            int conta_origem,
