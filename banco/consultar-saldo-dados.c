@@ -8,6 +8,11 @@
 #include <string.h>
 #include "banco.h"
 
+/* Remove o '\n' deixado pelo fgets (segurança adicional) */
+static void remove_enter(char *str) {
+    str[strcspn(str, "\n")] = '\0';
+}
+
 /* ====================================================
    FUNÇÃO PRINCIPAL: consultar_conta
 
@@ -35,7 +40,7 @@ void consultar_conta(Conta contas[], int quant) {
     printf("(2) Por CPF\n");
     printf("Escolha: ");
     scanf("%d", &opcao_busca);
-    limpa_buffer();
+
 
     // ========== VALIDAÇÃO DA OPÇÃO ==========
     if (opcao_busca != 1 && opcao_busca != 2) {
@@ -81,7 +86,7 @@ void consultar_conta(Conta contas[], int quant) {
         } while (entrada_valida == -1);
 
         // Busca a conta no array
-        indice = encontrar_conta_por_numero(contas, &numero_conta, quant);
+        indice = encontrar_conta_por_numero(contas, numero_conta, quant);
 
         if (indice != -1) {
             encontrou = 1;
