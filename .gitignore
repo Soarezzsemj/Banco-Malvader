@@ -9,3 +9,4 @@
 
 # Pasta de build local do CLion
 cmake-build-debug/
+build/
