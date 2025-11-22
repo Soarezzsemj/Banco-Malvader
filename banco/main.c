@@ -109,8 +109,46 @@ int main() {
             }
 
             case 3:
-                printf("Voce escolheu sacar seu saldo.");
-                // chamada aqui
+                printf("Voce escolheu sacar seu saldo.\n");
+
+                int num_conta_saque, indice_saque;
+                double valor_saque;
+
+                coletar_info_saque(&num_conta_saque, &valor_saque);
+
+                indice_saque = encontrar_conta_por_numero(vetor_de_contas, num_conta_saque, quantidade_atual);
+
+                if (indice_saque == -1) {
+                    printf("\nErro: Conta inexistente!\n");
+                    break;
+                }
+
+                int resultado = realizar_saque(vetor_de_contas, indice_saque, valor_saque);
+
+                switch (resultado) {
+
+                    case OK:
+                        printf("\nSaque realizado com sucesso!\n");
+                        break;
+
+                    case 1:  // saque parcial
+                        printf("\nAviso: Saldo insuficiente. Saque parcial realizado.\n");
+                        break;
+
+                    case ERR_CONTA_INATIVA:
+                        printf("\nErro: A conta está encerrada!\n");
+                        break;
+
+                    case ERR_VALOR_INVALIDO:
+                        printf("\nErro: Valor do saque inválido!\n");
+                        break;
+
+                    default:
+                        printf("\nErro desconhecido ao realizar saque.\n");
+                        break;
+                }
+
+                break;
 
                 break;
 
