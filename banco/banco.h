@@ -16,6 +16,7 @@
 #define ATIVA 1
 #define ENCERRADA 0
 #define VALOR_MAX_DEPOSITO (100000000.0) //valor maximo para um deposito, transferencia, saque: 100 milhoes
+#define VALOR_MAX_SAQUE (100000000.0) //valor maximo para um deposito, transferencia, saque: 100 milhoes
 
 // 0 = sucesso, <0 = códigos de erro. parenteses pq se nao compilador reclama
 
@@ -28,18 +29,20 @@ typedef enum {
     ERR_CONTA_INEXISTENTE = -1, // conta não encontrada
     ERR_CONTA_INATIVA     = -2, // conta existe mas está encerrada
     ERR_VALOR_INVALIDO    = -3, // valor <= 0 ou fora do limite
-    ERR_DIGIT_ENCONTRA    = -4, // dígito encontrado onde não deveria (ex: em nome)
+    ERR_DIGIT_EM_NOME     = -4, // dígito encontrado onde não deveria (ex: em nome)
     ERR_CPF_DUPLICADO     = -5, // ao criar conta, CPF já cadastrado em conta ativa
     ERR_NENHUMA_CONTA     = -6, // lista vazia / nenhuma conta no sistema
+    ERR_SALDO_NAO_ZERO    = -7, //para funcao encerrar conta
+    ERR_SAQUE_PARCIAL         = -8, // saldo insuficiente; saque parcial foi realizado
 
     /*  Erros de input / validação */
-    ERR_INPUT_MUITO_LONG  = -7, // fgets ultrapassou buffer
-    ERR_PARSE_FAIL        = -8, // conversão/parse (atoi/atof) falhou
-    ERR_LETRA_ENCONTRA    = -9, // letra encontrada onde só número é permitido
+    ERR_INPUT_MUITO_LONG  = -9, // fgets ultrapassou buffer
+    ERR_PARSE_FAIL        = -10, // conversão/parse (atoi/atof) falhou
+    ERR_LETRA_EM_NUMERO   = -11, // letra encontrada onde só número é permitido
 
     /* Erros sentinela / código inútil só pro compilador parar de reclamar */
-    ERR_PARA_COMPILADOR   = -10, // usar onde a função não pode alcançar
-    ERR_INVALIDO          = -11  // genérico; usar quando nada mais encaixa
+    ERR_PARA_COMPILADOR   = -12, // usar onde a função não pode alcançar
+    ERR_INVALIDO          = -13  // genérico; usar quando nada mais encaixa
 
 } ErrorCode;
 
@@ -96,6 +99,8 @@ int listar_contas(const Conta contas[], int qtd, int filtro_status);
 void mostrar_dados(const Conta* c);
 
 int verifica_digitos_saldo(char SALDO[]);
+
+int encerrar_conta(Conta contas[], int idx_conta, int quant_atual);
 
 /* Funções dos seus amigos (eles adicionarão aqui depois) */
 // void depositar(Conta contas[], int quant);

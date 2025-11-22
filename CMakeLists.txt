@@ -17,4 +17,6 @@ add_executable(banco
         banco/listar_contas.c
         banco/mostrar_dados.c
         banco/atualizar-telefone-agencia.c
+        banco/encerrar_conta.c
+        banco/Saque.c
 )

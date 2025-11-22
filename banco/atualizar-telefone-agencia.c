@@ -20,7 +20,7 @@ void coletar_novos_dados_tel_agencia (char TEL_TEMP[], char AGENCIA_TEMP[]) {
 
             entrada_valida = verifica_digitos(TEL_TEMP);
 
-            if (entrada_valida == ERR_LETRA_ENCONTRA) {
+            if (entrada_valida == ERR_LETRA_EM_NUMERO) {
                 printf("\nErro: Informe somente numeros!");
                 continue;
             }
@@ -40,7 +40,7 @@ void coletar_novos_dados_tel_agencia (char TEL_TEMP[], char AGENCIA_TEMP[]) {
 
             entrada_valida = verifica_digitos(AGENCIA_TEMP);
 
-            if (entrada_valida == ERR_LETRA_ENCONTRA) {
+            if (entrada_valida == ERR_LETRA_EM_NUMERO) {
                 printf("\nErro: Informe somente numeros!");
                 continue;
             }

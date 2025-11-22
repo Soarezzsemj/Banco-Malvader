@@ -5,7 +5,8 @@
 #include <stdio.h> // 2. Inclui as bibliotecas que ESTAS funções usam
 #include <string.h>
 
-int abrir_conta(Conta contas[], int *quant, int num_conta, const char *nome, const char *cpf, const char *agencia, const char *telefone) {
+int abrir_conta(Conta contas[], int *quant, int num_conta, const char *nome,
+                const char *cpf,const char *agencia, const char *telefone) {
     int i;
 
     for (i = 0; i < *quant; i++) {
@@ -49,7 +50,7 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
 
         entrada_valida = verifica_letras(NOME_temp);
 
-        if (entrada_valida == ERR_DIGIT_ENCONTRA) {
+        if (entrada_valida == ERR_DIGIT_EM_NOME) {
             printf("\nErro: Informe somente letras!");
             continue;
         }
@@ -69,7 +70,7 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
 
         entrada_valida = verifica_digitos(CPF_temp);
 
-        if (entrada_valida == ERR_LETRA_ENCONTRA) {
+        if (entrada_valida == ERR_LETRA_EM_NUMERO) {
             printf("\nErro: Digite apenas numeros!\n");
             continue;
         }
@@ -94,7 +95,7 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
 
         entrada_valida = verifica_digitos(AGENCIA_temp);
 
-        if (entrada_valida == ERR_LETRA_ENCONTRA) {
+        if (entrada_valida == ERR_LETRA_EM_NUMERO) {
             printf("\nErro: Digite apenas numeros!\n");
             continue;
         }
@@ -113,7 +114,7 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
 
         entrada_valida = verifica_digitos(TELEFONE_temp);
 
-        if (entrada_valida == ERR_LETRA_ENCONTRA) {
+        if (entrada_valida == ERR_LETRA_EM_NUMERO) {
             printf("\nErro: Digite apenas numeros!\n");
             continue;
         }
