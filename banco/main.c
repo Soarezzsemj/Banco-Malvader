@@ -139,7 +139,7 @@ int main() {
                         printf("\nSaque realizado com sucesso!\n");
                         break;
 
-                    case SAQUE_PARCIAL:                                         
+                    case SAQUE_PARCIAL:
                         printf("\nAviso: Saldo insuficiente. Saque parcial realizado.\n");
                         break;
 
