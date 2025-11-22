@@ -16,6 +16,7 @@
 #define ATIVA 1
 #define ENCERRADA 0
 #define VALOR_MAX_DEPOSITO (100000000.0) //valor maximo para um deposito, transferencia, saque: 100 milhoes
+#define VALOR_MAX_SAQUE (100000000.0) //valor maximo para um deposito, transferencia, saque: 100 milhoes
 
 // 0 = sucesso, <0 = códigos de erro. parenteses pq se nao compilador reclama
 
@@ -32,15 +33,16 @@ typedef enum {
     ERR_CPF_DUPLICADO     = -5, // ao criar conta, CPF já cadastrado em conta ativa
     ERR_NENHUMA_CONTA     = -6, // lista vazia / nenhuma conta no sistema
     ERR_SALDO_NAO_ZERO    = -7, //para funcao encerrar conta
+    SAQUE_PARCIAL         = -8, // saldo insuficiente; saque parcial foi realizado
 
     /*  Erros de input / validação */
-    ERR_INPUT_MUITO_LONG  = -8, // fgets ultrapassou buffer
-    ERR_PARSE_FAIL        = -9, // conversão/parse (atoi/atof) falhou
-    ERR_LETRA_EM_NUMERO   = -10, // letra encontrada onde só número é permitido
+    ERR_INPUT_MUITO_LONG  = -9, // fgets ultrapassou buffer
+    ERR_PARSE_FAIL        = -10, // conversão/parse (atoi/atof) falhou
+    ERR_LETRA_EM_NUMERO   = -11, // letra encontrada onde só número é permitido
 
     /* Erros sentinela / código inútil só pro compilador parar de reclamar */
-    ERR_PARA_COMPILADOR   = -11, // usar onde a função não pode alcançar
-    ERR_INVALIDO          = -12  // genérico; usar quando nada mais encaixa
+    ERR_PARA_COMPILADOR   = -12, // usar onde a função não pode alcançar
+    ERR_INVALIDO          = -13  // genérico; usar quando nada mais encaixa
 
 } ErrorCode;
 
