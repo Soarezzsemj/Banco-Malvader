@@ -1,16 +1,10 @@
-/* Implementação das funções "ajudantes" (limpeza de tela, buffer, etc.) */
+/* Implementação das funções "ajudantes" (verificacoes padroes, buffer, etc.) */
 
 #include "banco.h" // 1. Inclui o "contrato"
 #include <stdio.h> // 2. Inclui as bibliotecas que ESTAS funções usam
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-
-void limpa_tela() {
-    int i;
-    for (i = 0; i < 40; i++) // da 40 espaços
-        printf("\n");
-}
 
 void limpa_buffer() {
     int c;

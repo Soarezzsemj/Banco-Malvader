@@ -68,7 +68,6 @@ typedef struct {
 // Dizemos ao 'main.c' que essas funções existem em algum lugar...
 
 /* Funções do utils.c */
-void limpa_tela();
 
 void limpa_buffer();
 
@@ -113,8 +112,6 @@ int consultar_por_cpf(Conta contas[], int quant, const char *cpf, int *indice_ou
 
 int encerrar_conta(Conta contas[], int idx_conta, int quant_atual);
 
-
-
 int realizar_transferencia(Conta contas[],
                            int quant_atual,
                            int conta_origem,
@@ -124,5 +121,23 @@ int realizar_transferencia(Conta contas[],
 void coletar_info_saque(int *num_conta, double *valor_saque);
 
 int realizar_saque(Conta contas[], int indice_conta, double valor_saque);
+
+/* === FUNCOES UI: MELHORAM A EXPERIENCIA VISUAL DO USUARIO COM O PROGRAMA === */
+
+void limpa_tela();
+
+void ui_bloco_fim();
+
+void ui_bloco_inicio();
+
+void ui_msg_erro(const char *msg);
+
+void ui_msg_ok(const char *msg);
+
+void ui_subtitulo(const char *texto);
+
+void ui_titulo(const char *titulo);
+
+void ui_linha();
 
 #endif //FIM DA TRAVA

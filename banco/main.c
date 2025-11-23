@@ -38,10 +38,9 @@ int main() {
                     break; // volta para o menu
                 }
 
-                char nome_temp[TAM_NOME];
-                char cpf_temp[TAM_CPF];
-                char agencia_temp[TAM_AGENCIA];
-                char telefone_temp[TAM_TELEFONE];
+                char nome_temp[TAM_NOME], cpf_temp[TAM_CPF], agencia_temp[TAM_AGENCIA], telefone_temp[TAM_TELEFONE];
+
+                ui_titulo("ABERTURA DE CONTA");
 
                 coletar_dados_abertura_conta(nome_temp, cpf_temp, agencia_temp, telefone_temp); // preenche os dados
 
@@ -65,9 +64,7 @@ int main() {
                 int idx_conta, num_conta, verifica_sucesso;
                 double valor_deposito;
 
-                limpa_tela();
-
-                printf("\n --- Fazer deposito --- \n");
+                ui_titulo("FAZER DEPOSITO");
 
                 num_conta = coletar_numero_conta();
 
