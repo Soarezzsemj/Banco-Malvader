@@ -11,7 +11,7 @@ int encerrar_conta(Conta contas[], int idx_conta, int quant_atual) {
     if (valida_conta_ativa(contas, idx_conta) == ERR_CONTA_INATIVA) {
         return ERR_CONTA_INATIVA;
     }
-    const double EPS = 1e-9; //para comparacao
+
     if (fabs(contas[idx_conta].saldo) > EPS) { // se o saldo nao for (praticamente) zero, usado para precisao em doubles
         return ERR_SALDO_NAO_ZERO;
     }

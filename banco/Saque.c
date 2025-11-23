@@ -27,7 +27,6 @@ int realizar_saque(Conta contas[], int indice_conta, double valor_saque) {
     double saldo_atual = contas[indice_conta].saldo;
 
     // --- Saque parcial --- //
-    const double EPS = 1e-9; //EPS = 0.0000000001
     if (saldo_atual < valor_saque - EPS) { //evitar problemas com precisao no double
         return ERR_SALDO_INSUFICIENTE;
     }

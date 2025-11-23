@@ -15,11 +15,16 @@
 #define TAM_TELEFONE 20
 #define ATIVA 1
 #define ENCERRADA 0
-#define VALOR_MAX_DEPOSITO (100000000.0) //valor maximo para um deposito, transferencia, saque: 100 milhoes
-#define VALOR_MAX_SAQUE (100000000.0) //valor maximo para um deposito, transferencia, saque: 100 milhoes
+
+//valor maximo para um deposito, transferencia, saque: 100 milhoes
+#define VALOR_MAX_DEPOSITO (100000000.0)
+#define VALOR_MAX_SAQUE (100000000.0)
+#define VALOR_MAX_TRANSFERENCIA (100000000.0)
+
+//usado na funcao encerrar_conta e saque
+#define EPS 1e-9 //EPS = 0.0000000001
 
 // 0 = sucesso, <0 = códigos de erro. parenteses pq se nao compilador reclama
-
 typedef enum {
 
     /* Sucesso */
