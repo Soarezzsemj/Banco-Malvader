@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-
 #include "banco.h"
 
 void coletar_novos_dados_tel_agencia (char tel_temp[], char agencia_temp[]) {

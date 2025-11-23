@@ -13,7 +13,7 @@ int main() {
 
         sucesso_leitura = scanf("%d", &opcao); // se ler um numero ele retorna 1
 
-        if (sucesso_leitura != 1) { // se for uma letra
+        if (sucesso_leitura != 1) { // se for uma letra, ele ficou preso na fila, temos que limpa-lo
             limpa_tela();
             ui_msg_erro("Entrada invalida! Por favor informe somente numeros.");
             limpa_buffer();
@@ -23,14 +23,13 @@ int main() {
 
         limpa_buffer(); // limpar o buffer para o \n nao ir para o proximo fgets
 
-        if (opcao < 1 || opcao > 9) { // opção inválida
+        if (opcao < 1 || opcao > 9) { // se nao for uma das opcoes pede ao usuario para tentar novamente
             limpa_tela();
             ui_msg_erro("Opcao invalida! Digite uma opcao valida por favor.");
-            continue;
+            continue; // reinicia o loop
         }
 
         switch (opcao) {
-
             /* =============================================================
              *                       1. ABRIR CONTA
              * ============================================================= */
@@ -39,27 +38,30 @@ int main() {
 
                 if (quantidade_atual >= MAX_CONTAS) {
                     ui_msg_erro("Limite de contas atingido!");
-                    break;
+                    break; // volta para o menu
                 }
 
-                char nome_temp[TAM_NOME], cpf_temp[TAM_CPF],
-                     agencia_temp[TAM_AGENCIA], telefone_temp[TAM_TELEFONE];
+                char nome_temp[TAM_NOME];
+                char cpf_temp[TAM_CPF];
+                char agencia_temp[TAM_AGENCIA];
+                char telefone_temp[TAM_TELEFONE];
 
                 ui_titulo("ABERTURA DE CONTA");
 
-                coletar_dados_abertura_conta(nome_temp, cpf_temp, agencia_temp, telefone_temp);
+                coletar_dados_abertura_conta(nome_temp, cpf_temp, agencia_temp, telefone_temp); // preenche os dados
 
                 resultado_da_conta = abrir_conta(
                     vetor_de_contas, &quantidade_atual, num_proxima_conta,
                     nome_temp, cpf_temp, agencia_temp, telefone_temp
-                );
+                ); //verifica se o CPF ja existe em outra conta
 
                 if (resultado_da_conta == OK) {
                     char msg[80];
                     sprintf(msg, "Conta criada com sucesso! Numero da conta: %d", num_proxima_conta);
                     ui_msg_ok(msg);
                     num_proxima_conta++;
-                } else {
+                }
+                else { //erro se o cpf da conta for duplicado
                     ui_msg_erro("O CPF cadastrado ja existe em uma conta ativa.");
                 }
 
@@ -74,9 +76,10 @@ int main() {
                 ui_titulo("FAZER DEPOSITO");
 
                 int num_conta = coletar_numero_conta();
+
                 int idx_conta = encontrar_conta_por_numero(
                     vetor_de_contas, num_conta, quantidade_atual
-                );
+                ); // pega O INDICE DA CONTA
 
                 if (idx_conta == ERR_CONTA_INEXISTENTE) {
                     ui_msg_erro("A conta nao existe!");
@@ -84,16 +87,22 @@ int main() {
                 }
 
                 double valor_deposito = coletar_info_deposito("Informe o valor do deposito: ");
-                int r = realizar_deposito(vetor_de_contas, idx_conta, valor_deposito);
 
-                switch (r) {
-                    case ERR_VALOR_INVALIDO:
+                int verifica_sucesso = realizar_deposito(
+                    vetor_de_contas, idx_conta, valor_deposito
+                );
+
+                switch (verifica_sucesso) {
+
+                    case ERR_VALOR_INVALIDO: {
                         ui_msg_erro("Informe um valor maior que 0!");
                         break;
+                    }
 
-                    case ERR_CONTA_INATIVA:
+                    case ERR_CONTA_INATIVA: {
                         ui_msg_erro("A conta informada esta desativada!");
                         break;
+                    }
 
                     case OK: {
                         char msg[80];
@@ -123,18 +132,25 @@ int main() {
 
                 coletar_info_saque(&num_conta_saque, &valor_saque);
 
-                indice_saque = encontrar_conta_por_numero(
-                    vetor_de_contas, num_conta_saque, quantidade_atual
-                );
+                // Verifica se o número da conta é válido
+                if (num_conta_saque <= 0) {
+                    ui_msg_erro("Numero da conta invalido!");
+                    break;
+                }
+
+                indice_saque = encontrar_conta_por_numero(vetor_de_contas,
+                                                          num_conta_saque,
+                                                          quantidade_atual);
 
                 if (indice_saque == ERR_CONTA_INEXISTENTE) {
                     ui_msg_erro("Conta inexistente!");
                     break;
                 }
 
-                int r = realizar_saque(vetor_de_contas, indice_saque, valor_saque);
+                int resultado = realizar_saque(vetor_de_contas, indice_saque, valor_saque);
 
-                switch (r) {
+                switch (resultado) {
+
                     case OK:
                         ui_msg_ok("Saque realizado com sucesso!");
                         break;
@@ -148,7 +164,7 @@ int main() {
                         break;
 
                     case ERR_VALOR_INVALIDO:
-                        ui_msg_erro("Valor de saque invalido!");
+                        ui_msg_erro("Valor do saque invalido!");
                         break;
 
                     default:
@@ -170,28 +186,31 @@ int main() {
                 int num_origem = coletar_numero_conta();
                 printf("Numero da conta de destino:\n");
                 int num_destino = coletar_numero_conta();
-                double valor = coletar_info_deposito("Informe o valor da transferencia: ");
+                double valor_transferencia = coletar_info_deposito("Informe o valor da transferencia: ");
 
-                int r = realizar_transferencia(
-                    vetor_de_contas, quantidade_atual,
-                    num_origem, num_destino, valor
+                int resultado = realizar_transferencia(
+                    vetor_de_contas,
+                    quantidade_atual,
+                    num_origem,
+                    num_destino,
+                    valor_transferencia
                 );
 
-                switch (r) {
+                switch (resultado) {
                     case OK:
                         ui_msg_ok("Transferencia concluida com sucesso!");
                         break;
 
                     case ERR_VALOR_INVALIDO:
-                        ui_msg_erro("Valor invalido! Deve ser maior que zero.");
+                        ui_msg_erro("Valor invalido! Deve ser maior que zero e menor que o limite.");
                         break;
 
                     case ERR_CONTA_INEXISTENTE:
-                        ui_msg_erro("Conta inexistente!");
+                        ui_msg_erro("Conta inexistente! Verifique os numeros das contas.");
                         break;
 
                     case ERR_CONTA_INATIVA:
-                        ui_msg_erro("Conta inativa!");
+                        ui_msg_erro("Conta inativa! A operacao nao pode ser realizada.");
                         break;
 
                     case ERR_SALDO_INSUFICIENTE:
@@ -213,26 +232,25 @@ int main() {
                 limpa_tela();
                 ui_titulo("CONSULTAR CONTA");
 
-                int modo, indice = ERR_INVALIDO;
+                int tipo, numero, r, indice;
                 char cpf[TAM_CPF];
-                int numero, r;
 
                 printf("(1) Consultar por numero da conta\n");
                 printf("(2) Consultar por CPF\n");
                 printf("Escolha: ");
 
-                if (scanf("%d", &modo) != 1) {
+                if (scanf("%d", &tipo) != 1) {
                     limpa_buffer();
                     ui_msg_erro("Entrada invalida.");
                     break;
                 }
                 limpa_buffer();
 
-                if (modo == 1) {
+                if (tipo == 1) {
                     numero = coletar_numero_conta();
                     r = consultar_por_numero(vetor_de_contas, quantidade_atual, numero, &indice);
                 }
-                else if (modo == 2) {
+                else if (tipo == 2) {
                     r = coletar_cpf(cpf);
                     if (r != OK) {
                         ui_msg_erro("CPF invalido.");
@@ -262,7 +280,7 @@ int main() {
                         ui_msg_erro("Conta existe, mas esta inativa.");
                         break;
 
-                    default:
+                    case ERR_INVALIDO:
                         ui_msg_erro("Entrada invalida.");
                         break;
                 }
@@ -277,23 +295,34 @@ int main() {
                 limpa_tela();
                 ui_titulo("ATUALIZAR TELEFONE / AGENCIA");
 
-                char telefone_temp[TAM_TELEFONE], agencia_temp[TAM_AGENCIA];
-                int numero_conta = coletar_numero_conta();
-                int idx = encontrar_conta_por_numero(vetor_de_contas, numero_conta, quantidade_atual);
+                char TELEFONE_TEMP[TAM_TELEFONE], AGENCIA_TEMP[TAM_AGENCIA];
+                int sucesso_atualizacao, numero_conta, idx_conta;
 
-                if (idx == ERR_CONTA_INEXISTENTE) {
+                printf("\n --- Atualizar telefone e agencia --- \n");
+
+                numero_conta = coletar_numero_conta(); // coleta os dados
+
+                idx_conta = encontrar_conta_por_numero(
+                    vetor_de_contas, numero_conta, quantidade_atual
+                );
+
+                if (idx_conta == ERR_CONTA_INEXISTENTE) {
                     ui_msg_erro("A conta nao existe!");
                     break;
                 }
 
-                int r = valida_conta_ativa(vetor_de_contas, idx);
-                if (r == ERR_CONTA_INATIVA) {
+                sucesso_atualizacao = valida_conta_ativa(vetor_de_contas, idx_conta);
+
+                if (sucesso_atualizacao == ERR_CONTA_INATIVA) {
                     ui_msg_erro("A conta esta desativada!");
                     break;
                 }
 
-                coletar_novos_dados_tel_agencia(telefone_temp, agencia_temp);
-                atualizar_dados_tel_agencia(vetor_de_contas, telefone_temp, agencia_temp, idx);
+                coletar_novos_dados_tel_agencia(TELEFONE_TEMP, AGENCIA_TEMP);
+
+                atualizar_dados_tel_agencia(
+                    vetor_de_contas, TELEFONE_TEMP, AGENCIA_TEMP, idx_conta
+                );
 
                 ui_msg_ok("Dados atualizados com sucesso!");
                 break;
@@ -306,30 +335,43 @@ int main() {
                 limpa_tela();
                 ui_titulo("LISTAR CONTAS");
 
-                int filtro;
+                int filtro, sucesso_scanf, valida_listar;
+
+                printf("\n--- Listar Contas ---\n");
+                printf("Qual filtro deseja aplicar?\n");
                 printf(" (1) Somente Encerradas\n");
                 printf(" (2) Somente Ativas\n");
                 printf(" (3) Todas as Contas\n");
                 printf("Escolha: ");
 
-                if (scanf("%d", &filtro) != 1) {
+                sucesso_scanf = scanf("%d", &filtro);
+
+                if (sucesso_scanf != 1) {
+                    limpa_tela();
+                    ui_msg_erro("Entrada invalida! Por favor informe somente numeros.");
                     limpa_buffer();
-                    ui_msg_erro("Entrada invalida!");
                     continue;
                 }
+
                 limpa_buffer();
 
                 if (filtro < 1 || filtro > 3) {
                     ui_msg_erro("Opcao de filtro invalida!");
-                    break;
                 }
+                else {
+                    valida_listar = listar_contas(
+                        vetor_de_contas, quantidade_atual, filtro
+                    );
 
-                int r = listar_contas(vetor_de_contas, quantidade_atual, filtro);
+                    if (valida_listar == ERR_CONTA_INEXISTENTE) {
+                        ui_msg_erro("Nenhuma conta cadastrada no sistema.");
+                        break;
+                    }
 
-                if (r == ERR_CONTA_INEXISTENTE) {
-                    ui_msg_erro("Nenhuma conta cadastrada no sistema.");
-                } else if (r == ERR_NENHUMA_CONTA) {
-                    ui_msg_erro("Nenhuma conta encontrada para este filtro.");
+                    if (valida_listar == ERR_NENHUMA_CONTA) {
+                        ui_msg_erro("Nenhuma conta encontrada para este filtro.");
+                        break;
+                    }
                 }
 
                 break;
@@ -342,17 +384,27 @@ int main() {
                 limpa_tela();
                 ui_titulo("ENCERRAR CONTA");
 
-                int num_conta = coletar_numero_conta();
-                int idx = encontrar_conta_por_numero(vetor_de_contas, num_conta, quantidade_atual);
+                int num_conta, idx_conta, verifica_sucesso;
 
-                if (idx == ERR_CONTA_INEXISTENTE) {
+                printf("\n--- Encerrar conta ---\n");
+
+                num_conta = coletar_numero_conta();
+
+                idx_conta = encontrar_conta_por_numero(
+                    vetor_de_contas, num_conta, quantidade_atual
+                );
+
+                if (idx_conta == ERR_CONTA_INEXISTENTE) {
                     ui_msg_erro("A conta nao existe!");
                     break;
                 }
 
-                int r = encerrar_conta(vetor_de_contas, idx, quantidade_atual);
+                verifica_sucesso = encerrar_conta(
+                    vetor_de_contas, idx_conta, quantidade_atual
+                );
 
-                switch (r) {
+                switch (verifica_sucesso) {
+
                     case ERR_CONTA_INEXISTENTE:
                         ui_msg_erro("A conta nao existe!");
                         break;
@@ -385,6 +437,10 @@ int main() {
                 ui_msg_ok("Encerrando o programa...");
                 return OK;
             }
+
+            default:
+                ui_msg_erro("Opcao invalida!");
+                break;
         }
 
         /* Pequena pausa antes de mostrar o menu novamente */

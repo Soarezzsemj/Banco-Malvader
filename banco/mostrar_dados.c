@@ -4,10 +4,6 @@
 #include "banco.h"
 #include <stdio.h>
 
-/*
- * FUNÇÃO VAZIA, só fiz para o projeto compilar, QUEM ESTÁ NA
- * FUNÇÃO 5 SÓ APAGAR E JOGAR O CÓDIGO.
-*/
 void mostrar_dados(const Conta* c) {
     printf("\n========================================\n");
     printf("         DADOS DA CONTA\n");

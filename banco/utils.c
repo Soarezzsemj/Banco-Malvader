@@ -18,9 +18,7 @@ void limpa_buffer() {
                                                      nao limpar a fila toda), o buffer que causa o loop */
 }
 
-/*
- * Função para exibir o menu principal 
- */
+/* Função para exibir o menu principal */
 void exibir_menu() {
     limpa_tela();
     ui_titulo("MENU PRINCIPAL");

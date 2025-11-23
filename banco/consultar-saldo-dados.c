@@ -22,8 +22,6 @@ int consultar_por_numero(Conta contas[], int quant, int numero, int *indice_out)
 
     return OK;
 }
-
-
 //Consultar por CPF
 
 int consultar_por_cpf(Conta contas[], int quant, const char *cpf, int *indice_out) {

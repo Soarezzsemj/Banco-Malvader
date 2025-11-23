@@ -1,7 +1,3 @@
-//
-// Created by Soarezz on 16/11/2025.
-//
-
 #include <stdio.h>
 #include "banco.h"
 

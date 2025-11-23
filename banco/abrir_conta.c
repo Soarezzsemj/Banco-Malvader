@@ -1,5 +1,4 @@
-/* * Implementação das funções principais de gerenciamento de conta.
- */
+/* Implementação das funções principais de gerenciamento de conta.*/
 
 #include "banco.h" // 1. Inclui o "contrato"
 #include <stdio.h> // 2. Inclui as bibliotecas que ESTAS funções usam

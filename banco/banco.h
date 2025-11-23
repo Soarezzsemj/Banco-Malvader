@@ -1,7 +1,6 @@
-/* * O "Contrato" do Projeto.
-* Define todas as estruturas de dados e "promete"
- * quais funções existem.
- */
+/** O "Contrato" do Projeto.
+Define todas as estruturas de dados e "promete"
+quais funções existem. */
 
 #ifndef BANCO_MALVADER_BANCO_H // "Trava" para evitar importação duplicada
 #define BANCO_MALVADER_BANCO_H
@@ -53,7 +52,7 @@ typedef enum {
 
 #define ERR_PARA_COMPILADOR_D (-100.0) //mesma do normal mas usado para funcoes que retorna double
 
-// --- 2. ESTRUTURAS DE DADOS (O Molde) ---
+// --- 2. ESTRUTURAS DE DADOS ---
 typedef struct {
     int numero; /* número único da conta */
     char nome[TAM_NOME];
@@ -65,9 +64,6 @@ typedef struct {
 } Conta;
 
 // --- 3. PROTÓTIPOS DE FUNÇÃO (As "Promessas") ---
-// Dizemos ao 'main.c' que essas funções existem em algum lugar...
-
-/* Funções do utils.c */
 
 void limpa_buffer();
 

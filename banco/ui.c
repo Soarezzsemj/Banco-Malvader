@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdarg.h>
 #include "banco.h"
@@ -6,7 +5,7 @@
 
 #define UI_WIDTH 40
 
-/* limpador simples (mantém comportamento atual) */
+/* limpador simples */
 void limpa_tela() {
     for (int i = 0; i < 30; ++i) putchar('\n');
 }
@@ -30,7 +29,7 @@ void ui_titulo(const char *titulo) {
     ui_linha();
 }
 
-/* subtítulo (menor que titulo) */
+/* subtítulo */
 void ui_subtitulo(const char *texto) {
     putchar('\n');
     int len = (int)strlen(texto);
