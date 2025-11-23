@@ -211,7 +211,7 @@ int main() {
 }
 
             case 5: {
-                int tipo, numero, r, indice;
+                int opcao, numero, r, indice;
                 char cpf[TAM_CPF];
 
                 printf("\n--- CONSULTAR CONTA ---\n");
@@ -219,18 +219,18 @@ int main() {
                 printf("(2) Consultar por CPF\n");
                 printf("Escolha: ");
 
-                if (scanf("%d", &tipo) != 1) {
+                if (scanf("%d", &opcao) != 1) {
                     limpa_buffer();
                     printf("Entrada invalida.\n");
                     break;
                 }
                 limpa_buffer();
 
-                if (tipo == 1) {
+                if (opcao == 1) {
                     numero = coletar_numero_conta();
                     r = consultar_por_numero(vetor_de_contas, quantidade_atual, numero, &indice);
                 }
-                else if (tipo == 2) {
+                else if (opcao == 2) {
                     r = coletar_cpf(cpf);
                     if (r != OK) {
                         printf("CPF invalido.\n");

@@ -4,6 +4,7 @@
 
 int consultar_por_numero(Conta contas[], int quant, int numero, int *indice_out) {
     int indice;
+    *indice_out = ERR_INVALIDO; //evitando lixo de memoria no return
 
     if (quant == 0)
         return ERR_NENHUMA_CONTA;
@@ -26,6 +27,7 @@ int consultar_por_numero(Conta contas[], int quant, int numero, int *indice_out)
 
 int consultar_por_cpf(Conta contas[], int quant, const char *cpf, int *indice_out) {
     int i;
+    *indice_out = ERR_INVALIDO; //evitando lixo de memoria no return
 
     if (quant == 0)
         return ERR_NENHUMA_CONTA;
