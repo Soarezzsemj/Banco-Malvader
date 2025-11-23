@@ -106,6 +106,12 @@ int consultar_por_numero(Conta contas[], int quant, int numero, int *indice_out)
 
 int consultar_por_cpf(Conta contas[], int quant, const char *cpf, int *indice_out);
 
+void coletar_info_saque(int *num_conta, double *valor_saque);
+
+int realizar_saque(Conta contas[], int indice_conta, double valor_saque);
+
+int encerrar_conta(Conta contas[], int idx_conta, int quant_atual);
+
 
 
 /* Funções dos seus amigos (eles adicionarão aqui depois) */
