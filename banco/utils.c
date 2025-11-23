@@ -82,7 +82,7 @@ int verifica_digitos(char INFO[]) {
     for (i = 0; i < tamanho; i++) {
         if (!isdigit(INFO[i])) { /* se a posição atual da string NAO FOR um digito
                                          mande um codigo de erro */
-            return ERR_DIGIT_EM_NOME; // codigo de erro
+            return ERR_LETRA_EM_NUMERO; // codigo de erro
         }
     }
     return OK;
@@ -91,7 +91,7 @@ int verifica_digitos(char INFO[]) {
 int verifica_digitos_saldo(char SALDO[]) {
     for (int i = 0; SALDO[i] != '\0'; i++) {
         if (!isdigit(SALDO[i]) && SALDO[i] != '.') {
-            return ERR_DIGIT_EM_NOME;
+            return ERR_LETRA_EM_NUMERO;
         }
     }
     return OK;
@@ -141,34 +141,40 @@ int coletar_numero_conta(void) { //coleta o numero de uma conta de forma segura 
     return ERR_PARA_COMPILADOR; //funcao nao chega aqui, so para o compilador nao reclamar
 }
 
-/* Lê um inteiro com validação */
-int ler_int(const char *mensagem) {
-    int valor;
-    char c;
-    while (1) {
-        printf("%s", mensagem);
-        if (scanf("%d", &valor) == 1) {
-            while ((c = getchar()) != '\n' && c != EOF); // limpa buffer
-            return valor;
-        } else {
-            printf("Entrada invalida! Digite um numero.\n");
-            while ((c = getchar()) != '\n' && c != EOF);
+//Função para COLETAR CPF
+
+int coletar_cpf(char cpf_out[]) {
+    char buffer[TAM_CPF];
+    int valido;
+
+    do {
+        printf("Digite o CPF (11 digitos): ");
+
+        if (fgets(buffer, TAM_CPF, stdin) == NULL) {
+            return ERR_INVALIDO;
         }
-    }
+
+        valido = verifica_fgets(buffer);
+        if (valido != OK) {
+            limpa_buffer();
+            continue;
+        }
+
+        valido = verifica_digitos(buffer);
+        if (valido != OK) {
+            continue;
+        }
+
+        if (strlen(buffer) != 11) {
+            valido = ERR_INVALIDO;
+            continue;
+        }
+
+        valido = OK;
+
+    } while (valido != OK);
+
+    strcpy(cpf_out, buffer);
+    return OK;
 }
 
-/* Lê um double com validação */
-double ler_double(const char *mensagem) {
-    double valor;
-    char c;
-    while (1) {
-        printf("%s", mensagem);
-        if (scanf("%lf", &valor) == 1) {
-            while ((c = getchar()) != '\n' && c != EOF); // limpa buffer
-            return valor;
-        } else {
-            printf("Entrada invalida! Digite um numero.\n");
-            while ((c = getchar()) != '\n' && c != EOF);
-        }
-    }
-}
