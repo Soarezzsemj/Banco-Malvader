@@ -2,11 +2,6 @@
 #include <string.h>
 #include "banco.h"
 
-
-//Consultar por NÚMERO DA CONTA
-#include <stdio.h>
-#include "banco.h"
-
 int consultar_por_numero(Conta contas[], int quant, int numero, int *indice_out) {
     int indice;
 

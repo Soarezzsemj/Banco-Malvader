@@ -224,31 +224,6 @@ int main() {
 
                 break;
 
-
-                switch (r) {
-                case OK:
-                        mostrar_dados(&vetor_de_contas[indice]);
-                        break;
-
-                case ERR_NENHUMA_CONTA:
-                        printf("Nenhuma conta cadastrada.\n");
-                        break;
-
-                case ERR_CONTA_INEXISTENTE:
-                        printf("Conta nao encontrada.\n");
-                        break;
-
-                case ERR_CONTA_INATIVA:
-                        printf("Conta existe, mas esta inativa.\n");
-                        break;
-
-                case ERR_INVALIDO:
-                        printf("Entrada invalida.\n");
-                }
-                break;
-
-                break;
-
             case 6: {
                 char TELEFONE_TEMP[TAM_TELEFONE], AGENCIA_TEMP[TAM_AGENCIA];
                 int sucesso_atualizacao, numero_conta, idx_conta;
