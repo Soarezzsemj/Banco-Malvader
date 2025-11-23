@@ -33,17 +33,16 @@ typedef enum {
     ERR_CPF_DUPLICADO     = -5, // ao criar conta, CPF já cadastrado em conta ativa
     ERR_NENHUMA_CONTA     = -6, // lista vazia / nenhuma conta no sistema
     ERR_SALDO_NAO_ZERO    = -7, //para funcao encerrar conta
-    ERR_SAQUE_PARCIAL     = -8, // saldo insuficiente; saque parcial foi realizado
-    ERR_SALDO_INSUFICIENTE = -9, // saldo na conta insuficiente, p tranferir
+    ERR_SALDO_INSUFICIENTE = -8, // saldo na conta insuficiente, p tranferir
 
     /*  Erros de input / validação */
-    ERR_INPUT_MUITO_LONG  = -10, // fgets ultrapassou buffer
-    ERR_PARSE_FAIL        = -11, // conversão/parse (atoi/atof) falhou
-    ERR_LETRA_EM_NUMERO   = -12, // letra encontrada onde só número é permitido
+    ERR_INPUT_MUITO_LONG  = -9, // fgets ultrapassou buffer
+    ERR_PARSE_FAIL        = -10, // conversão/parse (atoi/atof) falhou
+    ERR_LETRA_EM_NUMERO   = -11, // letra encontrada onde só número é permitido
 
     /* Erros sentinela / código inútil só pro compilador parar de reclamar */
-    ERR_PARA_COMPILADOR   = -13, // usar onde a função não pode alcançar
-    ERR_INVALIDO          = -14  // genérico; usar quando nada mais encaixa
+    ERR_PARA_COMPILADOR   = -12, // usar onde a função não pode alcançar
+    ERR_INVALIDO          = -13  // genérico; usar quando nada mais encaixa
 
 } ErrorCode;
 

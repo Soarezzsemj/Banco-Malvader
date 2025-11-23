@@ -122,12 +122,6 @@ int main() {
 
                 coletar_info_saque(&num_conta_saque, &valor_saque);
 
-                // Verifica se o número da conta é válido
-                if (num_conta_saque <= 0) {
-                    printf("\nErro: Numero da conta invalido!\n");
-                    break;
-                }
-
                 indice_saque = encontrar_conta_por_numero(vetor_de_contas,
                                                           num_conta_saque,
                                                           quantidade_atual);
@@ -145,8 +139,8 @@ int main() {
                         printf("\nSaque realizado com sucesso!\n");
                         break;
 
-                    case ERR_SAQUE_PARCIAL:
-                        printf("\nAviso: Saldo insuficiente. Saque parcial realizado.\n");
+                    case ERR_SALDO_INSUFICIENTE:
+                        printf("\nErro: Saldo insuficiente para saque!\n");
                         break;
 
                     case ERR_CONTA_INATIVA:
@@ -211,7 +205,7 @@ int main() {
 }
 
             case 5: {
-                int opcao, numero, r, indice;
+                int opcao, numero, r, indice = ERR_INVALIDO;
                 char cpf[TAM_CPF];
 
                 printf("\n--- CONSULTAR CONTA ---\n");

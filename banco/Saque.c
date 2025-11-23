@@ -28,12 +28,17 @@ int realizar_saque(Conta contas[], int indice_conta, double valor_saque) {
 
     // --- Saque parcial --- //
     const double EPS = 1e-9; //EPS = 0.0000000001
-    if (saldo_atual + EPS < valor_saque) { //evitar problemas com precisao no double
-        contas[indice_conta].saldo = 0;
-        return ERR_SAQUE_PARCIAL;
+    if (saldo_atual < valor_saque - EPS) { //evitar problemas com precisao no double
+        return ERR_SALDO_INSUFICIENTE;
     }
 
     // --- Saque normal --- //
     contas[indice_conta].saldo -= valor_saque;
+
+    // Se ficou com saldo muito próximo de zero, zera (evita -0.00000001) em caso de o usuario digitar um numero menor que EPS
+    if (fabs(contas[indice_conta].saldo) < EPS) {
+        contas[indice_conta].saldo = 0.0;
+    }
+
     return OK;
 }
