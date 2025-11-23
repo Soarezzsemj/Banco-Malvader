@@ -1,11 +1,8 @@
-/* utils_ui.c
-Implementação das funções de UI: blocos, títulos, mensagens de erro/ok, etc.
-   Fácil de usar e sem dependências.
-*/
 
 #include <stdio.h>
 #include <stdarg.h>
 #include "banco.h"
+#include <string.h>
 
 #define UI_WIDTH 40
 

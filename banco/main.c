@@ -13,9 +13,9 @@ int main() {
 
         sucesso_leitura = scanf("%d", &opcao); // se ler um numero ele retorna 1
 
-        if (sucesso_leitura != 1) { // se for uma letra, ele ficou preso na fila, temos que limpa-lo
+        if (sucesso_leitura != 1) { // se for uma letra
             limpa_tela();
-            printf("\nErro: Entrada invalida! Por favor informe somente numeros.\n");
+            ui_msg_erro("Entrada invalida! Por favor informe somente numeros.");
             limpa_buffer();
             opcao = 0;
             continue;
@@ -23,212 +23,225 @@ int main() {
 
         limpa_buffer(); // limpar o buffer para o \n nao ir para o proximo fgets
 
-        if (opcao < 1 || opcao > 9) { // se nao for uma das opcoes pede ao usuario para tentar novamente
+        if (opcao < 1 || opcao > 9) { // opção inválida
             limpa_tela();
-            printf("\nErro: Opcao invalida! Digite uma opcao valida por favor.\n");
-            continue; // reinicia o loop
+            ui_msg_erro("Opcao invalida! Digite uma opcao valida por favor.");
+            continue;
         }
 
         switch (opcao) {
+
+            /* =============================================================
+             *                       1. ABRIR CONTA
+             * ============================================================= */
             case 1: {
                 limpa_tela();
 
                 if (quantidade_atual >= MAX_CONTAS) {
-                    printf("\nErro: Limite de contas atingido!\n");
-                    break; // volta para o menu
+                    ui_msg_erro("Limite de contas atingido!");
+                    break;
                 }
 
-                char nome_temp[TAM_NOME], cpf_temp[TAM_CPF], agencia_temp[TAM_AGENCIA], telefone_temp[TAM_TELEFONE];
+                char nome_temp[TAM_NOME], cpf_temp[TAM_CPF],
+                     agencia_temp[TAM_AGENCIA], telefone_temp[TAM_TELEFONE];
 
                 ui_titulo("ABERTURA DE CONTA");
 
-                coletar_dados_abertura_conta(nome_temp, cpf_temp, agencia_temp, telefone_temp); // preenche os dados
+                coletar_dados_abertura_conta(nome_temp, cpf_temp, agencia_temp, telefone_temp);
 
                 resultado_da_conta = abrir_conta(
                     vetor_de_contas, &quantidade_atual, num_proxima_conta,
                     nome_temp, cpf_temp, agencia_temp, telefone_temp
-                ); //verifica se o CPF ja existe em outra conta
+                );
 
                 if (resultado_da_conta == OK) {
-                    printf("\nConta criada com sucesso! Numero da conta: %d\n", num_proxima_conta);
+                    char msg[80];
+                    sprintf(msg, "Conta criada com sucesso! Numero da conta: %d", num_proxima_conta);
+                    ui_msg_ok(msg);
                     num_proxima_conta++;
-                }
-                else { //erro se o cpf da conta for duplicado
-                    printf("\nErro: O CPF cadastrado já existe em uma conta ativa.");
+                } else {
+                    ui_msg_erro("O CPF cadastrado ja existe em uma conta ativa.");
                 }
 
                 break;
             }
 
+            /* =============================================================
+             *                         2. DEPOSITO
+             * ============================================================= */
             case 2: {
-                int idx_conta, num_conta, verifica_sucesso;
-                double valor_deposito;
-
+                limpa_tela();
                 ui_titulo("FAZER DEPOSITO");
 
-                num_conta = coletar_numero_conta();
-
-                idx_conta = encontrar_conta_por_numero(
+                int num_conta = coletar_numero_conta();
+                int idx_conta = encontrar_conta_por_numero(
                     vetor_de_contas, num_conta, quantidade_atual
-                ); // pega O INDICE DA CONTA
+                );
 
                 if (idx_conta == ERR_CONTA_INEXISTENTE) {
-                    printf("Erro: A conta nao existe!");
+                    ui_msg_erro("A conta nao existe!");
                     break;
                 }
 
-                valor_deposito = coletar_info_deposito("\nInforme o valor do deposito: ");
+                double valor_deposito = coletar_info_deposito("Informe o valor do deposito: ");
+                int r = realizar_deposito(vetor_de_contas, idx_conta, valor_deposito);
 
-                verifica_sucesso = realizar_deposito(
-                    vetor_de_contas, idx_conta, valor_deposito
-                );
-
-                switch (verifica_sucesso) {
-
-                    case ERR_VALOR_INVALIDO: {
-                        printf("Erro: Informe um valor maior que 0!\n");
+                switch (r) {
+                    case ERR_VALOR_INVALIDO:
+                        ui_msg_erro("Informe um valor maior que 0!");
                         break;
-                    }
 
-                    case ERR_CONTA_INATIVA: {
-                        printf("Erro: A conta informada esta desativada!\n");
+                    case ERR_CONTA_INATIVA:
+                        ui_msg_erro("A conta informada esta desativada!");
                         break;
-                    }
 
                     case OK: {
-                        printf("\nSucesso no deposito! Saldo atual: R$ %.2lf\n",
-                               vetor_de_contas[idx_conta].saldo);
+                        char msg[80];
+                        sprintf(msg, "Sucesso no deposito! Saldo atual: R$ %.2lf",
+                                vetor_de_contas[idx_conta].saldo);
+                        ui_msg_ok(msg);
                         break;
                     }
 
                     default:
-                        printf("\nErro inesperado: código %d\n", verifica_sucesso);
+                        ui_msg_erro("Erro inesperado no deposito.");
                         break;
                 }
 
                 break;
             }
 
-            case 3:
-                printf("Voce escolheu sacar seu saldo.\n");
+            /* =============================================================
+             *                           3. SAQUE
+             * ============================================================= */
+            case 3: {
+                limpa_tela();
+                ui_titulo("SAQUE");
 
                 int num_conta_saque, indice_saque;
                 double valor_saque;
 
                 coletar_info_saque(&num_conta_saque, &valor_saque);
 
-                indice_saque = encontrar_conta_por_numero(vetor_de_contas,
-                                                          num_conta_saque,
-                                                          quantidade_atual);
+                indice_saque = encontrar_conta_por_numero(
+                    vetor_de_contas, num_conta_saque, quantidade_atual
+                );
 
                 if (indice_saque == ERR_CONTA_INEXISTENTE) {
-                    printf("\nErro: Conta inexistente!\n");
+                    ui_msg_erro("Conta inexistente!");
                     break;
                 }
 
-                int resultado = realizar_saque(vetor_de_contas, indice_saque, valor_saque);
+                int r = realizar_saque(vetor_de_contas, indice_saque, valor_saque);
 
-                switch (resultado) {
-
+                switch (r) {
                     case OK:
-                        printf("\nSaque realizado com sucesso!\n");
+                        ui_msg_ok("Saque realizado com sucesso!");
                         break;
 
                     case ERR_SALDO_INSUFICIENTE:
-                        printf("\nErro: Saldo insuficiente para saque!\n");
+                        ui_msg_erro("Saldo insuficiente para saque!");
                         break;
 
                     case ERR_CONTA_INATIVA:
-                        printf("\nErro: A conta esta encerrada!\n");
+                        ui_msg_erro("A conta esta encerrada!");
                         break;
 
                     case ERR_VALOR_INVALIDO:
-                        printf("\nErro: Valor do saque invalido!\n");
+                        ui_msg_erro("Valor de saque invalido!");
                         break;
 
                     default:
-                        printf("\nErro desconhecido ao realizar saque.\n");
+                        ui_msg_erro("Erro desconhecido ao realizar saque.");
                         break;
                 }
 
                 break;
+            }
 
-
+            /* =============================================================
+             *                       4. TRANSFERENCIA
+             * ============================================================= */
             case 4: {
-    // Transferir
-    printf("Informe o numero da conta de origem: ");
-    int num_origem = coletar_numero_conta();
-    printf("Informe o numero da conta de destino: ");
-    int num_destino = coletar_numero_conta();
-    double valor_transferencia = coletar_info_deposito("Informe o valor da transferencia: ");
+                limpa_tela();
+                ui_titulo("TRANSFERENCIA");
 
-    int resultado = realizar_transferencia(
-        vetor_de_contas,
-        quantidade_atual,
-        num_origem,
-        num_destino,
-        valor_transferencia
-    );
+                printf("Numero da conta de origem:\n");
+                int num_origem = coletar_numero_conta();
+                printf("Numero da conta de destino:\n");
+                int num_destino = coletar_numero_conta();
+                double valor = coletar_info_deposito("Informe o valor da transferencia: ");
 
-    switch (resultado) {
-        case OK:
-            printf("\nTransferencia concluida com sucesso!\n");
-            break;
+                int r = realizar_transferencia(
+                    vetor_de_contas, quantidade_atual,
+                    num_origem, num_destino, valor
+                );
 
-        case ERR_VALOR_INVALIDO:
-            printf("\nValor invalido! Deve ser maior que zero e menor que %.2f\n", VALOR_MAX_DEPOSITO);
-            break;
+                switch (r) {
+                    case OK:
+                        ui_msg_ok("Transferencia concluida com sucesso!");
+                        break;
 
-        case ERR_CONTA_INEXISTENTE:
-            printf("\nConta inexistente! Verifique os numeros das contas.\n");
-            break;
+                    case ERR_VALOR_INVALIDO:
+                        ui_msg_erro("Valor invalido! Deve ser maior que zero.");
+                        break;
 
-        case ERR_CONTA_INATIVA:
-            printf("\nConta inativa! A operacao nao pode ser realizada.\n");
-            break;
+                    case ERR_CONTA_INEXISTENTE:
+                        ui_msg_erro("Conta inexistente!");
+                        break;
 
-        case ERR_SALDO_INSUFICIENTE:
-            printf("\nSaldo insuficiente na conta de origem!\n");
-            break;
+                    case ERR_CONTA_INATIVA:
+                        ui_msg_erro("Conta inativa!");
+                        break;
 
-        default:
-            printf("\nErro desconhecido na transferencia.\n");
-            break;
-    }
+                    case ERR_SALDO_INSUFICIENTE:
+                        ui_msg_erro("Saldo insuficiente na conta de origem!");
+                        break;
 
-    break;
-}
+                    default:
+                        ui_msg_erro("Erro desconhecido na transferencia.");
+                        break;
+                }
 
+                break;
+            }
+
+            /* =============================================================
+             *                    5. CONSULTAR CONTA
+             * ============================================================= */
             case 5: {
-                int opcao, numero, r, indice = ERR_INVALIDO;
-                char cpf[TAM_CPF];
+                limpa_tela();
+                ui_titulo("CONSULTAR CONTA");
 
-                printf("\n--- CONSULTAR CONTA ---\n");
+                int modo, indice = ERR_INVALIDO;
+                char cpf[TAM_CPF];
+                int numero, r;
+
                 printf("(1) Consultar por numero da conta\n");
                 printf("(2) Consultar por CPF\n");
                 printf("Escolha: ");
 
-                if (scanf("%d", &opcao) != 1) {
+                if (scanf("%d", &modo) != 1) {
                     limpa_buffer();
-                    printf("Entrada invalida.\n");
+                    ui_msg_erro("Entrada invalida.");
                     break;
                 }
                 limpa_buffer();
 
-                if (opcao == 1) {
+                if (modo == 1) {
                     numero = coletar_numero_conta();
                     r = consultar_por_numero(vetor_de_contas, quantidade_atual, numero, &indice);
                 }
-                else if (opcao == 2) {
+                else if (modo == 2) {
                     r = coletar_cpf(cpf);
                     if (r != OK) {
-                        printf("CPF invalido.\n");
+                        ui_msg_erro("CPF invalido.");
                         break;
                     }
                     r = consultar_por_cpf(vetor_de_contas, quantidade_atual, cpf, &indice);
                 }
                 else {
-                    printf("Opcao invalida.\n");
+                    ui_msg_erro("Opcao invalida.");
                     break;
                 }
 
@@ -238,162 +251,145 @@ int main() {
                         break;
 
                     case ERR_NENHUMA_CONTA:
-                        printf("\nNenhuma conta cadastrada.\n");
+                        ui_msg_erro("Nenhuma conta cadastrada.");
                         break;
 
                     case ERR_CONTA_INEXISTENTE:
-                        printf("\nConta nao encontrada.\n");
+                        ui_msg_erro("Conta nao encontrada.");
                         break;
 
                     case ERR_CONTA_INATIVA:
-                        printf("\nConta existe, mas esta inativa.\n");
-                        printf("Conta numero: %d\n", vetor_de_contas[indice].numero);
+                        ui_msg_erro("Conta existe, mas esta inativa.");
                         break;
 
-                    case ERR_INVALIDO:
-                        printf("\nEntrada invalida.\n");
+                    default:
+                        ui_msg_erro("Entrada invalida.");
                         break;
                 }
 
                 break;
             }
 
+            /* =============================================================
+             *        6. ATUALIZAR TELEFONE / AGENCIA
+             * ============================================================= */
             case 6: {
-                char telefone_temp[TAM_TELEFONE], agencia_temp[TAM_AGENCIA];
-                int sucesso_atualizacao, numero_conta, idx_conta;
-
                 limpa_tela();
+                ui_titulo("ATUALIZAR TELEFONE / AGENCIA");
 
-                printf("\n --- Atualizar telefone e agencia --- \n");
+                char telefone_temp[TAM_TELEFONE], agencia_temp[TAM_AGENCIA];
+                int numero_conta = coletar_numero_conta();
+                int idx = encontrar_conta_por_numero(vetor_de_contas, numero_conta, quantidade_atual);
 
-                numero_conta = coletar_numero_conta(); // coleta os dados
-
-                idx_conta = encontrar_conta_por_numero(
-                    vetor_de_contas, numero_conta, quantidade_atual
-                );
-
-                if (idx_conta == ERR_CONTA_INEXISTENTE) {
-                    printf("\nErro: A conta nao existe!");
+                if (idx == ERR_CONTA_INEXISTENTE) {
+                    ui_msg_erro("A conta nao existe!");
                     break;
                 }
 
-                sucesso_atualizacao = valida_conta_ativa(vetor_de_contas, idx_conta);
-
-                if (sucesso_atualizacao == ERR_CONTA_INATIVA) {
-                    printf("\nErro: A conta esta desativada!");
+                int r = valida_conta_ativa(vetor_de_contas, idx);
+                if (r == ERR_CONTA_INATIVA) {
+                    ui_msg_erro("A conta esta desativada!");
                     break;
                 }
 
                 coletar_novos_dados_tel_agencia(telefone_temp, agencia_temp);
+                atualizar_dados_tel_agencia(vetor_de_contas, telefone_temp, agencia_temp, idx);
 
-                atualizar_dados_tel_agencia(
-                    vetor_de_contas, telefone_temp, agencia_temp, idx_conta
-                );
-
+                ui_msg_ok("Dados atualizados com sucesso!");
                 break;
             }
 
+            /* =============================================================
+             *                       7. LISTAR CONTAS
+             * ============================================================= */
             case 7: {
-                int filtro, sucesso_scanf, valida_listar;
+                limpa_tela();
+                ui_titulo("LISTAR CONTAS");
 
-                printf("\n--- Listar Contas ---\n");
-                printf("Qual filtro deseja aplicar?\n");
+                int filtro;
                 printf(" (1) Somente Encerradas\n");
                 printf(" (2) Somente Ativas\n");
                 printf(" (3) Todas as Contas\n");
                 printf("Escolha: ");
 
-                sucesso_scanf = scanf("%d", &filtro);
-
-                if (sucesso_scanf != 1) {
-                    limpa_tela();
-                    printf("\nErro: Entrada invalida! Por favor informe somente numeros.\n");
+                if (scanf("%d", &filtro) != 1) {
                     limpa_buffer();
+                    ui_msg_erro("Entrada invalida!");
                     continue;
                 }
-
                 limpa_buffer();
 
                 if (filtro < 1 || filtro > 3) {
-                    printf("Erro: Opcao de filtro invalida!\n");
-                }
-                else {
-                    valida_listar = listar_contas(
-                        vetor_de_contas, quantidade_atual, filtro
-                    );
-
-                    if (valida_listar == ERR_CONTA_INEXISTENTE) {
-                        printf("Erro: Nenhuma conta cadastrada no sistema.\n");
-                        break;
-                    }
-
-                    if (valida_listar == ERR_NENHUMA_CONTA) {
-                        printf("Erro: Nenhuma conta encontrada para este filtro.\n");
-                        break;
-                    }
-                }
-
-                break;
-            }
-
-            case 8: {
-                int num_conta, idx_conta, verifica_sucesso;
-
-                limpa_tela();
-
-                printf("\n--- Encerrar conta ---\n");
-
-                num_conta = coletar_numero_conta();
-
-                idx_conta = encontrar_conta_por_numero(
-                    vetor_de_contas, num_conta, quantidade_atual
-                );
-
-                if (idx_conta == ERR_CONTA_INEXISTENTE) {
-                    printf("\nErro: A conta nao existe!\n");
+                    ui_msg_erro("Opcao de filtro invalida!");
                     break;
                 }
 
-                verifica_sucesso = encerrar_conta(
-                    vetor_de_contas, idx_conta, quantidade_atual
-                );
+                int r = listar_contas(vetor_de_contas, quantidade_atual, filtro);
 
-                switch (verifica_sucesso) {
+                if (r == ERR_CONTA_INEXISTENTE) {
+                    ui_msg_erro("Nenhuma conta cadastrada no sistema.");
+                } else if (r == ERR_NENHUMA_CONTA) {
+                    ui_msg_erro("Nenhuma conta encontrada para este filtro.");
+                }
 
+                break;
+            }
+
+            /* =============================================================
+             *                        8. ENCERRAR CONTA
+             * ============================================================= */
+            case 8: {
+                limpa_tela();
+                ui_titulo("ENCERRAR CONTA");
+
+                int num_conta = coletar_numero_conta();
+                int idx = encontrar_conta_por_numero(vetor_de_contas, num_conta, quantidade_atual);
+
+                if (idx == ERR_CONTA_INEXISTENTE) {
+                    ui_msg_erro("A conta nao existe!");
+                    break;
+                }
+
+                int r = encerrar_conta(vetor_de_contas, idx, quantidade_atual);
+
+                switch (r) {
                     case ERR_CONTA_INEXISTENTE:
-                        printf("\nErro: A conta nao existe!\n");
+                        ui_msg_erro("A conta nao existe!");
                         break;
 
                     case ERR_CONTA_INATIVA:
-                        printf("\nErro: A conta ja esta desativada!\n");
+                        ui_msg_erro("A conta ja esta desativada!");
                         break;
 
                     case ERR_SALDO_NAO_ZERO:
-                        printf("\nErro: Por favor, faca transferencia do saldo da sua conta antes de encerra-la!");
-                        printf("\nO saldo da conta deve ser zero antes dela ser encerrada.\n");
+                        ui_msg_erro("O saldo deve ser zero antes de encerrar a conta!");
                         break;
 
                     case OK:
-                        printf("\nConta encerrada com sucesso!");
+                        ui_msg_ok("Conta encerrada com sucesso!");
                         break;
 
                     default:
-                        printf("\nErro inesperado: código %d\n", verifica_sucesso);
+                        ui_msg_erro("Erro inesperado ao encerrar conta.");
                         break;
                 }
 
                 break;
             }
 
+            /* =============================================================
+             *                        9. SAIR
+             * ============================================================= */
             case 9: {
-                printf("\nEncerrando o programa...\n");
+                limpa_tela();
+                ui_msg_ok("Encerrando o programa...");
                 return OK;
             }
-
-            default:
-                printf("\nErro: Opcao invalida!");
-                break;
         }
+
+        /* Pequena pausa antes de mostrar o menu novamente */
+        printf("\nPressione ENTER para voltar ao menu...");
+        getchar();
 
     } while (opcao != 9);
 
