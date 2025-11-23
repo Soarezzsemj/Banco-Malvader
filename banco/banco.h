@@ -107,6 +107,8 @@ int consultar_por_numero(Conta contas[], int quant, int numero, int *indice_out)
 
 int consultar_por_cpf(Conta contas[], int quant, const char *cpf, int *indice_out);
 
+int encerrar_conta(Conta contas[], int idx_conta, int quant_atual);
+
 
 
 int realizar_transferencia(Conta contas[],
@@ -115,9 +117,13 @@ int realizar_transferencia(Conta contas[],
                            int conta_destino,
                            double valor);
 
-/* Funções dos seus amigos (eles adicionarão aqui depois) */
-// void depositar(Conta contas[], int quant);
-// void sacar(Conta contas[], int quant);
+void coletar_info_saque(int *num_conta, double *valor_saque);
+
+int realizar_saque(Conta contas[], int indice_conta, double valor_saque);
+
+int ler_int(const char *mensagem);
+
+double ler_double(const char *mensagem);
 
 
 #endif //FIM DA TRAVA

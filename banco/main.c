@@ -6,10 +6,7 @@ int main() {
     int quantidade_atual = 0; // numero de contas criadas
     int num_proxima_conta = 1; // vai ser incrementado depois apos a criação de uma nova conta
     int opcao, sucesso_leitura, resultado_da_conta;
-    int ler_int(const char *mensagem);
-    double ler_double(const char *mensagem);
-    void coletar_info_saque(int *num_conta, double *valor_saque);
-    int realizar_saque(Conta contas[], int indice_conta, double valor_saque);
+
 
 
     do {
@@ -169,56 +166,51 @@ int main() {
 
 
             case 4: {
-                // Transferir
-                printf("Informe o numero da conta de origem: ");
-                int num_origem = coletar_numero_conta();
-                printf("Informe o numero da conta de destino: ");
-                int num_destino = coletar_numero_conta();
-                double valor_transferencia = ler_double("Informe o valor da transferencia: ");
+    // Transferir
+    printf("Informe o numero da conta de origem: ");
+    int num_origem = coletar_numero_conta();
+    printf("Informe o numero da conta de destino: ");
+    int num_destino = coletar_numero_conta();
+    double valor_transferencia = ler_double("Informe o valor da transferencia: ");
 
-                int resultado = realizar_transferencia(
-                    vetor_de_contas,
-                    quantidade_atual,
-                    num_origem,
-                    num_destino,
-                    valor_transferencia
-                );
+    int resultado = realizar_transferencia(
+        vetor_de_contas,
+        quantidade_atual,
+        num_origem,
+        num_destino,
+        valor_transferencia
+    );
 
+    switch (resultado) {
+        case OK:
+            printf("\nTransferencia concluida com sucesso!\n");
+            break;
 
-                // if (resultado == OK) {
-                //     printf("\nTransferencia concluida com sucesso!\n");
-                // } else {
-                //     printf("\nErro na transferencia! Verifique os dados e tente novamente.\n");
-                // }
+        case ERR_VALOR_INVALIDO:
+            printf("\nValor invalido! Deve ser maior que zero e menor que %.2f\n", VALOR_MAX_DEPOSITO);
+            break;
 
-                switch ( resultado ) {
+        case ERR_CONTA_INEXISTENTE:
+            printf("\nConta inexistente! Verifique os numeros das contas.\n");
+            break;
 
-                    case OK :
-                        printf("\nTransferencia concluida com sucesso!\n");
-                        break;
+        case ERR_CONTA_INATIVA:
+            printf("\nConta inativa! A operacao nao pode ser realizada.\n");
+            break;
 
-                    case ERR_VALOR_INVALIDO:
-                        printf("\nValor invalido!\n");
-                        break;
+        case ERR_SALDO_INSUFICIENTE:
+            printf("\nSaldo insuficiente na conta de origem!\n");
+            break;
 
-                    case ERR_CONTA_INEXISTENTE:
-                        printf("\nConta inexistente!\n");
-                        break;
+        default:
+            printf("\nErro desconhecido na transferencia.\n");
+            break;
+    }
 
-                    case ERR_CONTA_INATIVA:
-                        printf("\nConta inativa!\n");
-                        break;
-                    case ERR_SALDO_INSUFICIENTE:
-                        printf("\nSaldo insuficiente!\n");
-                        break;
+    break;
+}
 
-
-                }
-
-                break;
-            }
-
-            case 5:
+            case 5: {
                 int tipo, numero, r, indice;
                 char cpf[TAM_CPF];
 
@@ -274,6 +266,7 @@ int main() {
                 }
 
                 break;
+            }
 
             case 6: {
                 char TELEFONE_TEMP[TAM_TELEFONE], AGENCIA_TEMP[TAM_AGENCIA];

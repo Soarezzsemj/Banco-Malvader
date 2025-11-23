@@ -13,11 +13,17 @@
        - conta_origem: número da conta que vai transferir
        - conta_destino: número da conta que vai receber
        - valor: valor a ser transferido
+   Retorna:
+       - OK: transferência realizada com sucesso
+       - ERR_VALOR_INVALIDO: valor <= 0 ou > limite
+       - ERR_CONTA_INEXISTENTE: conta origem ou destino não existe
+       - ERR_CONTA_INATIVA: conta origem ou destino inativa
+       - ERR_SALDO_INSUFICIENTE: saldo insuficiente na conta origem
 */
 int realizar_transferencia(Conta contas[], int quant_atual, int conta_origem, int conta_destino, double valor) {
 
     // Verifica se o valor é válido
-    if (valor <= 0) {
+    if (valor <= 0 || valor > VALOR_MAX_DEPOSITO) {
         return ERR_VALOR_INVALIDO;
     }
 
@@ -34,11 +40,11 @@ int realizar_transferencia(Conta contas[], int quant_atual, int conta_origem, in
     }
 
     // Verifica se as contas estão ativas
-    if (!valida_conta_ativa(contas, idx_origem)) {
+    if (valida_conta_ativa(contas, idx_origem) != OK) {
         return ERR_CONTA_INATIVA;
     }
 
-    if (!valida_conta_ativa(contas, idx_destino)) {
+    if (valida_conta_ativa(contas, idx_destino) != OK) {
         return ERR_CONTA_INATIVA;
     }
 
@@ -50,8 +56,6 @@ int realizar_transferencia(Conta contas[], int quant_atual, int conta_origem, in
     // Realiza a transferência
     contas[idx_origem].saldo -= valor;
     contas[idx_destino].saldo += valor;
-
-    printf("Transferencia de %.2f realizada com sucesso!\n", valor);
 
     return OK; // Sucesso
 }
