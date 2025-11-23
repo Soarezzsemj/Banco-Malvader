@@ -140,3 +140,41 @@ int coletar_numero_conta(void) { //coleta o numero de uma conta de forma segura 
 
     return ERR_PARA_COMPILADOR; //funcao nao chega aqui, so para o compilador nao reclamar
 }
+
+//Função para COLETAR CPF
+
+int coletar_cpf(char cpf_out[]) {
+    char buffer[TAM_CPF];
+    int valido;
+
+    do {
+        printf("Digite o CPF (11 digitos): ");
+
+        if (fgets(buffer, TAM_CPF, stdin) == NULL) {
+            return ERR_INVALIDO;
+        }
+
+        valido = verifica_fgets(buffer);
+        if (valido != OK) {
+            limpa_buffer();
+            continue;
+        }
+
+        valido = verifica_digitos(buffer);
+        if (valido != OK) {
+            continue;
+        }
+
+        if (strlen(buffer) != 11) {
+            valido = ERR_INVALIDO;
+            continue;
+        }
+
+        valido = OK;
+
+    } while (valido != OK);
+
+    strcpy(cpf_out, buffer);
+    return OK;
+}
+
