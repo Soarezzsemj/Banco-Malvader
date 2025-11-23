@@ -171,7 +171,7 @@ int main() {
             case 5:
                 resultado = consultar_conta(vetor_de_contas, quantidade_atual);
                 if (resultado != OK) {
-                    printf("\n[Operacao nao concluida]\n");
+                    printf("\nconta nao encontrada!\n");
                 }
                 break;
 
