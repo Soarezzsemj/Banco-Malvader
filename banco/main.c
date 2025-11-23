@@ -7,6 +7,7 @@ int main() {
     int num_proxima_conta = 1; // vai ser incrementado depois apos a criação de uma nova conta
     int opcao, sucesso_leitura, resultado_da_conta;
 
+
     do {
         // imprime na tela todas as opções do sistema bancário
         exibir_menu();
@@ -30,7 +31,6 @@ int main() {
         }
 
         switch (opcao) {
-
             case 1: {
                 limpa_tela();
 
@@ -168,6 +168,60 @@ int main() {
                 break;
 
             case 5:
+                int tipo, numero, r, indice;
+                char cpf[TAM_CPF];
+
+                printf("\n--- CONSULTAR CONTA ---\n");
+                printf("(1) Consultar por numero da conta\n");
+                printf("(2) Consultar por CPF\n");
+                printf("Escolha: ");
+
+                if (scanf("%d", &tipo) != 1) {
+                    limpa_buffer();
+                    printf("Entrada invalida.\n");
+                    break;
+                }
+                limpa_buffer();
+
+                if (tipo == 1) {
+                    numero = coletar_numero_conta();
+                    r = consultar_por_numero(vetor_de_contas, quantidade_atual, numero, &indice);
+                }
+                else if (tipo == 2) {
+                    r = coletar_cpf(cpf);
+                    if (r != OK) {
+                        printf("CPF invalido.\n");
+                        break;
+                    }
+                    r = consultar_por_cpf(vetor_de_contas, quantidade_atual, cpf, &indice);
+                }
+                else {
+                    printf("Opcao invalida.\n");
+                    break;
+                }
+
+                switch (r) {
+                    case OK:
+                        mostrar_dados(&vetor_de_contas[indice]);
+                        break;
+
+                    case ERR_NENHUMA_CONTA:
+                        printf("Nenhuma conta cadastrada.\n");
+                        break;
+
+                    case ERR_CONTA_INEXISTENTE:
+                        printf("Conta nao encontrada.\n");
+                        break;
+
+                    case ERR_CONTA_INATIVA:
+                        printf("Conta existe, mas esta inativa.\n");
+                        break;
+
+                    case ERR_INVALIDO:
+                        printf("Entrada invalida.\n");
+                        break;
+                }
+
                 break;
 
             case 6: {
