@@ -1,7 +1,6 @@
-/* * O "Contrato" do Projeto.
-* Define todas as estruturas de dados e "promete"
- * quais funções existem.
- */
+/** O "Contrato" do Projeto.
+Define todas as estruturas de dados e "promete"
+quais funções existem. */
 
 #ifndef BANCO_MALVADER_BANCO_H // "Trava" para evitar importação duplicada
 #define BANCO_MALVADER_BANCO_H
@@ -15,11 +14,16 @@
 #define TAM_TELEFONE 20
 #define ATIVA 1
 #define ENCERRADA 0
-#define VALOR_MAX_DEPOSITO (100000000.0) //valor maximo para um deposito, transferencia, saque: 100 milhoes
-#define VALOR_MAX_SAQUE (100000000.0) //valor maximo para um deposito, transferencia, saque: 100 milhoes
+
+//valor maximo para um deposito, transferencia, saque: 100 milhoes
+#define VALOR_MAX_DEPOSITO (100000000.0)
+#define VALOR_MAX_SAQUE (100000000.0)
+#define VALOR_MAX_TRANSFERENCIA (100000000.0)
+
+//usado na funcao encerrar_conta e saque
+#define EPS 1e-9 //EPS = 0.0000000001
 
 // 0 = sucesso, <0 = códigos de erro. parenteses pq se nao compilador reclama
-
 typedef enum {
 
     /* Sucesso */
@@ -33,23 +37,22 @@ typedef enum {
     ERR_CPF_DUPLICADO     = -5, // ao criar conta, CPF já cadastrado em conta ativa
     ERR_NENHUMA_CONTA     = -6, // lista vazia / nenhuma conta no sistema
     ERR_SALDO_NAO_ZERO    = -7, //para funcao encerrar conta
-    ERR_SAQUE_PARCIAL     = -8, // saldo insuficiente; saque parcial foi realizado
-    ERR_SALDO_INSUFICIENTE = -9, // saldo na conta insuficiente, p tranferir
+    ERR_SALDO_INSUFICIENTE = -8, // saldo na conta insuficiente, p tranferir
 
     /*  Erros de input / validação */
-    ERR_INPUT_MUITO_LONG  = -10, // fgets ultrapassou buffer
-    ERR_PARSE_FAIL        = -11, // conversão/parse (atoi/atof) falhou
-    ERR_LETRA_EM_NUMERO   = -12, // letra encontrada onde só número é permitido
+    ERR_INPUT_MUITO_LONG  = -9, // fgets ultrapassou buffer
+    ERR_PARSE_FAIL        = -10, // conversão/parse (atoi/atof) falhou
+    ERR_LETRA_EM_NUMERO   = -11, // letra encontrada onde só número é permitido
 
     /* Erros sentinela / código inútil só pro compilador parar de reclamar */
-    ERR_PARA_COMPILADOR   = -13, // usar onde a função não pode alcançar
-    ERR_INVALIDO          = -14  // genérico; usar quando nada mais encaixa
+    ERR_PARA_COMPILADOR   = -12, // usar onde a função não pode alcançar
+    ERR_INVALIDO          = -13  // genérico; usar quando nada mais encaixa
 
 } ErrorCode;
 
 #define ERR_PARA_COMPILADOR_D (-100.0) //mesma do normal mas usado para funcoes que retorna double
 
-// --- 2. ESTRUTURAS DE DADOS (O Molde) ---
+// --- 2. ESTRUTURAS DE DADOS ---
 typedef struct {
     int numero; /* número único da conta */
     char nome[TAM_NOME];
@@ -61,16 +64,12 @@ typedef struct {
 } Conta;
 
 // --- 3. PROTÓTIPOS DE FUNÇÃO (As "Promessas") ---
-// Dizemos ao 'main.c' que essas funções existem em algum lugar...
-
-/* Funções do utils.c */
-void limpa_tela();
 
 void limpa_buffer();
 
 void exibir_menu();
 
-void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCIA_temp[], char TELEFONE_temp[]);
+void coletar_dados_abertura_conta(char nome_temp[], char cpf_temp[], char agencia_temp[], char TELEFONE_temp[]);
 
 int verifica_fgets(char INFO[]);
 
@@ -89,9 +88,9 @@ int coletar_numero_conta(void);
 
 int verifica_digitos(char INFO[]);
 
-void coletar_novos_dados_tel_agencia (char TEL_TEMP[], char AGENCIA_TEMP[]);
+void coletar_novos_dados_tel_agencia (char tel_temp[], char agencia_temp[]);
 
-void atualizar_dados_tel_agencia (Conta contas[], char TEL_NOVO[], char AGENCIA_NOVA[], int indice);
+void atualizar_dados_tel_agencia (Conta contas[], char tel_novo[], char agencia_nova[], int indice);
 
 int verifica_letras(char INFO[]);
 
@@ -109,8 +108,6 @@ int consultar_por_cpf(Conta contas[], int quant, const char *cpf, int *indice_ou
 
 int encerrar_conta(Conta contas[], int idx_conta, int quant_atual);
 
-
-
 int realizar_transferencia(Conta contas[],
                            int quant_atual,
                            int conta_origem,
@@ -121,9 +118,22 @@ void coletar_info_saque(int *num_conta, double *valor_saque);
 
 int realizar_saque(Conta contas[], int indice_conta, double valor_saque);
 
-int ler_int(const char *mensagem);
+/* === FUNCOES UI: MELHORAM A EXPERIENCIA VISUAL DO USUARIO COM O PROGRAMA === */
 
-double ler_double(const char *mensagem);
+void limpa_tela();
 
+void ui_bloco_fim();
+
+void ui_bloco_inicio();
+
+void ui_msg_erro(const char *msg);
+
+void ui_msg_ok(const char *msg);
+
+void ui_subtitulo(const char *texto);
+
+void ui_titulo(const char *titulo);
+
+void ui_linha();
 
 #endif //FIM DA TRAVA

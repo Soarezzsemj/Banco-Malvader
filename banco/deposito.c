@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "banco.h"
 
 double coletar_info_deposito (const char *mensagem) {

@@ -21,4 +21,5 @@ add_executable(banco
         banco/encerrar_conta.c
         banco/Saque.c
         banco/consultar-saldo-dados.c
+        banco/ui.c
 )
