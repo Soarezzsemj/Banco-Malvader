@@ -262,8 +262,6 @@ int main() {
             case 7: {
                 int filtro, sucesso_scanf, valida_listar;
 
-                limpa_tela();
-
                 printf("\n--- Listar Contas ---\n");
                 printf("Qual filtro deseja aplicar?\n");
                 printf(" (1) Somente Encerradas\n");
