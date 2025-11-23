@@ -157,12 +157,12 @@ int consultar_conta(Conta contas[], int quant) {
    RESUMO FINAL:
    ====================================================
 
-   ✅ Usa enum em TODAS as comparações (não -1 ou 0)
-   ✅ Retorna ERR_NENHUMA_CONTA quando quant == 0
-   ✅ Compara com != OK (não != 0)
-   ✅ NÃO imprime mensagens de erro (main faz isso)
-   ✅ Reutiliza funções existentes
-   ✅ Código limpo e consistente
+    Usa enum em TODAS as comparações (não -1 ou 0)
+    Retorna ERR_NENHUMA_CONTA quando quant == 0
+    Compara com != OK (não != 0)
+    NÃO imprime mensagens de erro (main faz isso)
+    Reutiliza funções existentes
+    Código limpo e consistente
 
    ====================================================
    NO main.c, o case 5 deve ficar:
