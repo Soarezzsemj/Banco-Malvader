@@ -168,7 +168,8 @@ int main() {
                 break;
 
 
-            case 4: { // Transferir
+            case 4: {
+                // Transferir
                 printf("Informe o numero da conta de origem: ");
                 int num_origem = coletar_numero_conta();
                 printf("Informe o numero da conta de destino: ");
@@ -184,10 +185,34 @@ int main() {
                 );
 
 
-                if (resultado == OK) {
-                    printf("\nTransferencia concluida com sucesso!\n");
-                } else {
-                    printf("\nErro na transferencia! Verifique os dados e tente novamente.\n");
+                // if (resultado == OK) {
+                //     printf("\nTransferencia concluida com sucesso!\n");
+                // } else {
+                //     printf("\nErro na transferencia! Verifique os dados e tente novamente.\n");
+                // }
+
+                switch ( resultado ) {
+
+                    case OK :
+                        printf("\nTransferencia concluida com sucesso!\n");
+                        break;
+
+                    case ERR_VALOR_INVALIDO:
+                        printf("\nValor invalido!\n");
+                        break;
+
+                    case ERR_CONTA_INEXISTENTE:
+                        printf("\nConta inexistente!\n");
+                        break;
+
+                    case ERR_CONTA_INATIVA:
+                        printf("\nConta inativa!\n");
+                        break;
+                    case ERR_SALDO_INSUFICIENTE:
+                        printf("\nSaldo insuficiente!\n");
+                        break;
+
+
                 }
 
                 break;

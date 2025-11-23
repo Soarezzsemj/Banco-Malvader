@@ -18,33 +18,33 @@ int realizar_transferencia(Conta contas[], int quant_atual, int conta_origem, in
 
     // Verifica se o valor é válido
     if (valor <= 0) {
-        return 0;
+        return ERR_VALOR_INVALIDO;
     }
 
     // Encontrar índice da conta de origem
     int idx_origem = encontrar_conta_por_numero(contas, conta_origem, quant_atual);
     if (idx_origem == ERR_CONTA_INEXISTENTE) {
-        return 0;
+        return ERR_CONTA_INEXISTENTE;
     }
 
     // Encontrar índice da conta de destino
     int idx_destino = encontrar_conta_por_numero(contas, conta_destino, quant_atual);
     if (idx_destino == ERR_CONTA_INEXISTENTE) {
-        return 0;
+        return ERR_CONTA_INEXISTENTE;
     }
 
     // Verifica se as contas estão ativas
     if (!valida_conta_ativa(contas, idx_origem)) {
-        return 0;
+        return ERR_CONTA_INATIVA;
     }
 
     if (!valida_conta_ativa(contas, idx_destino)) {
-        return 0;
+        return ERR_CONTA_INATIVA;
     }
 
     // Verifica se há saldo suficiente
     if (contas[idx_origem].saldo < valor) {
-        return 0;
+        return ERR_SALDO_INSUFICIENTE;
     }
 
     // Realiza a transferência
