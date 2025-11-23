@@ -8,6 +8,7 @@ int main() {
     int opcao, sucesso_leitura, resultado_da_conta;
 
 
+
     do {
         // imprime na tela todas as opções do sistema bancário
         exibir_menu();
@@ -164,10 +165,52 @@ int main() {
                 break;
 
 
-            case 4:
-                break;
+            case 4: {
+    // Transferir
+    printf("Informe o numero da conta de origem: ");
+    int num_origem = coletar_numero_conta();
+    printf("Informe o numero da conta de destino: ");
+    int num_destino = coletar_numero_conta();
+    double valor_transferencia = ler_double("Informe o valor da transferencia: ");
 
-            case 5:
+    int resultado = realizar_transferencia(
+        vetor_de_contas,
+        quantidade_atual,
+        num_origem,
+        num_destino,
+        valor_transferencia
+    );
+
+    switch (resultado) {
+        case OK:
+            printf("\nTransferencia concluida com sucesso!\n");
+            break;
+
+        case ERR_VALOR_INVALIDO:
+            printf("\nValor invalido! Deve ser maior que zero e menor que %.2f\n", VALOR_MAX_DEPOSITO);
+            break;
+
+        case ERR_CONTA_INEXISTENTE:
+            printf("\nConta inexistente! Verifique os numeros das contas.\n");
+            break;
+
+        case ERR_CONTA_INATIVA:
+            printf("\nConta inativa! A operacao nao pode ser realizada.\n");
+            break;
+
+        case ERR_SALDO_INSUFICIENTE:
+            printf("\nSaldo insuficiente na conta de origem!\n");
+            break;
+
+        default:
+            printf("\nErro desconhecido na transferencia.\n");
+            break;
+    }
+
+    break;
+}
+
+            case 5: {
                 int tipo, numero, r, indice;
                 char cpf[TAM_CPF];
 
@@ -223,6 +266,7 @@ int main() {
                 }
 
                 break;
+            }
 
             case 6: {
                 char TELEFONE_TEMP[TAM_TELEFONE], AGENCIA_TEMP[TAM_AGENCIA];

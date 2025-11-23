@@ -70,7 +70,7 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
 
         entrada_valida = verifica_digitos(CPF_temp);
 
-        if (entrada_valida == ERR_LETRA_EM_NUMERO) {
+        if (entrada_valida ==  ERR_LETRA_EM_NUMERO) {
             printf("\nErro: Digite apenas numeros!\n");
             continue;
         }
@@ -114,7 +114,7 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
 
         entrada_valida = verifica_digitos(TELEFONE_temp);
 
-        if (entrada_valida == ERR_LETRA_EM_NUMERO) {
+        if (entrada_valida == ERR_LETRA_EM_NUMERO ) {
             printf("\nErro: Digite apenas numeros!\n");
             continue;
         }
