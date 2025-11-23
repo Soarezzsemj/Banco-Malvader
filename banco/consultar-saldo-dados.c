@@ -14,11 +14,12 @@ int consultar_por_numero(Conta contas[], int quant, int numero, int *indice_out)
     if (indice < 0)
         return ERR_CONTA_INEXISTENTE;
 
+    *indice_out = indice;
+
     int r = valida_conta_ativa(contas, indice);
     if (r != OK)
         return ERR_CONTA_INATIVA;
 
-    *indice_out = indice;
     return OK;
 }
 
@@ -34,12 +35,13 @@ int consultar_por_cpf(Conta contas[], int quant, const char *cpf, int *indice_ou
 
     for (i = 0; i < quant; i++) {
         if (strcmp(contas[i].cpf, cpf) == 0) {
+            *indice_out = i;
+
             int r = valida_conta_ativa(contas, i);
 
             if (r != OK)
                 return ERR_CONTA_INATIVA;
 
-            *indice_out = i;
             return OK;
         }
     }

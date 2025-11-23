@@ -69,7 +69,7 @@ void limpa_buffer();
 
 void exibir_menu();
 
-void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCIA_temp[], char TELEFONE_temp[]);
+void coletar_dados_abertura_conta(char nome_temp[], char cpf_temp[], char agencia_temp[], char TELEFONE_temp[]);
 
 int verifica_fgets(char INFO[]);
 
@@ -88,9 +88,9 @@ int coletar_numero_conta(void);
 
 int verifica_digitos(char INFO[]);
 
-void coletar_novos_dados_tel_agencia (char TEL_TEMP[], char AGENCIA_TEMP[]);
+void coletar_novos_dados_tel_agencia (char tel_temp[], char agencia_temp[]);
 
-void atualizar_dados_tel_agencia (Conta contas[], char TEL_NOVO[], char AGENCIA_NOVA[], int indice);
+void atualizar_dados_tel_agencia (Conta contas[], char tel_novo[], char agencia_nova[], int indice);
 
 int verifica_letras(char INFO[]);
 
@@ -119,10 +119,5 @@ int realizar_transferencia(Conta contas[],
 void coletar_info_saque(int *num_conta, double *valor_saque);
 
 int realizar_saque(Conta contas[], int indice_conta, double valor_saque);
-
-int ler_int(const char *mensagem);
-
-double ler_double(const char *mensagem);
-
 
 #endif //FIM DA TRAVA

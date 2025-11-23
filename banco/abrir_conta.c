@@ -31,16 +31,16 @@ int abrir_conta(Conta contas[], int *quant, int num_conta, const char *nome,
     return OK; // sucesso, uma conta foi criada
 }
 
-void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCIA_temp[], char TELEFONE_temp[]) {
+void coletar_dados_abertura_conta(char nome_temp[], char cpf_temp[], char agencia_temp[], char telefone_temp[]) {
     printf("\n------ABERTURA DE CONTA NOVA------\n");
 
     int entrada_valida = OK;
 
     do {
         printf("\nDigite o seu nome completo: ");
-        fgets(NOME_temp, TAM_NOME, stdin);
+        fgets(nome_temp, TAM_NOME, stdin);
 
-        entrada_valida = verifica_fgets(NOME_temp); // funcao verifica se ultrapassou o limite
+        entrada_valida = verifica_fgets(nome_temp); // funcao verifica se ultrapassou o limite
 
         if (entrada_valida == ERR_INPUT_MUITO_LONG) {
             printf("\nErro: Nome muito longo! O limite de caracteres eh %d caracteres.\n", TAM_NOME - 2);
@@ -48,7 +48,7 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
             continue;
         }
 
-        entrada_valida = verifica_letras(NOME_temp);
+        entrada_valida = verifica_letras(nome_temp);
 
         if (entrada_valida == ERR_DIGIT_EM_NOME) {
             printf("\nErro: Informe somente letras!");
@@ -59,24 +59,24 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
 
     do {
         printf("Digite o seu cpf completo (apenas numeros): ");
-        fgets(CPF_temp, TAM_CPF, stdin);
+        fgets(cpf_temp, TAM_CPF, stdin);
 
-        entrada_valida = verifica_fgets(CPF_temp);
+        entrada_valida = verifica_fgets(cpf_temp);
         if (entrada_valida == ERR_INPUT_MUITO_LONG) {
             printf("Erro: CPF muito longo! O CPF deve ter 11 digitos.\n");
             limpa_buffer();
             continue;
         }
 
-        entrada_valida = verifica_digitos(CPF_temp);
+        entrada_valida = verifica_digitos(cpf_temp);
 
         if (entrada_valida ==  ERR_LETRA_EM_NUMERO) {
             printf("\nErro: Digite apenas numeros!\n");
             continue;
         }
 
-        if (strlen(CPF_temp) != 11) {
-            printf("\nErro: O CPF deve ter 11 digitos, voce informou somente %d.\n", (int)strlen(CPF_temp));
+        if (strlen(cpf_temp) != 11) {
+            printf("\nErro: O CPF deve ter 11 digitos, voce informou somente %d.\n", (int)strlen(cpf_temp));
             entrada_valida = ERR_INVALIDO;
             continue;
         }
@@ -84,16 +84,16 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
 
     do {
         printf("Informe sua agencia: ");
-        fgets(AGENCIA_temp, TAM_AGENCIA, stdin);
+        fgets(agencia_temp, TAM_AGENCIA, stdin);
 
-        entrada_valida = verifica_fgets(AGENCIA_temp);
+        entrada_valida = verifica_fgets(agencia_temp);
         if (entrada_valida == ERR_INPUT_MUITO_LONG) {
             printf("\nErro: Nome de agencia muito longo! O limite eh %d caracteres.\n", TAM_AGENCIA - 2);
             limpa_buffer();
             continue;
         }
 
-        entrada_valida = verifica_digitos(AGENCIA_temp);
+        entrada_valida = verifica_digitos(agencia_temp);
 
         if (entrada_valida == ERR_LETRA_EM_NUMERO) {
             printf("\nErro: Digite apenas numeros!\n");
@@ -103,16 +103,16 @@ void coletar_dados_abertura_conta(char NOME_temp[], char CPF_temp[], char AGENCI
 
     do {
         printf("Informe seu telefone (apenas numeros): ");
-        fgets(TELEFONE_temp, TAM_TELEFONE, stdin);
+        fgets(telefone_temp, TAM_TELEFONE, stdin);
 
-        entrada_valida = verifica_fgets(TELEFONE_temp);
+        entrada_valida = verifica_fgets(telefone_temp);
         if (entrada_valida == ERR_INPUT_MUITO_LONG) {
             printf("\nErro: Numero de telefone grande demais! O limite eh de %d numeros.\n", TAM_TELEFONE - 2);
             limpa_buffer();
             continue;
         }
 
-        entrada_valida = verifica_digitos(TELEFONE_temp);
+        entrada_valida = verifica_digitos(telefone_temp);
 
         if (entrada_valida == ERR_LETRA_EM_NUMERO ) {
             printf("\nErro: Digite apenas numeros!\n");

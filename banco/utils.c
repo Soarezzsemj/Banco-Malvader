@@ -178,18 +178,3 @@ int coletar_cpf(char cpf_out[]) {
     return OK;
 }
 
-double ler_double(const char *mensagem) {
-    double valor;
-
-    printf("%s", mensagem);
-
-    while (scanf("%lf", &valor) != 1) {
-        printf("Entrada inválida! Digite um número válido.\n");
-        limpa_buffer();
-        printf("%s", mensagem);
-    }
-
-    limpa_buffer();
-    return valor;
-}
-

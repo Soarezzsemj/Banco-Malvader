@@ -3,14 +3,14 @@
 
 #include "banco.h"
 
-void coletar_novos_dados_tel_agencia (char TEL_TEMP[], char AGENCIA_TEMP[]) {
+void coletar_novos_dados_tel_agencia (char tel_temp[], char agencia_temp[]) {
     int entrada_valida = OK;
 
         do {
             printf("Informe o novo numero de telefone: ");
-            fgets(TEL_TEMP, TAM_TELEFONE, stdin);
+            fgets(tel_temp, TAM_TELEFONE, stdin);
 
-            entrada_valida = verifica_fgets(TEL_TEMP);
+            entrada_valida = verifica_fgets(tel_temp);
 
             if (entrada_valida == ERR_INPUT_MUITO_LONG) {
                 printf("\nErro: Informe um numero de ate %d digitos!", TAM_TELEFONE - 2);
@@ -18,7 +18,7 @@ void coletar_novos_dados_tel_agencia (char TEL_TEMP[], char AGENCIA_TEMP[]) {
                 continue;
             }
 
-            entrada_valida = verifica_digitos(TEL_TEMP);
+            entrada_valida = verifica_digitos(tel_temp);
 
             if (entrada_valida == ERR_LETRA_EM_NUMERO) {
                 printf("\nErro: Informe somente numeros!");
@@ -28,9 +28,9 @@ void coletar_novos_dados_tel_agencia (char TEL_TEMP[], char AGENCIA_TEMP[]) {
 
         do {
             printf("Informe a nova agencia: ");
-            fgets(AGENCIA_TEMP, TAM_AGENCIA, stdin);
+            fgets(agencia_temp, TAM_AGENCIA, stdin);
 
-            entrada_valida = verifica_fgets(AGENCIA_TEMP);
+            entrada_valida = verifica_fgets(agencia_temp);
 
             if (entrada_valida == ERR_INPUT_MUITO_LONG) {
                 printf("\nErro: Informe um numero de ate %d digitos!", TAM_AGENCIA - 2);
@@ -38,7 +38,7 @@ void coletar_novos_dados_tel_agencia (char TEL_TEMP[], char AGENCIA_TEMP[]) {
                 continue;
             }
 
-            entrada_valida = verifica_digitos(AGENCIA_TEMP);
+            entrada_valida = verifica_digitos(agencia_temp);
 
             if (entrada_valida == ERR_LETRA_EM_NUMERO) {
                 printf("\nErro: Informe somente numeros!");
@@ -47,9 +47,9 @@ void coletar_novos_dados_tel_agencia (char TEL_TEMP[], char AGENCIA_TEMP[]) {
         }while (entrada_valida != OK);
 }
 
-void atualizar_dados_tel_agencia (Conta contas[], char TEL_NOVO[], char AGENCIA_NOVA[], int indice) {
-    strcpy(contas[indice].telefone, TEL_NOVO);
-    strcpy(contas[indice].agencia, AGENCIA_NOVA);
+void atualizar_dados_tel_agencia (Conta contas[], char tel_novo[], char agencia_nova[], int indice) {
+    strcpy(contas[indice].telefone, tel_novo);
+    strcpy(contas[indice].agencia, agencia_nova);
 
     printf("\nDados alterados com sucesso!\n");
 }

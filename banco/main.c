@@ -7,8 +7,6 @@ int main() {
     int num_proxima_conta = 1; // vai ser incrementado depois apos a criação de uma nova conta
     int opcao, sucesso_leitura, resultado_da_conta;
 
-
-
     do {
         // imprime na tela todas as opções do sistema bancário
         exibir_menu();
@@ -165,7 +163,7 @@ int main() {
     int num_origem = coletar_numero_conta();
     printf("Informe o numero da conta de destino: ");
     int num_destino = coletar_numero_conta();
-    double valor_transferencia = ler_double("Informe o valor da transferencia: ");
+    double valor_transferencia = coletar_info_deposito("Informe o valor da transferencia: ");
 
     int resultado = realizar_transferencia(
         vetor_de_contas,
@@ -243,19 +241,20 @@ int main() {
                         break;
 
                     case ERR_NENHUMA_CONTA:
-                        printf("Nenhuma conta cadastrada.\n");
+                        printf("\nNenhuma conta cadastrada.\n");
                         break;
 
                     case ERR_CONTA_INEXISTENTE:
-                        printf("Conta nao encontrada.\n");
+                        printf("\nConta nao encontrada.\n");
                         break;
 
                     case ERR_CONTA_INATIVA:
-                        printf("Conta existe, mas esta inativa.\n");
+                        printf("\nConta existe, mas esta inativa.\n");
+                        printf("Conta numero: %d\n", vetor_de_contas[indice].numero);
                         break;
 
                     case ERR_INVALIDO:
-                        printf("Entrada invalida.\n");
+                        printf("\nEntrada invalida.\n");
                         break;
                 }
 
@@ -263,7 +262,7 @@ int main() {
             }
 
             case 6: {
-                char TELEFONE_TEMP[TAM_TELEFONE], AGENCIA_TEMP[TAM_AGENCIA];
+                char telefone_temp[TAM_TELEFONE], agencia_temp[TAM_AGENCIA];
                 int sucesso_atualizacao, numero_conta, idx_conta;
 
                 limpa_tela();
@@ -288,10 +287,10 @@ int main() {
                     break;
                 }
 
-                coletar_novos_dados_tel_agencia(TELEFONE_TEMP, AGENCIA_TEMP);
+                coletar_novos_dados_tel_agencia(telefone_temp, agencia_temp);
 
                 atualizar_dados_tel_agencia(
-                    vetor_de_contas, TELEFONE_TEMP, AGENCIA_TEMP, idx_conta
+                    vetor_de_contas, telefone_temp, agencia_temp, idx_conta
                 );
 
                 break;
