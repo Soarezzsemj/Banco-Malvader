@@ -1,6 +1,7 @@
 # Sistema Bancário Básico em C
 
-![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
+![Status](https://img.shields.io/badge/status-concluído-brightgreen)
+
 
 Este projeto é um trabalho prático da disciplina de Algoritmos e Programação em C. O objetivo é desenvolver um sistema bancário simples para cadastro e manutenção de contas correntes.
 
