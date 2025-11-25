@@ -76,3 +76,48 @@ A avaliação deste projeto será baseada nos seguintes critérios:
 | Validações e tratamento de erros (entradas do usuário, regras de negócio) | 15% |
 | Clareza do código, nomes, comentários e organização | 15% |
 | Relatório curto explicando decisões e testes apresentados | 5% |
+
+## 🚀 Como Rodar o Projeto
+
+Este projeto foi estruturado utilizando **CMake** para gerenciamento de build, garantindo portabilidade e organização.
+
+### Pré-requisitos
+* Compilador C (GCC, MinGW ou Clang).
+* [CMake](https://cmake.org/download/) (opcional, mas recomendado).
+
+### Opção 1: Usando CMake (Recomendado)
+
+1.  **Clone o repositório:**
+    ```bash
+    git clone [https://github.com/Soarezzsemj/Banco-Malvader.git](https://github.com/Soarezzsemj/Banco-Malvader.git)
+    cd Banco-Malvader
+    ```
+
+2.  **Gere os arquivos de build:**
+    ```bash
+    cmake -B build
+    ```
+
+3.  **Compile o projeto:**
+    ```bash
+    cmake --build build
+    ```
+
+4.  **Execute o programa:**
+    * **No Windows:**
+        ```bash
+        .\build\banco.exe
+        ```
+    * **No Linux/Mac:**
+        ```bash
+        ./build/banco
+        ```
+
+---
+
+### Opção 2: Compilação Manual (GCC)
+
+Se você não tiver o CMake instalado, pode compilar manualmente rodando este comando na raiz do projeto:
+
+```bash
+gcc banco/main.c banco/utils.c banco/funcoes_abrir_conta.c banco/listar_contas.c banco/deposito.c banco/saque.c banco/atualizar-telefone-agencia.c banco/mostrar_dados.c banco/encerrar_conta.c banco/funcao-transferir.c banco/ui.c -o banco
